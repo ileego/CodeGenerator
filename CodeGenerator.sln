@@ -1,23 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB6F4D1E-3CBF-402D-838B-499378F8DB51}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Console", "src\CodeGenerator.Console\CodeGenerator.Console.csproj", "{C01EC5CB-F78E-415F-9D52-9F89C68ABC4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.ConsoleApp", "src\CodeGenerator.ConsoleApp\CodeGenerator.ConsoleApp.csproj", "{C01EC5CB-F78E-415F-9D52-9F89C68ABC4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Core", "src\CodeGenerator.Core\CodeGenerator.Core.csproj", "{BEDFF3C0-1526-4942-A640-86639012C122}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Core", "src\CodeGenerator.Core\CodeGenerator.Core.csproj", "{BEDFF3C0-1526-4942-A640-86639012C122}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Infrastructure", "src\CodeGenerator.Infrastructure\CodeGenerator.Infrastructure.csproj", "{590C323B-06B8-46D2-A97C-07F092C59415}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Infrastructure", "src\CodeGenerator.Infrastructure\CodeGenerator.Infrastructure.csproj", "{590C323B-06B8-46D2-A97C-07F092C59415}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Service", "src\CodeGenerator.Service\CodeGenerator.Service.csproj", "{5D04C04E-5023-4A9D-BD35-F07926684C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Service", "src\CodeGenerator.Service\CodeGenerator.Service.csproj", "{5D04C04E-5023-4A9D-BD35-F07926684C53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Mvc", "src\CodeGenerator.Mvc\CodeGenerator.Mvc.csproj", "{33E8B209-2372-4118-929D-B3AA83BDF262}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Mvc", "src\CodeGenerator.Mvc\CodeGenerator.Mvc.csproj", "{33E8B209-2372-4118-929D-B3AA83BDF262}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EA80EAF8-56A0-4788-AA29-E770E218B9C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{871E2C2F-5622-4A75-94AE-2D7F39EA20DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "test\UnitTest\UnitTest.csproj", "{871E2C2F-5622-4A75-94AE-2D7F39EA20DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C01EC5CB-F78E-415F-9D52-9F89C68ABC4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -105,6 +102,9 @@ Global
 		{871E2C2F-5622-4A75-94AE-2D7F39EA20DF}.Release|x86.ActiveCfg = Release|Any CPU
 		{871E2C2F-5622-4A75-94AE-2D7F39EA20DF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C01EC5CB-F78E-415F-9D52-9F89C68ABC4A} = {DB6F4D1E-3CBF-402D-838B-499378F8DB51}
 		{BEDFF3C0-1526-4942-A640-86639012C122} = {DB6F4D1E-3CBF-402D-838B-499378F8DB51}
@@ -112,5 +112,8 @@ Global
 		{5D04C04E-5023-4A9D-BD35-F07926684C53} = {DB6F4D1E-3CBF-402D-838B-499378F8DB51}
 		{33E8B209-2372-4118-929D-B3AA83BDF262} = {DB6F4D1E-3CBF-402D-838B-499378F8DB51}
 		{871E2C2F-5622-4A75-94AE-2D7F39EA20DF} = {EA80EAF8-56A0-4788-AA29-E770E218B9C1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7817473C-530F-4BCC-9D95-7F6E9D5133E9}
 	EndGlobalSection
 EndGlobal
