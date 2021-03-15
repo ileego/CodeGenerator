@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeGenerator.Infrastructure
+namespace CodeGenerator.Infrastructure.Options
 {
     public class RedisOptions
     {

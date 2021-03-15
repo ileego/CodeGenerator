@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CodeGenerator.Infrastructure
+﻿namespace CodeGenerator.Infrastructure.Options
 {
     public class JwtOptions
     {

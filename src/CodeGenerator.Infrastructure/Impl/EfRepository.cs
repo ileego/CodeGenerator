@@ -28,6 +28,11 @@ namespace CodeGenerator.Infrastructure.Impl
             DbSet.Add(entity);
         }
 
+        public void BulkInsert(ICollection<TEntity> entities)
+        {
+            DbSet.AddRangeAsync(entities);
+        }
+
         public virtual void BulkInsert(IEnumerable<TEntity> entities)
         {
             DbSet.AddRangeAsync(entities);

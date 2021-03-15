@@ -2,6 +2,7 @@
 using Aliyun.Acs.Core.Auth.Sts;
 using Aliyun.Acs.Core.Profile;
 using Aliyun.OSS;
+using CodeGenerator.Infrastructure.Options;
 using Microsoft.Extensions.Options;
 
 namespace CodeGenerator.Infrastructure.Extensions

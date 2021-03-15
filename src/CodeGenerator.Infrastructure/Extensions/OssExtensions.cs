@@ -1,17 +1,18 @@
 ﻿using Aliyun.OSS;
 using Microsoft.Extensions.Options;
 using System;
+using CodeGenerator.Infrastructure.Options;
 
 namespace CodeGenerator.Infrastructure.Extensions
 {
     public class OssExtensions
     {
         private readonly OssClient _ossClient;
-        private readonly AliyunOptions _aliyunOptions;
+
         public OssExtensions(IOptions<AliyunOptions> options)
         {
-            _aliyunOptions = options.Value;
-            _ossClient = new OssClient(_aliyunOptions.OssEndpoint, _aliyunOptions.AccessKeyId, _aliyunOptions.AccessKeySecret);
+            var aliyunOptions = options.Value;
+            _ossClient = new OssClient(aliyunOptions.OssEndpoint, aliyunOptions.AccessKeyId, aliyunOptions.AccessKeySecret);
         }
 
         /// <summary>

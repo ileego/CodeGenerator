@@ -448,23 +448,6 @@ namespace CodeGenerator.Infrastructure.Extensions
             return (T)Enum.Parse(typeof(T), value, ignoreCase);
         }
 
-        public static string ToMd5(this string str)
-        {
-            using (var md5 = MD5.Create())
-            {
-                var inputBytes = Encoding.UTF8.GetBytes(str);
-                var hashBytes = md5.ComputeHash(inputBytes);
-
-                var sb = new StringBuilder();
-                foreach (var hashByte in hashBytes)
-                {
-                    sb.Append(hashByte.ToString("X2"));
-                }
-
-                return sb.ToString();
-            }
-        }
-
         /// <summary>
         /// Converts camelCase string to PascalCase string.
         /// </summary>
@@ -598,16 +581,16 @@ namespace CodeGenerator.Infrastructure.Extensions
 
             value = value.Trim();
 
-            string[] patten1 = strKeyWord.Split('|');
-            string[] patten2 = strSymbol.Split('|');
-            foreach (string str in patten1)
+            var patten1 = strKeyWord.Split('|');
+            var patten2 = strSymbol.Split('|');
+            foreach (var str in patten1)
             {
                 if (value.Contains(str))
                 {
                     return true;
                 }
             }
-            foreach (string str in patten2)
+            foreach (var str in patten2)
             {
                 if (value.Contains(str))
                 {
@@ -633,7 +616,7 @@ namespace CodeGenerator.Infrastructure.Extensions
         }
 
         /// <summary>
-        /// MD5加密
+        /// MD5
         /// </summary>
         /// <param name="source">要加密的字符串</param>
         /// <returns></returns>
@@ -642,8 +625,8 @@ namespace CodeGenerator.Infrastructure.Extensions
         {
             try
             {
-                MD5 getmd5 = new MD5CryptoServiceProvider();
-                byte[] targetStr = getmd5.ComputeHash(Encoding.UTF8.GetBytes(source));
+                MD5 md5CryptoServiceProvider = new MD5CryptoServiceProvider();
+                var targetStr = md5CryptoServiceProvider.ComputeHash(Encoding.UTF8.GetBytes(source));
                 var result = BitConverter.ToString(targetStr).Replace("-", "");
                 return result;
             }

@@ -37,14 +37,7 @@ namespace CodeGenerator.Infrastructure.Extensions
         /// <returns></returns>
         public static DateTime ValidateDate(this ControllerBase controller, DateTime? date)
         {
-            if (null == date)
-            {
-                return Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd"));
-            }
-            else
-            {
-                return Convert.ToDateTime(date.Value.ToString("yyyy-MM-dd"));
-            }
+            return Convert.ToDateTime(null == date ? DateTime.Now.ToString("yyyy-MM-dd") : date.Value.ToString("yyyy-MM-dd"));
         }
 
         /// <summary>
@@ -83,7 +76,7 @@ namespace CodeGenerator.Infrastructure.Extensions
             foreach (var s in state.Keys)
             {
                 var entry = state.GetValueOrDefault(s);
-                if (entry.Errors != null && entry.Errors.Count > 0)
+                if (entry?.Errors != null && entry.Errors.Count > 0)
                 {
                     foreach (var e in entry.Errors)
                     {
@@ -95,49 +88,13 @@ namespace CodeGenerator.Infrastructure.Extensions
             return errors;
         }
 
-        /// <summary>  
-        /// 该方法用于生成指定位数的随机数  
+
+        /// <summary>
+        /// 服务实例
         /// </summary>
-        /// <param name="controller"></param>
-        /// <param name="codeLength">参数是随机数的位数</param>  
-        /// <returns>返回一个随机数字符串</returns>  
-        public static string RandomChar(this ControllerBase controller, int codeLength)
+        public class ServiceLocator
         {
-            //验证码可以显示的字符集合  
-            var chars = "0,1,2,3,4,5,6,7,8,9";
-            var array = chars.Split(new Char[] { ',' }); //拆分成数组   
-            var codes = ""; //产生的随机数  
-            var temp = -1; //记录上次随机数值，尽量避避免生产几个一样的随机数  
+            public static IServiceProvider Provider { get; set; }
 
-            var rand = new Random();
-            //采用一个简单的算法以保证生成随机数的不同  
-            for (var i = 1; i < codeLength + 1; i++)
-            {
-                if (temp != -1)
-                {
-                    rand = new Random(i * temp * unchecked((int)DateTime.Now.Ticks)); //初始化随机类  
-                }
-
-                var t = rand.Next(array.Length); //获取随机数  
-                if (temp != -1 && temp == t)
-                {
-                    return RandomChar(controller, codeLength); //如果获取的随机数重复，则递归调用  
-                }
-
-                temp = t; //把本次产生的随机数记录起来  
-                codes += array[t]; //随机数的位数加一  
-            }
-
-            return codes;
         }
     }
-
-    /// <summary>
-    /// 服务实例
-    /// </summary>
-    public class ServiceLocator
-    {
-        public static IServiceProvider Provider { get; set; }
-
-    }
-}

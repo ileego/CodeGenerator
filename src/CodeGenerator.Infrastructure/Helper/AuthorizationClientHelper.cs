@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using CodeGenerator.Infrastructure.Options;
 using CodeGenerator.Infrastructure.ValueModel;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
