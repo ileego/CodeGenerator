@@ -642,6 +642,7 @@ namespace CodeGenerator.Infrastructure.Extensions
         /// <param name="source"></param>
         /// <param name="key"></param>
         /// <returns></returns>
+        // ReSharper disable once InconsistentNaming
         public static string GetHMACMD5(this string source, string key)
         {
             var keyBytes = new HMACMD5(Encoding.UTF8.GetBytes(key));
@@ -730,7 +731,7 @@ namespace CodeGenerator.Infrastructure.Extensions
         /// <param name="eccLevel">容错率</param>
         /// <param name="pixelsPerModule">像素</param>
         /// <returns></returns>
-        public static MemoryStream GetQRCode(this string planText, QRCodeGenerator.ECCLevel eccLevel = QRCodeGenerator.ECCLevel.Q, int pixelsPerModule = 15)
+        public static MemoryStream GetQrCode(this string planText, QRCodeGenerator.ECCLevel eccLevel = QRCodeGenerator.ECCLevel.Q, int pixelsPerModule = 15)
         {
             Bitmap bitmap;
             using (var generator = new QRCodeGenerator())
@@ -756,5 +757,6 @@ namespace CodeGenerator.Infrastructure.Extensions
             bitmap.Dispose();
             return ms;
         }
+
     }
 }

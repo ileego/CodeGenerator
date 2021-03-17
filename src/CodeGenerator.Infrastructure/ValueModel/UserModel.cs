@@ -11,7 +11,7 @@ namespace CodeGenerator.Infrastructure.ValueModel
         /// <summary>
         /// 唯一标识
         /// </summary>
-        public string UserId { get; set; }
+        public long UserId { get; set; }
         /// <summary>
         /// 账号
         /// </summary>
@@ -25,13 +25,13 @@ namespace CodeGenerator.Infrastructure.ValueModel
         /// </summary>
         public string RealName { get; set; }
         /// <summary>
-        /// 角色名称
+        /// email
         /// </summary>
-        public string RoleName { get; set; }
+        public string Email { get; set; }
         /// <summary>
-        /// 职位名称
+        /// 所有关联的角色Id
         /// </summary>
-        public string PositionName { get; set; }
+        public long[] RoleIds { get; set; }
         /// <summary>
         /// 附加内容
         /// </summary>

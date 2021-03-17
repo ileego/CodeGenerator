@@ -1,6 +1,6 @@
-﻿using CodeGenerator.Infrastructure.Middlewares;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using System;
+using CodeGenerator.Infrastructure.Middleware;
 
 namespace CodeGenerator.Infrastructure.Extensions
 {

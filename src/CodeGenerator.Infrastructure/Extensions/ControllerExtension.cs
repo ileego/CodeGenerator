@@ -37,7 +37,9 @@ namespace CodeGenerator.Infrastructure.Extensions
         /// <returns></returns>
         public static DateTime ValidateDate(this ControllerBase controller, DateTime? date)
         {
-            return Convert.ToDateTime(null == date ? DateTime.Now.ToString("yyyy-MM-dd") : date.Value.ToString("yyyy-MM-dd"));
+            return Convert.ToDateTime(null == date
+                ? DateTime.Now.ToString("yyyy-MM-dd")
+                : date.Value.ToString("yyyy-MM-dd"));
         }
 
         /// <summary>
@@ -98,3 +100,4 @@ namespace CodeGenerator.Infrastructure.Extensions
 
         }
     }
+}

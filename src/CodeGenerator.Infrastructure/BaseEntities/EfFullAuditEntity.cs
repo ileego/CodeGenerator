@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 
-namespace CodeGenerator.Infrastructure.Entity
+namespace CodeGenerator.Infrastructure.BaseEntities
 {
-    [Serializable]
-    public abstract class FullAuditedEntity<TKey, TUser> : AuditedEntity<TKey, TUser>
+    public class EfFullAuditEntity : EfModifyAuditEntity, IFullAuditEntity<long, long>
     {
         /// <summary>
         /// 是否删除
         /// </summary>
-        [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+
         /// <summary>
         /// 删除操作人员
         /// </summary>
-        public TUser Deleter { get; set; }
+        public long Deleter { get; set; }
+
         /// <summary>
         /// 删除时间
         /// </summary>

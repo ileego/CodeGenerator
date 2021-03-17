@@ -44,12 +44,10 @@ namespace CodeGenerator.Infrastructure.Impl
             var identity = new ClaimsIdentity(JwtBearerDefaults.AuthenticationScheme);
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Sid,user.UserId),
+                new Claim(ClaimTypes.Sid,user.UserId.ToString()),
                 new Claim(ClaimTypes.Name,user.Account),
                 new Claim(ClaimTypes.GivenName,user.UserName),
                 new Claim(ClaimTypes.Surname,string.IsNullOrEmpty(user.RealName)?"":user.RealName),
-                new Claim(ClaimTypes.Role,string.IsNullOrEmpty(user.RoleName)?"":user.RoleName),
-                new Claim(ClaimTypes.UserData,string.IsNullOrEmpty(user.PositionName)?"":user.PositionName),
                 new Claim(ClaimTypes.Expiration,expireAt.ToString(CultureInfo.InvariantCulture)),
             };
 
@@ -67,12 +65,12 @@ namespace CodeGenerator.Infrastructure.Impl
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenStr = tokenHandler.WriteToken(token);
-            if (_userCache.Existence(user.UserId).Result)
+            if (_userCache.Existence(user.UserId.ToString()).Result)
             {
-                _ = DeactivateTokenByUserId(user.UserId);
+                _ = DeactivateTokenByUserId(user.UserId.ToString());
             }
 
-            _ = _userCache.SetUserCache(user.UserId, tokenStr, _options.ExpireMinutes);
+            _ = _userCache.SetUserCache(user.UserId.ToString(), tokenStr, _options.ExpireMinutes);
             _redis.SetStringAsync(tokenStr, JsonConvert.SerializeObject(user), TimeSpan.FromMinutes(_options.ExpireMinutes));
             return tokenStr;
         }
@@ -162,7 +160,7 @@ namespace CodeGenerator.Infrastructure.Impl
         {
             var obj = _redis.GetStringAsync(token);
             var user = JsonConvert.DeserializeObject<UserModel>(obj.Result);
-            return user.UserId;
+            return user.UserId.ToString();
         }
 
         /// <summary>
