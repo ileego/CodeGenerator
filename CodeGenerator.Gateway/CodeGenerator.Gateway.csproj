@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ocelot" Version="15.0.7" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="15.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
+  </ItemGroup>
+
+</Project>

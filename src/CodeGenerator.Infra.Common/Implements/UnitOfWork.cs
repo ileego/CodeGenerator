@@ -40,9 +40,10 @@ namespace CodeGenerator.Infra.Common.Implements
         /// </summary>
         /// <param name="isolationLevel"></param>
         /// <param name="sharedToCap"></param>
-        public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead, bool sharedToCap = false)
+        public IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead, bool sharedToCap = false)
         {
             _dbTransaction = GetDbContextTransaction(isolationLevel, sharedToCap);
+            return _dbTransaction;
         }
 
         /// <summary>
@@ -113,7 +114,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
         public void Dispose()
         {
-
+            _dbTransaction?.Dispose();
             _dbContext?.Dispose();
             GC.SuppressFinalize(this);
         }

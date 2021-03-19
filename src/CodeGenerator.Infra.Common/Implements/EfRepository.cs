@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.BaseEntities;
 using CodeGenerator.Infra.Common.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infra.Common;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Z.EntityFramework.Plus;
 
 namespace CodeGenerator.Infra.Common.Implements

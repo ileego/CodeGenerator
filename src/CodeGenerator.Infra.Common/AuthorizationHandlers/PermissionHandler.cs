@@ -51,7 +51,7 @@ namespace CodeGenerator.Infra.Common.AuthorizationHandlers
             _jwtHelper = jwtHelper;
             var jwtOptions1 = jwtOptions.Value;
             _httpContextAccessor = httpContextAccessor;
-            _expireMinutes = jwtOptions1.ExpireMinutes;
+            _expireMinutes = jwtOptions1.AccessTokenExpire;
             //_systemAction = systemActionService;
         }
 

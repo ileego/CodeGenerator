@@ -3,6 +3,7 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CodeGenerator.Infra.Common.Interfaces
 {
@@ -18,7 +19,7 @@ namespace CodeGenerator.Infra.Common.Interfaces
         /// </summary>
         /// <param name="isolationLevel"></param>
         /// <param name="sharedToCap"></param>
-        void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead, bool sharedToCap = false);
+        IDbContextTransaction BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.RepeatableRead, bool sharedToCap = false);
         /// <summary>
         /// 回滚
         /// </summary>

@@ -6,8 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.BaseEntities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infra.Common;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace CodeGenerator.Infra.Common.Interfaces
 {

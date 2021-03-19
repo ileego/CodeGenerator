@@ -14,8 +14,8 @@ namespace CodeGenerator.Infra.Common.Helper
         /// <summary>
         /// 3DES加密
         /// </summary>
-        /// <param name="data">16进制串</param>
-        /// <param name="key">16进制串</param>
+        /// <param name="data">数据</param>
+        /// <param name="key">密钥</param>
         /// <returns>16进制串</returns>
         public static string Des3Encrypt(string data, string key)
         {
@@ -84,8 +84,8 @@ namespace CodeGenerator.Infra.Common.Helper
         /// <summary>
         /// 3DES解密
         /// </summary>
-        /// <param name="data">16进制串</param>
-        /// <param name="key">16进制串</param>
+        /// <param name="data">数据</param>
+        /// <param name="key">密钥</param>
         /// <returns></returns>
         public static string Des3Decrypt(string data, string key)
         {
@@ -117,7 +117,7 @@ namespace CodeGenerator.Infra.Common.Helper
         /// <returns></returns>
         private static byte[] DecryptDataFromMemory(byte[] data, byte[] key, byte[] iv, CipherMode cipherMode = CipherMode.ECB, PaddingMode paddingMode = PaddingMode.Zeros)
         {
-            var tdes = new TripleDESCryptoServiceProvider
+            var tripleDesCryptoServiceProvider = new TripleDESCryptoServiceProvider
             {
                 Mode = cipherMode,//CipherMode.ECB
                 Padding = paddingMode//PaddingMode.Zeros
@@ -125,12 +125,12 @@ namespace CodeGenerator.Infra.Common.Helper
 
             // Create a new MemoryStream using the passed 
             // array of encrypted data.
-            var msDecrypt = new MemoryStream(data);
+            var memoryStream = new MemoryStream(data);
 
             // Create a CryptoStream using the MemoryStream 
             // and the passed key and initialization vector (IV).
-            var csDecrypt = new CryptoStream(msDecrypt,
-                tdes.CreateDecryptor(key, iv),
+            var cryptoStream = new CryptoStream(memoryStream,
+                tripleDesCryptoServiceProvider.CreateDecryptor(key, iv),
                 CryptoStreamMode.Read);
 
             // Create buffer to hold the decrypted data.
@@ -138,7 +138,7 @@ namespace CodeGenerator.Infra.Common.Helper
 
             // Read the decrypted data out of the crypto stream
             // and place it into the temporary buffer.
-            csDecrypt.Read(fromEncrypt, 0, fromEncrypt.Length);
+            cryptoStream.Read(fromEncrypt, 0, fromEncrypt.Length);
 
             //Convert the buffer into a string and return it.
             return fromEncrypt;
