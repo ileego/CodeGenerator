@@ -23,11 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Infra", "1.Infra", "{75F1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Core", "2.Core", "{CDBBF9D2-1E2D-49A5-AB5A-0F63ABCF088A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Infra.RabbitMQ", "CodeGenerator.Infra.RabbitMQ\CodeGenerator.Infra.RabbitMQ.csproj", "{8CF820EE-84DB-49EF-8F41-35B09145B3B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Infra.RabbitMQ", "src\CodeGenerator.Infra.RabbitMQ\CodeGenerator.Infra.RabbitMQ.csproj", "{8CF820EE-84DB-49EF-8F41-35B09145B3B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Infra.EventBus", "CodeGenerator.Infra.EventBus\CodeGenerator.Infra.EventBus.csproj", "{F2413CCA-1599-44ED-A6F8-CE859EA5A5C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Infra.EventBus", "src\CodeGenerator.Infra.EventBus\CodeGenerator.Infra.EventBus.csproj", "{F2413CCA-1599-44ED-A6F8-CE859EA5A5C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Gateway", "CodeGenerator.Gateway\CodeGenerator.Gateway.csproj", "{41865AF5-CA37-4B27-8714-143A744DDB7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator.Gateway", "src\CodeGenerator.Gateway\CodeGenerator.Gateway.csproj", "{41865AF5-CA37-4B27-8714-143A744DDB7A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
