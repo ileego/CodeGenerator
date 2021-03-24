@@ -6,9 +6,9 @@ using System.Text;
 namespace CodeGenerator.Infra.Common.BaseEntities
 {
     /// <summary>
-    /// Ef Base Entity
+    /// Base Entity
     /// </summary>
-    public class EfEntity : IEntity<long>
+    public abstract class Entity : IEntity<long>
     {
         /// <summary>
         /// 主键

@@ -3,6 +3,8 @@ using CodeGenerator.Infra.Common.Extensions;
 using CodeGenerator.Infra.Common.Helper;
 using CodeGenerator.Infra.Common.Implements;
 using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.ValueModel;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeGenerator.Infra.Common
@@ -14,8 +16,12 @@ namespace CodeGenerator.Infra.Common
     {
         public static void AddInfrastructureDependency(this IServiceCollection services)
         {
+            services.AddScoped(typeof(UnitOfWorkStatus));
             //注册工作单元
-            services.AddScoped<IUnitOfWork, UnitOfWork<EfDbContext>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IEntityInfo, EntityInfo>();
+
             //注册Redis工具类
             services.AddScoped<ICache, RedisCache>();
             //注册Jwt工具类

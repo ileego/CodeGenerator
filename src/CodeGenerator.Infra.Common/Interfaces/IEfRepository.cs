@@ -10,12 +10,20 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace CodeGenerator.Infra.Common.Interfaces
 {
+    public interface IQueryRepository<out TEntity> where TEntity : NoKeyEntity
+    {
+        /// <summary>
+        /// DbQuery
+        /// </summary>
+        IQueryable<TEntity> Query { get; }
+    }
+
     /// <summary>
     /// 仓储接口
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IEfRepository<TEntity, in TKey> where TEntity : EfEntity
+    public interface IEfRepository<TEntity, in TKey> where TEntity : Entity
     {
         /// <summary>
         /// DbContext
@@ -36,16 +44,16 @@ namespace CodeGenerator.Infra.Common.Interfaces
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        TEntity Find(params TKey[] key);
+        TEntity FindById(long id);
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TEntity> FindAsync(TKey[] key, CancellationToken cancellationToken = default);
+        Task<TEntity> FindByIdAsync(long id, CancellationToken cancellationToken = default);
         /// <summary>
         /// 包含任意满足条件的数据
         /// </summary>

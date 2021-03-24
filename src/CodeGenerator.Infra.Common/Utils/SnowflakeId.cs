@@ -28,6 +28,18 @@ namespace CodeGenerator.Infra.Common.Utils
         private static readonly object SLock = new object();
         private long _lastTimestamp = -1L;
 
+        /// <summary>
+        /// 生成Id
+        /// </summary>
+        /// <param name="workerId">0---31</param>
+        /// <param name="datacenterId">0---31</param>
+        /// <param name="sequence"></param>
+        /// <returns></returns>
+        public static long NextId(long workerId, long datacenterId, long sequence = 0L)
+        {
+            return new SnowflakeId(workerId, datacenterId, sequence).NextId();
+        }
+
         public SnowflakeId(long workerId, long datacenterId, long sequence = 0L)
         {
             WorkerId = workerId;

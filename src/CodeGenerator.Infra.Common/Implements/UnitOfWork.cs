@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CodeGenerator.Infra.Common.Implements
 {
-    public sealed class UnitOfWork<TDbContext> : IUnitOfWork where TDbContext : DbContext
+    public sealed class UnitOfWork : IUnitOfWork
     {
-        private readonly TDbContext _dbContext;
+        private readonly DbContext _dbContext;
         private readonly UnitOfWorkStatus _unitOfWorkStatus;
         private readonly ICapPublisher _capPublisher;
         private IDbContextTransaction _dbTransaction;
 
-        public UnitOfWork(TDbContext dbContext,
+        public UnitOfWork(DbContext dbContext,
             UnitOfWorkStatus unitOfWorkStatus,
             ICapPublisher capPublisher = null)
         {

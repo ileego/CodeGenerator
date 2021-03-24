@@ -12,11 +12,24 @@ using Z.EntityFramework.Plus;
 
 namespace CodeGenerator.Infra.Common.Implements
 {
+    public abstract partial class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity : NoKeyEntity
+    {
+        protected QueryRepository(DbContext dbContext)
+        {
+            var dbSet = dbContext.Set<TEntity>();
+            Query = dbSet.AsQueryable();
+        }
+
+        /// <summary>
+        /// DbQuery
+        /// </summary>
+        public IQueryable<TEntity> Query { get; }
+    }
     /// <summary>
     /// Ef Repository
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract partial class EfRepository<TEntity> : IEfRepository<TEntity, long> where TEntity : EfEntity
+    public abstract partial class EfRepository<TEntity> : IEfRepository<TEntity, long> where TEntity : Entity
     {
         protected EfRepository(DbContext dbContext)
         {
@@ -49,22 +62,22 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public virtual TEntity Find(params long[] key)
+        public virtual TEntity FindById(long id)
         {
-            return DbSet.Find(key);
+            return DbSet.FirstOrDefault(t => t.Id == id);
         }
 
         /// <summary>
         /// 查询
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<TEntity> FindAsync(long[] key, CancellationToken cancellationToken = default)
+        public async Task<TEntity> FindByIdAsync(long id, CancellationToken cancellationToken = default)
         {
-            return await DbSet.FindAsync(key);
+            return await DbSet.FirstOrDefaultAsync(t => t.Id == id, cancellationToken: cancellationToken); ;
         }
 
         /// <summary>

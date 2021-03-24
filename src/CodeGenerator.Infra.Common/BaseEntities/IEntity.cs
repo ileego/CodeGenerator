@@ -9,6 +9,11 @@ namespace CodeGenerator.Infra.Common.BaseEntities
     {
     }
 
+    public abstract class NoKeyEntity : IEntity
+    {
+
+    }
+
     public interface IEntity<TKey> : IEntity
     {
         /// <summary>

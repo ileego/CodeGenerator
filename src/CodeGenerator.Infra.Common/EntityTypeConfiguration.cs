@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace CodeGenerator.Infra.Common
 {
     public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-       where TEntity : EfEntity
+       where TEntity : Entity
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {

@@ -1,5 +1,9 @@
-﻿using System.Threading;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using CodeGenerator.Infra.Common.BaseEntities;
 using CodeGenerator.Infra.Common.Interfaces;
 using CodeGenerator.Infra.Common.ValueModel;
 using JetBrains.Annotations;
@@ -53,7 +57,22 @@ namespace CodeGenerator.Infra.Common
 
             foreach (var entityType in types)
             {
-                modelBuilder.Entity(entityType);
+                if (typeof(NoKeyEntity).IsAssignableFrom(entityType))
+                {
+                    modelBuilder.Entity(entityType).HasNoKey();
+                }
+                else
+                {
+                    modelBuilder.Entity(entityType);
+                }
+                //var any = entityType.GetFields().Any(t =>
+                //    t.Name.Equals("id", StringComparison.OrdinalIgnoreCase) ||
+                //    t.
+                //    t.CustomAttributes.Any(a => a.AttributeType == typeof(KeyAttribute)));
+                //if (any)
+                //    modelBuilder.Entity(entityType);
+                //else
+                //    modelBuilder.Entity(entityType).HasNoKey();
             }
 
             modelBuilder.ApplyConfigurationsFromAssembly(assembly);

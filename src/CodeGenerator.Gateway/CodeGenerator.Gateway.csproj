@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
+    <ProjectReference Include="..\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
   </ItemGroup>
-
 </Project>

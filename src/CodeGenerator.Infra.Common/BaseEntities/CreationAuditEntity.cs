@@ -2,7 +2,7 @@
 
 namespace CodeGenerator.Infra.Common.BaseEntities
 {
-    public class EfCreationAuditEntity : EfEntity, ICreationAuditEntity<long, long>
+    public abstract class CreationAuditEntity : Entity, ICreationAuditEntity<long, long>
     {
         /// <summary>
         /// 创建人
