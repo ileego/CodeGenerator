@@ -76,6 +76,8 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <returns></returns>
         public int Commit()
         {
+            if (_unitOfWorkStatus.IsStartingUow)
+                _dbTransaction.Commit();
             return _dbContext.SaveChanges();
         }
 
@@ -85,8 +87,9 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <returns></returns>
         public async Task<int> CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (_unitOfWorkStatus.IsStartingUow)
+                await _dbTransaction.CommitAsync(cancellationToken);
             return await _dbContext.SaveChangesAsync(cancellationToken);
-
         }
 
         private IDbContextTransaction GetDbContextTransaction(IsolationLevel isolationLevel, bool sharedToCap = false)
@@ -95,7 +98,6 @@ namespace CodeGenerator.Infra.Common.Implements
                 throw new Exception("UnitOfWork Error");
             else
                 _unitOfWorkStatus.IsStartingUow = true;
-
             IDbContextTransaction trans;
 
             if (sharedToCap)

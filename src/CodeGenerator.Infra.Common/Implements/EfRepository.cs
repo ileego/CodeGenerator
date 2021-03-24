@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.BaseEntities;
 using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Z.EntityFramework.Plus;
@@ -31,9 +32,13 @@ namespace CodeGenerator.Infra.Common.Implements
     /// <typeparam name="TEntity"></typeparam>
     public abstract partial class EfRepository<TEntity> : IEfRepository<TEntity, long> where TEntity : Entity
     {
-        protected EfRepository(DbContext dbContext)
+        private readonly UnitOfWorkStatus _unitOfWorkStatus;
+
+        protected EfRepository(DbContext dbContext,
+            UnitOfWorkStatus unitOfWorkStatus)
         {
             Context = dbContext;
+            _unitOfWorkStatus = unitOfWorkStatus;
             Database = Context.Database;
             DbSet = Context.Set<TEntity>();
             Query = DbSet.AsQueryable();
@@ -75,7 +80,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<TEntity> FindByIdAsync(long id, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> FindByIdAsync(long id, CancellationToken cancellationToken = default)
         {
             return await DbSet.FirstOrDefaultAsync(t => t.Id == id, cancellationToken: cancellationToken); ;
         }
@@ -85,7 +90,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// </summary>
         /// <param name="whereExpression"></param>
         /// <returns></returns>
-        public bool Any(Expression<Func<TEntity, bool>> whereExpression)
+        public virtual bool Any(Expression<Func<TEntity, bool>> whereExpression)
         {
             var dbSet = DbSet.AsNoTracking();
             return dbSet.Any(whereExpression);
@@ -97,7 +102,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="whereExpression"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
             var dbSet = DbSet.AsNoTracking();
             return await dbSet.AnyAsync(whereExpression, cancellationToken: cancellationToken);
@@ -108,7 +113,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// </summary>
         /// <param name="whereExpression"></param>
         /// <returns></returns>
-        public int Count(Expression<Func<TEntity, bool>> whereExpression)
+        public virtual int Count(Expression<Func<TEntity, bool>> whereExpression)
         {
             var dbSet = DbSet.AsNoTracking();
             return dbSet.Count(whereExpression);
@@ -120,7 +125,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="whereExpression"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> whereExpression, CancellationToken cancellationToken = default)
         {
             var dbSet = DbSet.AsNoTracking();
             return await dbSet.CountAsync(whereExpression, cancellationToken: cancellationToken);
@@ -134,6 +139,8 @@ namespace CodeGenerator.Infra.Common.Implements
         public virtual int Insert(TEntity entity)
         {
             DbSet.Add(entity);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
             return Context.SaveChanges();
         }
 
@@ -143,9 +150,11 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="entity"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<int> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             await DbSet.AddAsync(entity, cancellationToken);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
             return await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -157,6 +166,8 @@ namespace CodeGenerator.Infra.Common.Implements
         public virtual int BulkInsert(ICollection<TEntity> entities)
         {
             DbSet.AddRange(entities);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
             return Context.SaveChanges();
         }
 
@@ -166,9 +177,11 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="entities"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> BulkInsertAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> BulkInsertAsync(ICollection<TEntity> entities, CancellationToken cancellationToken = default)
         {
             await DbSet.AddRangeAsync(entities, cancellationToken);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
             return await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -192,6 +205,8 @@ namespace CodeGenerator.Infra.Common.Implements
             //    return 0;
             //}
             Context.Update(entity);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
             return Context.SaveChanges();
         }
 
@@ -201,7 +216,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="entity"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<int> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             ////获取实体状态
             //var entry = Context.Entry(entity);
@@ -216,6 +231,8 @@ namespace CodeGenerator.Infra.Common.Implements
             //    return await Task.FromResult(0);
             //}
             Context.Update(entity);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
             return await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -227,6 +244,8 @@ namespace CodeGenerator.Infra.Common.Implements
         public virtual int BulkUpdate(IEnumerable<TEntity> entities)
         {
             DbSet.BulkUpdate(entities);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
             return Context.SaveChanges();
         }
 
@@ -236,9 +255,11 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="entities"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> BulkUpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        public virtual async Task<int> BulkUpdateAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
             await DbSet.BulkUpdateAsync(entities, cancellationToken);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
             return await Context.SaveChangesAsync(cancellationToken);
         }
 
@@ -259,7 +280,7 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="id">主键</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(object id, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(object id, CancellationToken cancellationToken = default)
         {
             TEntity entity = await DbSet.FindAsync(id);
             return await DeleteAsync(entity, cancellationToken);
@@ -277,6 +298,8 @@ namespace CodeGenerator.Infra.Common.Implements
                 DbSet.Attach(entity);
             }
             DbSet.Remove(entity);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
             return Context.SaveChanges();
         }
 
@@ -286,24 +309,29 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="entity">实体</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             if (Context.Entry(entity).State == EntityState.Detached)
             {
                 DbSet.Attach(entity);
             }
             DbSet.Remove(entity);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
             return await Context.SaveChangesAsync(cancellationToken);
         }
 
         /// <summary>
-        /// 条件删除
+        /// 条件删除,直接提交
         /// </summary>
         /// <param name="condition"></param>
         /// <returns></returns>
         public virtual int Delete(Expression<Func<TEntity, bool>> condition)
         {
-            return Query.Where(condition).Delete();
+            Query.Where(condition).Delete();
+            if (_unitOfWorkStatus.IsStartingUow)
+                return 0;
+            return Context.SaveChanges();
         }
 
         /// <summary>
@@ -312,9 +340,12 @@ namespace CodeGenerator.Infra.Common.Implements
         /// <param name="condition"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public virtual Task<int> DeleteAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default)
+        public virtual async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default)
         {
-            return Query.Where(condition).DeleteAsync(cancellationToken);
+            await Query.Where(condition).DeleteAsync(cancellationToken);
+            if (_unitOfWorkStatus.IsStartingUow)
+                return await Task.FromResult(0);
+            return await Context.SaveChangesAsync(cancellationToken);
         }
     }
 }

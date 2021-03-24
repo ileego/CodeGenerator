@@ -12,7 +12,7 @@ namespace CodeGenerator.Infra.Common
             var entityType = typeof(TEntity);
 
             builder.HasKey(x => x.Id);
-            //builder.Property(x => x.Id).ValueGeneratedNever(); //不使用数据库自动生成
+            builder.Property(x => x.Id).ValueGeneratedNever(); //不使用数据库自动生成
 
             if (typeof(IConcurrency).IsAssignableFrom(entityType))
             {

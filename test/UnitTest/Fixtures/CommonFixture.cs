@@ -18,21 +18,24 @@ namespace UnitTest.Fixtures
         public CommonFixture()
         {
             var basePath = ApplicationEnvironment.ApplicationBasePath;
-            //日志
-            ILoggerFactory loggerFactory = new LoggerFactory();
+
             IServiceCollection services = new ServiceCollection();
 
             Configuration = new ConfigurationBuilder().AddJsonFile($"{basePath}appsettings.json", false, true).Build();
 
-            var connectionString = Configuration.GetConnectionString("MyCat");
-            //var connectionString = Configuration.GetConnectionString("MySql");
+            //var connectionString = Configuration.GetConnectionString("MyCat");
+            var connectionString = Configuration.GetConnectionString("MySql_Local");
 
             //注册DbContext Options
             services.AddScoped<DbContextOptions>(c =>
             {
                 return new DbContextOptionsBuilder<EfDbContext>()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddDebug()))
-                .UseMySQL(connectionString, options => options.CommandTimeout(10000)).Options;
+                .UseMySQL(connectionString, options =>
+                    {
+                        options.CommandTimeout(10000);
+                    }
+                    ).Options;
             });
 
             //注册DbContext
@@ -48,5 +51,9 @@ namespace UnitTest.Fixtures
             ServiceProvider = services.BuildServiceProvider();
         }
 
+        public T GetService<T>()
+        {
+            return ServiceProvider.GetService<T>();
+        }
     }
 }
