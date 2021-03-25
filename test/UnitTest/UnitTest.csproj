@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.13" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.13" />
     <PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.13" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.13" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.13" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
@@ -29,6 +32,7 @@
     <ProjectReference Include="..\..\src\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
     <ProjectReference Include="..\..\src\CodeGenerator.Infra.EventBus\CodeGenerator.Infra.EventBus.csproj" />
     <ProjectReference Include="..\..\src\CodeGenerator.Infra.RabbitMQ\CodeGenerator.Infra.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\src\CodeGenerator.Mvc\CodeGenerator.Mvc.csproj" />
   </ItemGroup>
 
   <ItemGroup>
