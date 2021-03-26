@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CodeGenerator.Infra.Common.ForTest.Entities;
+﻿using CodeGenerator.Core.ForTest.Entities;
+using CodeGenerator.Infra.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CodeGenerator.Infra.Common.ForTest.Maps
+namespace CodeGenerator.Core.ForTest.Maps
 {
     public class UserMap : EntityTypeConfiguration<User>
     {

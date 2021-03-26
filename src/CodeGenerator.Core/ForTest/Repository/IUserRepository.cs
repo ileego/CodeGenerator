@@ -1,7 +1,7 @@
-﻿using CodeGenerator.Infra.Common.ForTest.Entities;
+﻿using CodeGenerator.Core.ForTest.Entities;
 using CodeGenerator.Infra.Common.Interfaces;
 
-namespace CodeGenerator.Infra.Common.ForTest.Repository
+namespace CodeGenerator.Core.ForTest.Repository
 {
     public interface IUserRepository : IEfRepository<User, long>
     {

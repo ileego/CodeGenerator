@@ -20,7 +20,7 @@ namespace CodeGenerator.Infra.Common
             //注册工作单元
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IEntityInfo, EntityInfo>();
+            //services.AddScoped<IEntityInfo, EntityInfo>();
 
             //注册Redis工具类
             services.AddScoped<ICache, RedisCache>();

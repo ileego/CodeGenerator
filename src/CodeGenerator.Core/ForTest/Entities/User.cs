@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using CodeGenerator.Infra.Common.BaseEntities;
 
-namespace CodeGenerator.Infra.Common.ForTest.Entities
+namespace CodeGenerator.Core.ForTest.Entities
 {
     public class User : Entity
     {

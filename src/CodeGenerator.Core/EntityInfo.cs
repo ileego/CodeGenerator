@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+using CodeGenerator.Infra.Common.Implements;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Core
 {
     public class EntityInfo : AbstractEntityInfo
     {

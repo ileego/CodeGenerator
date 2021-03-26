@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CodeGenerator.Infra.Common.BaseEntities;
+﻿using CodeGenerator.Infra.Common.BaseEntities;
 
-namespace CodeGenerator.Infra.Common.ForTest.Entities
+namespace CodeGenerator.Core.Db.Entities
 {
     public class Table : NoKeyEntity
     {

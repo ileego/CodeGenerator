@@ -1,13 +1,13 @@
 ﻿using System;
-using Autofac;
+using CodeGenerator.Core;
+using CodeGenerator.Core.Db.Repository;
+using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Infra.Common;
-using CodeGenerator.Infra.Common.ForTest.Repository;
 using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MySql.Data.MySqlClient;
 
 namespace UnitTest.Fixtures
 {
@@ -43,10 +43,9 @@ namespace UnitTest.Fixtures
 
             //注册Infra.Common
             services.AddInfrastructureDependency();
-            //注册Repository
-            services.AddScoped<ITableRepository, TableRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserContactRepository, UserContactRepository>();
+            //注册Core
+            services.AddCoreDependency();
+
 
             ServiceProvider = services.BuildServiceProvider();
         }

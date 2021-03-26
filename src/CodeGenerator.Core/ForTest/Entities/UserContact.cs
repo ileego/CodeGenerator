@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using CodeGenerator.Infra.Common.BaseEntities;
+﻿using CodeGenerator.Infra.Common.BaseEntities;
+using MySql.Data.Types;
 
-namespace CodeGenerator.Infra.Common.ForTest.Entities
+namespace CodeGenerator.Core.ForTest.Entities
 {
     public class UserContact : Entity
     {
@@ -12,5 +9,7 @@ namespace CodeGenerator.Infra.Common.ForTest.Entities
         public string ContactAddress { get; set; }
         public string ContactTelephone { get; set; }
         public virtual User User { get; set; }
+        public MySqlGeometry Geometry { get; set; }
+
     }
 }

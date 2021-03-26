@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CodeGenerator.Infra.Common.ForTest.Entities;
+﻿using CodeGenerator.Core.ForTest.Entities;
+using CodeGenerator.Infra.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CodeGenerator.Infra.Common.ForTest.Maps
+namespace CodeGenerator.Core.ForTest.Maps
 {
     public class UserContactMap : EntityTypeConfiguration<UserContact>
     {
@@ -19,6 +17,7 @@ namespace CodeGenerator.Infra.Common.ForTest.Maps
             builder.Property(t => t.UserId).HasColumnName("user_id");
             builder.Property(t => t.ContactAddress).HasColumnName("contact_address");
             builder.Property(t => t.ContactTelephone).HasColumnName("contact_telephone");
+            builder.Property(t => t.Geometry).HasColumnName("address_geometry");
             base.Configure(builder);
         }
     }
