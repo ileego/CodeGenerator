@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CodeGenerator.Infra.Common.Extensions.String;
 
 namespace CodeGenerator.Infra.Common
 {

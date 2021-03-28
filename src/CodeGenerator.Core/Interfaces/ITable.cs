@@ -26,6 +26,14 @@ namespace CodeGenerator.Core.Interfaces
         /// </summary>
         string TableName { get; set; }
         /// <summary>
+        /// 类名
+        /// </summary>
+        string ClassName { get; set; }
+        /// <summary>
+        /// 变量名
+        /// </summary>
+        string VariableName { get; set; }
+        /// <summary>
         /// 表类型
         /// </summary>
         TableTypeEnum TableType { get; set; }

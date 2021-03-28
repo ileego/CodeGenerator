@@ -1,43 +1,62 @@
 ﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
+using CodeGenerator.Core.Interfaces;
 
 namespace CodeGenerator.ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            var str = "user_name_hello";
-            var str2 = "USER_NAME_HELLO_WORLD";
-            Console.WriteLine("The camel name is: " + ToCamel(str));
-            Console.WriteLine("The pascal name is: " + ToPascal(str2));
-        }
+            var serviceProvider = new ServiceProvider();
+            var tableFactory = serviceProvider.GetService<ITableFactory<CodeGenerator.Core.Db.Entities.Table,
+                ICollection<CodeGenerator.Core.Db.Entities.Column>>>();
+            var generateContext = await tableFactory.CreateContext();
+            generateContext.Namespace = "CodeGenerator.Service";
+            var templatePath = Path.Combine(serviceProvider.ApplicationPath, "Template",
+                TemplateTypeConst.MAPPER_PROFILES);
+            var outPath = Path.Combine("Output", "Profiles", "MapperProfiles.cs");
 
-        public static string ToCamel(string input, char split = '_')
-        {
-            input = input.ToLower();
-            var regex = new Regex(@"_(\w?)");
-            var outString = "";
-            if (regex.IsMatch(input))
+            var stopwatch = new Stopwatch();
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine("开始生成代码...");
+            Console.ForegroundColor = ConsoleColor.Green;
+            stopwatch.Start();
+            var tokenSource = new CancellationTokenSource();
+            var token = tokenSource.Token;
+            Task task = new Task(() =>
             {
-                outString = regex.Replace(input, m => m.Groups[1].ToString().ToUpper());
-            }
-            return outString;
-        }
-        public static string ToPascal(string input, char split = '_')
-        {
-            input = input.ToLower();
-            var strArray = input.Split(split);
-            var stringBuilder = new StringBuilder();
-            foreach (var s in strArray)
-            {
-                stringBuilder.Append(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s));
-            }
+                while (!token.IsCancellationRequested)
+                {
+                    Thread.Sleep(200);
+                    Console.Write("\u0008");
+                    Console.Write("->");
+                }
+            }, token);
 
-            return stringBuilder.ToString();
+            Task genTask = new Task(() =>
+            {
+                //生成代码
+                generateContext.GenerateCodeSingleFile(templatePath, outPath);
+            });
+
+            task.Start();
+            genTask.Start();
+            Task.WaitAll(genTask);
+            stopwatch.Stop();
+            tokenSource.Cancel();
+            var seconds = stopwatch.ElapsedMilliseconds / 1000;
+
+            Thread.Sleep(200);
+
+            Console.WriteLine();
+            Console.WriteLine($"生成成功，耗时{seconds}秒");
+
+            Console.ReadKey();
         }
     }
 }

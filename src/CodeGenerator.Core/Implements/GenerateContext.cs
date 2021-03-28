@@ -1,7 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
+using CodeGenerator.Core.Utils;
+using RazorEngine;
+using RazorEngine.Configuration;
+using RazorEngine.Templating;
+using RazorEngine.Text;
 
 namespace CodeGenerator.Core.Implements
 {
@@ -27,6 +33,38 @@ namespace CodeGenerator.Core.Implements
         {
             this.Tables.Add(table);
             return this.Tables;
+        }
+
+        public void GenerateCode(string templatePath, string outPath, string postfix, bool createSeparateDirectory,
+            ICollection<string> excludeTableNames = null, ICollection<string> excludeFieldNames = null)
+        {
+            TemplateServiceConfiguration templateConfig = new TemplateServiceConfiguration
+            {
+                //Debug = true,
+                DisableTempFileLocking = true,
+                Language = Language.CSharp,
+                EncodedStringFactory = new RawStringFactory()
+            };
+            var razorEngineService = RazorEngineService.Create((ITemplateServiceConfiguration)templateConfig);
+            razorEngineService.AddTemplate("template", templatePath);
+            var outStr = razorEngineService.RunCompile(name: "template", typeof(IGenerateContext), model: this);
+            OutFile.WriteText(outPath, outStr);
+        }
+
+        public void GenerateCodeSingleFile(string templatePath, string outPath,
+            ICollection<string> excludeTableNames = null, ICollection<string> excludeFieldNames = null)
+        {
+            TemplateServiceConfiguration templateConfig = new TemplateServiceConfiguration
+            {
+                //Debug = true,
+                DisableTempFileLocking = true,
+                Language = Language.CSharp,
+                EncodedStringFactory = new RawStringFactory()
+            };
+            var razorEngineService = RazorEngineService.Create((ITemplateServiceConfiguration)templateConfig);
+            razorEngineService.AddTemplate("template", File.ReadAllText(templatePath));
+            var outStr = razorEngineService.RunCompile(name: "template", typeof(IGenerateContext), model: this);
+            OutFile.WriteText(outPath, outStr);
         }
 
         public GenerateContext()

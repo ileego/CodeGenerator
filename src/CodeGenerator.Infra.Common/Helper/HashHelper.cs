@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using CodeGenerator.Infra.Common.Extensions;
+using CodeGenerator.Infra.Common.Extensions.String;
 
 namespace CodeGenerator.Infra.Common.Helper
 {

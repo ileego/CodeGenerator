@@ -13,15 +13,16 @@ namespace CodeGenerator.ConsoleApp
     public static class TemplateTypeConst
     {
         public const string CONTROLLER = "Controller.cst";
-        public const string DTO = "Dto.cst";
         public const string ENTITY = "Entity.cst";
-        public const string ENTITYMAP = "EntityMap.cst";
+        public const string ENTITY_MAP = "EntityMap.cst";
         public const string IREPOSITORY = "IRepository.cst";
         public const string REPOSITORY = "Repository.cst";
         public const string ISERVICE = "IService.cst";
         public const string SERVICE = "Service.cst";
-        public const string QUERYPARAMS = "QueryParams.cst";
-        public const string QUERYRESULT = "QueryResult.cst";
+        public const string INPUT_DTO = "InputDto.cst";
+        public const string QUERY_PARAMS = "QueryParams.cst";
+        public const string QUERY_RESULT = "QueryResult.cst";
         public const string VALIDATOR = "Validator.cst";
+        public const string MAPPER_PROFILES = "MapperProfiles.cst";
     }
 }

@@ -1,8 +1,4 @@
-﻿using CodeGenerator.Infra.Common;
-using JetBrains.Annotations;
-using QRCoder;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
@@ -10,8 +6,10 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
+using QRCoder;
 
-namespace CodeGenerator.Infra.Common.Extensions
+namespace CodeGenerator.Infra.Common.Extensions.String
 {
     public static class StringExtension
     {
@@ -24,6 +22,10 @@ namespace CodeGenerator.Infra.Common.Extensions
         public static string ToCamel(this string input, char split = '_')
         {
             input = input.ToLower();
+            if (!input.Contains(split))
+            {
+                return input;
+            }
             var regex = new Regex(@"_(\w?)");
             var outString = "";
             if (regex.IsMatch(input))

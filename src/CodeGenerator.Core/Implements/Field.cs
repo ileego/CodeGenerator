@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Infra.Common;
+using CodeGenerator.Infra.Common.Extensions.String;
 
 namespace CodeGenerator.Core.Implements
 {
@@ -27,6 +28,8 @@ namespace CodeGenerator.Core.Implements
         {
             this.ToTable = toTable;
             this.FieldName = fieldName;
+            this.PropertyName = fieldName.ToPascal();
+            this.VariableName = fieldName.ToCamel();
             this.DataType = dataType;
             this.Length = length;
             this.Precision = precision;
@@ -45,6 +48,16 @@ namespace CodeGenerator.Core.Implements
         /// 字段名
         /// </summary>
         public string FieldName { get; set; }
+
+        /// <summary>
+        /// 属性名
+        /// </summary>
+        public string PropertyName { get; set; }
+
+        /// <summary>
+        /// 变量名
+        /// </summary>
+        public string VariableName { get; set; }
 
         /// <summary>
         /// 数据库数据类型

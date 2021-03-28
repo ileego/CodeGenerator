@@ -14,6 +14,14 @@
         /// </summary>
         string FieldName { get; set; }
         /// <summary>
+        /// 属性名
+        /// </summary>
+        string PropertyName { get; set; }
+        /// <summary>
+        /// 变量名
+        /// </summary>
+        string VariableName { get; set; }
+        /// <summary>
         /// 数据库数据类型
         /// </summary>
         string DataType { get; set; }

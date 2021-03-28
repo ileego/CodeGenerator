@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Infra.Common;
+using CodeGenerator.Infra.Common.Extensions.String;
 
 namespace CodeGenerator.Core.Implements
 {
@@ -21,6 +22,8 @@ namespace CodeGenerator.Core.Implements
         : this()
         {
             this.TableName = tableName;
+            this.ClassName = tableName.ToPascal();
+            this.VariableName = tableName.ToCamel();
             this.TableType = tableType;
             this.Comment = comment;
         }
@@ -40,6 +43,16 @@ namespace CodeGenerator.Core.Implements
         /// 表名
         /// </summary>
         public string TableName { get; set; }
+
+        /// <summary>
+        /// 类名
+        /// </summary>
+        public string ClassName { get; set; }
+
+        /// <summary>
+        /// 变量名
+        /// </summary>
+        public string VariableName { get; set; }
 
         /// <summary>
         /// 表类型
