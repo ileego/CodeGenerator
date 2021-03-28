@@ -1,0 +1,64 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+@{
+    string ref1 = Model.Namespace + ".Infrastructure.ValueModel";
+    string ref2 = Model.Namespace + ".Service.Dto";
+    string ref3 = Model.Namespace + ".Service.Dto." + Model.Name;
+    string interfaceName = "I" + Model.Name + "Service";
+    string ns = Model.Namespace + ".Service.Services.Interfaces";
+}
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using @ref1;
+using @ref2;
+using @ref3;
+
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description
+    /// </summary>
+    public interface @interfaceName
+    {
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<@{@Model.Name}Input> Add(@{@Model.Name}Input input, UserModel user);
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<@{@Model.Name}Input> Edit(@{@Model.Name}Input input, UserModel user);
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<@{@Model.Name}Input> Delete(Guid id, UserModel user);
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        Task<bool> BulkDelete(ICollection<Guid> ids, UserModel user);
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<@{@Model.Name}Input> QueryById(Guid id);
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        Task<Pagination<@{@Model.Name}QueryResult>> Query(@{@Model.Name}QueryParams queryParams);
+    }
+}

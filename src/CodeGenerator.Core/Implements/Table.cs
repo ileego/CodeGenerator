@@ -17,10 +17,34 @@ namespace CodeGenerator.Core.Implements
             this.Fields = new List<IField>();
         }
 
+        public Table(string tableName, string comment, TableTypeEnum tableType)
+        : this()
+        {
+            this.TableName = tableName;
+            this.TableType = tableType;
+            this.Comment = comment;
+        }
+
+        public Table(string tableName, string comment, TableTypeEnum tableType, ICollection<Field> fields)
+        : this(tableName, comment, tableType)
+        {
+            foreach (var field in fields)
+            {
+                Fields.Add(field);
+                if (field.IsKey)
+                    Keys.Add(new Key(field));
+            }
+        }
+
         /// <summary>
         /// 表名
         /// </summary>
         public string TableName { get; set; }
+
+        /// <summary>
+        /// 表类型
+        /// </summary>
+        public TableTypeEnum TableType { get; set; }
 
         /// <summary>
         /// 备注

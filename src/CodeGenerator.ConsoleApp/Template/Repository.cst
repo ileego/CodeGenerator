@@ -1,0 +1,26 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+@{
+    string ref1 = Model.Namespace + ".Infrastructure.Impl";
+    string ref2 = Model.Namespace + ".Core.Entities";
+    string ref3 = Model.Namespace + ".Core.Repository.Interfaces";
+    string ns = Model.Namespace +".Core.Repository.Impl";
+    string className = Model.Name + "Repository";
+    string interfaceName = "I" + Model.Name + "Repository";
+    string ctor = className + "(DbContext dbContext)";
+}
+using System;
+using @ref1;
+using @ref2;
+using @ref3;
+using Microsoft.EntityFrameworkCore;
+
+namespace @ns
+{
+    public class @className : EfRepository<@Model.Name, Guid>, @interfaceName
+    {
+        public @ctor
+            : base(dbContext)
+        {
+        }
+    }
+}

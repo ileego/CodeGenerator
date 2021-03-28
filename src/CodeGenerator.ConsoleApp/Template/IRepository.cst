@@ -1,0 +1,17 @@
+﻿@using CodeGenerator.Core.Implements;
+@{
+    string ref1 = Model.Namespace + ".Infra.Common";
+    string ref2 = Model.Namespace + ".Core.Entities";
+    string ns = Model.Namespace +".Core.Repository.Interfaces";
+    string className = "I" + Model.Name + "Repository";
+}
+using System;
+using @ref1;
+using @ref2;
+
+namespace @ns
+{
+    public interface @className : IRepository<@Model.Name, Guid>
+    {
+    }
+}

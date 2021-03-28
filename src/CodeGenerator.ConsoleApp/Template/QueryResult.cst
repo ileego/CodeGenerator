@@ -1,0 +1,23 @@
+﻿using System;
+@using GeneralManagement.GenerateCode.Entity;
+@{
+    string className = Model.Name + "QueryResult";
+    string parentName = Model.Name + "Input";
+    string ns = Model.Namespace + ".Service.Dto." + Model.Name;
+ }
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description
+    /// </summary>
+    public class @className : @parentName
+    {
+	    @foreach (Field field in Model.ExcludeFields)
+        {
+        string summary = @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+        string property = "        public " + field.DataType + " " + field.ColumnName+" { get; set; }\r\n";
+        @summary
+        @property
+        }
+    }
+}

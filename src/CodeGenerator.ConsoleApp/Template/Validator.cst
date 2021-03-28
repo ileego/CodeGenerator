@@ -1,0 +1,50 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+@{
+    string ref1 = Model.Namespace + ".Service.Dto." + Model.Name;
+    string ctorName = Model.Name + "Validator()";
+    string className = Model.Name + "Validator";
+    string modelName = Model.Name + "Input";
+    string ns = Model.Namespace + ".Service.Validations";
+    string outStr = "";
+}
+using @ref1;
+using FluentValidation;
+
+namespace @ns
+{
+    /// <summary>
+    /// 配置信息验证
+    /// </summary>
+    public class @className:AbstractValidator<@modelName>
+    {
+        /// <summary>
+        /// 验证配置
+        /// </summary>
+        public @ctorName
+        {
+            CascadeMode = CascadeMode.Stop;
+            @foreach (Field field in Model.Fields)
+            {
+                if (field.ColumnName.ToLower().Equals("id"))
+                {
+                    continue;
+                }
+                outStr = "";
+                if (field.DataType=="string")
+                {
+                    int length = field.Length;
+                    if (!field.IsNull)
+                    {
+                        outStr += "            RuleFor(t => t."+field.ColumnName+").NotEmpty().WithMessage(\"请输入"+field.Comment+"\");\r\n";
+                    }
+                    outStr+= "            RuleFor(t => t."+field.ColumnName+").MaximumLength(" + length + ").WithMessage(\""+field.Comment+"长度不能超过" + length + "\");\r\n";
+                }
+                else if (!field.IsNull)
+                {
+                    outStr+= "            RuleFor(t => t."+field.ColumnName+").NotEqual(t => default).WithMessage(\""+field.Comment+"必须填写\");\r\n";
+                }
+                @outStr
+            }
+        }
+    }
+}

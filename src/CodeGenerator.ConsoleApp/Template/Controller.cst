@@ -1,0 +1,247 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+@{
+    string ns = Model.Namespace + ".WebApi.Controllers";
+    string controllerName = Model.Name + "Controller";
+    string ctor = controllerName + "(";
+    string iServiceName = "I" + Model.Name + "Service";
+    string serviceName = Model.LName + "Service";
+    string _serviceName = "_" + Model.LName + "Service";
+    string modelName = Model.Name + "Input";
+	string queryModelName = Model.Name + "QueryResult";
+    string add = _serviceName + ".Add(input, currentUser);";
+    string edit = _serviceName + ".Edit(input, currentUser);";
+    string delete = _serviceName + ".Delete(id, currentUser);";
+    string bulkDelete = _serviceName + ".BulkDelete(ids, currentUser);";
+
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using @{@Model.Namespace}.Infrastructure.Extensions;
+using @{@Model.Namespace}.Service.Services.Interfaces;
+using @{@Model.Namespace}.Service.Dto;
+using @{@Model.Namespace}.Service.Dto.@{@Model.Name};
+
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description
+    /// </summary>
+    [Route("api/[controller]")]
+    [ApiController]
+    [Authorize(Policy = "Permission")]
+    public class @controllerName : ControllerBase
+    {
+        private readonly ILogger<@controllerName> _logger;
+        private readonly @iServiceName @_serviceName;
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        public @ctor
+            @iServiceName @serviceName,
+            ILogger<@controllerName> logger
+            )
+        {
+            this.@_serviceName = @serviceName;
+            this._logger = logger;
+        }
+
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("new")]
+        public async Task<Result<@modelName>> New@{@Model.Name}(@modelName input)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var currentUser = await this.CurrentUser();
+                    var result = await @{@_serviceName}.Add(input, currentUser);
+                    return new Result<@modelName>()
+                    {
+                        Succeed = true,
+                        Content = result
+                    };
+                }
+                else
+                {
+                    return new Result<@modelName>()
+                    {
+                        Succeed = false,
+                        Message = "数据不完整，请按要求填写！"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new Result<@modelName>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("edit")]
+        public async Task<Result<@modelName>> Edit@{@Model.Name}(@modelName input)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var currentUser = await this.CurrentUser();
+                    var result = await @{@_serviceName}.Edit(input, currentUser);
+                    return new Result<@modelName>()
+                    {
+                        Succeed = true,
+                        Content = result
+                    };
+                }
+                else
+                {
+                    return new Result<@modelName>()
+                    {
+                        Succeed = false,
+                        Message = "数据不完整，请按要求填写！"
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                return new Result<@modelName>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("delete")]
+        public async Task<Result<@modelName>> Delete@{@Model.Name}(Guid id)
+        {
+            try
+            {
+                var currentUser = await this.CurrentUser();
+                var result = await @{@_serviceName}.Delete(id, currentUser);
+                return new Result<@modelName>()
+                {
+                    Succeed = true,
+                    Content = result
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<@modelName>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("bulkDelete")]
+        public async Task<Result<bool>> BulkDelete@{@Model.Name}(ICollection<Guid> ids)
+        {
+            try
+            {
+                var currentUser = await this.CurrentUser();
+                var result = await @{@_serviceName}.BulkDelete(ids, currentUser);
+                return new Result<bool>()
+                {
+                    Succeed = true,
+                    Content = result
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<bool>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("queryById")]
+        public async Task<Result<@modelName>> QueryById(Guid id)
+        {
+            try
+            {
+                var result = await @{@_serviceName}.QueryById(id);
+                return new Result<@modelName>()
+                {
+                    Succeed = true,
+                    Content = result
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<@modelName>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("query")]
+        public async Task<Result<Pagination<@queryModelName>>> Query(@{@Model.Name}QueryParams queryParams)
+        {
+            try
+            {
+                var result = await @{@_serviceName}.Query(queryParams);
+                return new Result<Pagination<@queryModelName>>()
+                {
+                    Succeed = true,
+                    Content = result
+                };
+            }
+            catch (Exception e)
+            {
+                return new Result<Pagination<@queryModelName>>()
+                {
+                    Succeed = false,
+                    Message = e.Message
+                };
+            }
+        }
+    }
+}

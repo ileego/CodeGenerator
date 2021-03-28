@@ -5,7 +5,13 @@
     /// </summary>
     public enum KeyTypeEnum
     {
+        /// <summary>
+        /// 主键
+        /// </summary>
         PrimaryKey = 0,
+        /// <summary>
+        /// 外键
+        /// </summary>
         ForeignKey = 1
     }
 

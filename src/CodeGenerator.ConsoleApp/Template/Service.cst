@@ -1,0 +1,338 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+@{
+    string className = Model.Name + "Service";
+	string ctor = className + "(";
+    string interfaceName = "I" + Model.Name + "Service";
+    string ns = Model.Namespace + ".Service.Services.Impl";
+    string iRepository = "I" + Model.Name + "Repository";
+    string repository = Model.LName + "Repository";
+    string repositoryParams = iRepository + " " + repository ;
+    string _repository = "_" + Model.LName + "Repository";
+    string queryEntity = "var oEntity = " + _repository + ".Query.FirstOrDefault(t => t.Id.Equals(input.Id));\r\n";
+    string deleteQueryEntity = "var oEntity = " + _repository + ".Query.FirstOrDefault(t => t.Id.Equals(id));\r\n";
+    string bulkDeleteQueryEntities = "var oEntities = await " + _repository + ".Query.Where(t => ids.Contains(t.Id)).ToListAsync();";
+    string insert = _repository + ".Insert(entity);\r\n";
+    string queryId = "await " + _repository + ".Query.FirstOrDefaultAsync(t => t.Id.Equals(id));\r\n";
+    string query = $"            var query = {_repository}.Query.AsQueryable();\r\n";
+	string addOperate = "\"新增" + Model.Description + "\"";
+	string editOperate = "\"修改" + Model.Description + "\"";
+	string delOperate = "\"删除" + Model.Description + "\"";
+	string bulkDelOperate = "\"批量删除" + Model.Description + "\"";
+	string checkRefStr = "";
+    string deleteStr = "";
+	if (Model.HasParent)
+	{
+		checkRefStr += "            var parent = await " + _repository + ".Query\r\n";
+		checkRefStr += "                .FirstOrDefaultAsync(t => t.Id.Equals(input." + Model.ParentIdFieldName + "));\r\n";
+		checkRefStr += "            if (parent == null)\r\n";
+		checkRefStr += "            {\r\n";
+		checkRefStr += "                throw new Exception(\"父级不存在！\");\r\n";
+		checkRefStr += "            }\r\n";
+		checkRefStr += "            else\r\n";
+		checkRefStr += "            {\r\n";
+		checkRefStr += "                input.Level = parent.Level + 1;\r\n";
+		checkRefStr += "            }";
+	}
+	string foreignKeyRepositoryStr = "";
+	string foreignKeyRepositoryParamStr = "";
+	string foreignKeyRepositoryCtorStr = "";
+	if (Model.ForeignKeys.Count > 0)
+    {
+        foreach (var foreignKey in Model.ForeignKeys)
+        {
+			if (foreignKeyRepositoryStr.Length > 0) 
+			{
+				foreignKeyRepositoryStr += "\r\n";
+			}
+			foreignKeyRepositoryStr += "        private readonly I" + foreignKey.JoinTableName + "Repository _" + foreignKey.JoinTableLName + "Repository;";
+			if (foreignKeyRepositoryParamStr.Length > 0)
+			{
+				foreignKeyRepositoryParamStr += "\r\n";
+			}
+			foreignKeyRepositoryParamStr += "            I" + foreignKey.JoinTableName + "Repository " + foreignKey.JoinTableLName + "Repository,";
+			if (foreignKeyRepositoryCtorStr.Length > 0) 
+			{
+				foreignKeyRepositoryCtorStr += "\r\n";
+			}
+			foreignKeyRepositoryCtorStr += "            _" + foreignKey.JoinTableLName + "Repository = " + foreignKey.JoinTableLName + "Repository;";
+
+			if (checkRefStr.Length > 0)
+			{
+				checkRefStr += "\r\n";
+			}
+			checkRefStr += "            var " + foreignKey.JoinTableLName + " = await _" + foreignKey.JoinTableLName + "Repository.Query\r\n";
+			checkRefStr += "                .FirstOrDefaultAsync(t => t.Id.Equals(input." + foreignKey.KeyId + "));\r\n";
+			checkRefStr += "            if (" + foreignKey.JoinTableLName + " == null)\r\n";
+			checkRefStr += "            {\r\n";
+			checkRefStr += "                throw new Exception(\"" + foreignKey.Description + "不存在！\");\r\n";
+			checkRefStr += "            }";
+        }
+        foreignKeyRepositoryParamStr = foreignKeyRepositoryParamStr.Substring(0, foreignKeyRepositoryParamStr.LastIndexOf(",", StringComparison.Ordinal));
+        if (!string.IsNullOrEmpty(repositoryParams))
+            repositoryParams += ",\r\n"+foreignKeyRepositoryParamStr;
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using @{@Model.Namespace}.Infrastructure;
+using @{@Model.Namespace}.Infrastructure.ValueModel;
+using @{@Model.Namespace}.Core.Entities;
+using @{@Model.Namespace}.Core.Repository.Interfaces;
+using @{@Model.Namespace}.Service.Services.Interfaces;
+using @{@Model.Namespace}.Service.Dto;
+using @{@Model.Namespace}.Service.Dto.@{@Model.Name};
+using @{@Model.Namespace}.Service.Services;
+
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description
+    /// </summary>
+    public class @className : BaseService, @interfaceName
+    {
+        private readonly IEmployeesRepository _employeesRepository;
+        private readonly ISystemLogService _logService;
+        private readonly IMapper _mapper;
+        private readonly @iRepository @_repository;
+@foreignKeyRepositoryStr
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        public @ctor
+            IUnitOfWork unitOfWork, 
+            IEmployeesRepository employeesRepository,
+            ISystemLogService logService,
+            IMapper mapper,
+            @repositoryParams
+            ) : base(unitOfWork)
+        {
+            _employeesRepository = employeesRepository;
+            _logService = logService;
+            _mapper = mapper;
+            @_repository = @repository;
+@foreignKeyRepositoryCtorStr
+        }
+
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<@{@Model.Name}Input> Add(@{@Model.Name}Input input, UserModel user)
+        {
+            var hasOperator = _employeesRepository.Query
+                .FirstOrDefault(t => t.Id.Equals(Guid.Parse(user.UserId)));
+            if (hasOperator == null)
+            {
+                throw new Exception("操作人不存在！");
+            }
+@checkRefStr
+            var entity = _mapper.Map<@{@Model.Name}>(input);
+            entity.Id = Guid.NewGuid();
+            var now = DateTime.Now;
+            @if (Model.HasCreator)
+            {
+                string createStr = "            entity.Creator = hasOperator.Id;\r\n";
+                createStr +="            entity.CreationTime = now;\r\n";
+                @createStr
+            }
+            @if (Model.HasModifier)
+            {
+                string updateStr = "            entity.LastModifier = hasOperator.Id;\r\n";
+                updateStr += "            entity.LastModificationTime = now;\r\n";
+                @updateStr
+            }
+            @insert
+            _logService.WriteInformation(@addOperate, entity.GetType().Name, entity.Id.ToString(), entity.Id, hasOperator.Account, hasOperator.Name);
+
+            await SaveAsync();
+            return _mapper.Map<@{@Model.Name}Input>(entity);;
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<@{@Model.Name}Input> Edit(@{@Model.Name}Input input, UserModel user)
+        {
+            var hasOperator = _employeesRepository.Query
+                .FirstOrDefault(t => t.Id.Equals(Guid.Parse(user.UserId)));
+            if (hasOperator == null)
+            {
+                throw new Exception("操作人不存在！");
+            }
+            @queryEntity
+            if (oEntity == null)
+            {
+                throw new Exception("您正在修改的数据不存在！");
+            }
+@checkRefStr
+            _logService.WriteInformation(@editOperate, oEntity.GetType().Name, oEntity.Id.ToString(), oEntity, hasOperator.Account, hasOperator.Name);
+
+            @foreach (Field field in Model.Fields)
+            {
+                string str = "            oEntity." + field.ColumnName + " = input." + field.ColumnName + ";\r\n";
+                @str
+            }
+
+            @if (Model.HasModifier)
+            {
+                string updateStr = "            oEntity.LastModifier = hasOperator.Id;\r\n";
+                updateStr += "            oEntity.LastModificationTime = DateTime.Now;\r\n";
+                updateStr += "            " + _repository + ".Update(oEntity);\r\n";
+                @updateStr
+            }
+            await SaveAsync();
+            return _mapper.Map<@{@Model.Name}Input>(oEntity);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<@{@Model.Name}Input> Delete(Guid id, UserModel user)
+        {
+            var hasOperator = _employeesRepository.Query
+                .FirstOrDefault(t => t.Id.Equals(Guid.Parse(user.UserId)));
+            if (hasOperator == null)
+            {
+                throw new Exception("操作人不存在！");
+            }
+            @deleteQueryEntity
+            if (oEntity == null)
+            {
+                throw new Exception("您要删除的数据不存在！");
+            }
+            @if (Model.HasDeleter)
+            {
+                deleteStr = "";
+                deleteStr += "            oEntity.IsDeleted = true;\r\n";
+                deleteStr += "            oEntity.Deleter = hasOperator.Id;\r\n";
+                deleteStr += "            oEntity.DeletionTime = DateTime.Now;\r\n";
+                deleteStr += "            " + _repository + ".Update(oEntity);\r\n";
+                @deleteStr
+            }
+            else
+            {
+                deleteStr = "";
+                deleteStr += "            " + _repository + ".Delete(oEntity);\r\n";
+                @deleteStr
+            }
+            _logService.WriteInformation(@delOperate, oEntity.GetType().Name, oEntity.Id.ToString(), id, hasOperator.Account, hasOperator.Name);
+
+            await SaveAsync();
+            return _mapper.Map<@{@Model.Name}Input>(oEntity);
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<bool> BulkDelete(ICollection<Guid> ids, UserModel user)
+        {
+            var hasOperator = _employeesRepository.Query
+                .FirstOrDefault(t => t.Id.Equals(Guid.Parse(user.UserId)));
+            if (hasOperator == null)
+            {
+                throw new Exception("操作人不存在！");
+            }
+            @bulkDeleteQueryEntities
+            if (oEntities == null || oEntities.Count == 0)
+            {
+                throw new Exception("您要删除的数据不存在！");
+            }
+            foreach (var oEntity in oEntities)
+            {
+                @if (Model.HasDeleter)
+                {
+                    deleteStr = "";
+                    deleteStr += "                oEntity.IsDeleted = true;\r\n";
+                    deleteStr += "                oEntity.Deleter = hasOperator.Id;\r\n";
+                    deleteStr += "                oEntity.DeletionTime = DateTime.Now;\r\n";
+                    deleteStr += "                " + _repository + ".Update(oEntity);\r\n";
+                    @deleteStr
+                }
+                else
+                {
+                    deleteStr = "";
+                    deleteStr += "                " + _repository + ".Delete(oEntity);\r\n";
+                    @deleteStr
+                }
+            }
+            _logService.WriteInformation(@bulkDelOperate, oEntities.First().GetType().Name, string.Join("|", ids), ids, hasOperator.Account, hasOperator.Name);
+
+            await SaveAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<@{@Model.Name}Input> QueryById(Guid id)
+        {
+            var entity = @queryId
+            if (entity == null)
+            {
+                throw new Exception("您查询的数据不存在！");
+            }
+
+            return _mapper.Map<@{@Model.Name}Input>(entity);
+        }
+
+        /// <summary>
+        /// 查询
+        /// </summary>
+        /// <param name="queryParams"></param>
+        /// <returns></returns>
+        public async Task<Pagination<@{@Model.Name}QueryResult>> Query(@{@Model.Name}QueryParams queryParams)
+        {
+            @{@query}
+            @{var paramStr = "";}
+            @foreach (var param in Model.QueryFields)
+            {
+                @if (param.DataType.ToLower().Equals("string"))
+                {
+                    paramStr += $"            if (!string.IsNullOrEmpty(queryParams.{param.ColumnName}))\r\n";
+                    paramStr += "            {\r\n";
+                    paramStr += $"                query = query.Where(t=>t.{param.ColumnName}.Contains(queryParams.{param.ColumnName}));\r\n";
+                    paramStr += "            }\r\n";
+                }
+                else if (param.DataType.ToLower().Contains("datetime"))
+                {
+                    paramStr += $"            if (queryParams.Begin{param.ColumnName}.HasValue)\r\n";
+                    paramStr += "            {\r\n";
+                    paramStr += $"                query = query.Where(t=>t.{param.ColumnName} >= queryParams.Begin{param.ColumnName}.Value.Date);\r\n";
+                    paramStr += "            }\r\n";
+                    paramStr += $"            if (queryParams.End{param.ColumnName}.HasValue)\r\n";
+                    paramStr += "            {\r\n";
+                    paramStr += $"                query = query.Where(t=>t.{param.ColumnName} < queryParams.End{param.ColumnName}.Value.Date.AddDays(1));\r\n";
+                    paramStr += "            }\r\n";
+                }
+                else
+                {
+                    paramStr += $"            if (queryParams.{param.ColumnName}.HasValue)\r\n";
+                    paramStr += "            {\r\n";
+                    paramStr += $"                query = query.Where(t=>t.{param.ColumnName}.Equals(queryParams.{param.ColumnName}.Value));\r\n";
+                    paramStr += "            }\r\n";
+                }
+            }
+@paramStr
+            var queryModels = query.Select(t => _mapper.Map<@{@Model.Name}QueryResult>(t));
+            var data = await Pagination<@{@Model.Name}QueryResult>.New(queryModels, queryParams.PageParams.Skip, queryParams.PageParams.Take);
+            return data;
+        }
+    }
+}

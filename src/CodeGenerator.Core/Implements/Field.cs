@@ -13,9 +13,28 @@ namespace CodeGenerator.Core.Implements
     {
         public Field()
         {
-
         }
 
+        public Field(string toTable,
+            string fieldName,
+            string dataType,
+            long length,
+            int? precision,
+            string comment,
+            bool isNullable,
+            bool isKey,
+            KeyTypeEnum keyType)
+        {
+            this.ToTable = toTable;
+            this.FieldName = fieldName;
+            this.DataType = dataType;
+            this.Length = length;
+            this.Precision = precision;
+            this.Comment = comment;
+            this.IsNullable = isNullable;
+            this.IsKey = isKey;
+            this.KeyType = keyType;
+        }
 
         /// <summary>
         /// 属于哪个表
@@ -35,7 +54,7 @@ namespace CodeGenerator.Core.Implements
         /// <summary>
         /// 字段长度
         /// </summary>
-        public int Length { get; set; }
+        public long Length { get; set; }
 
         /// <summary>
         /// 精度
@@ -46,7 +65,10 @@ namespace CodeGenerator.Core.Implements
         /// 备注
         /// </summary>
         public string Comment { get; set; }
-
+        /// <summary>
+        /// 是否可为空
+        /// </summary>
+        public bool IsNullable { get; set; }
         /// <summary>
         /// 是否键
         /// </summary>

@@ -1,0 +1,22 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+using System;
+@{
+    string className = Model.Name + "Input";
+    string ns = Model.Namespace + ".Service.Dto." + Model.Name;
+}
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description - 录入
+    /// </summary>
+    public class @className
+    {
+        @foreach (Field field in Model.Fields)
+        {
+        string summary = @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+        string property = "        public " + field.DataType + " " + field.ColumnName+" { get; set; }\r\n";
+        @summary
+        @property
+        }
+    }
+}

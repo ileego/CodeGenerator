@@ -1,0 +1,30 @@
+@using CodeGenerator.Core.Implements;
+using AutoMapper;
+using System.Collections.Generic;
+using CodeGenerator.Infra.Common.BaseEntities;
+@{
+    string ns = Model.Namespace +".Service.Profiles";
+    var usingBuilder = new StringBuilder();
+    var mapBuilder = new StringBuilder();
+    foreach (var table in Tables)
+    {
+        usingBuilder.Append("using " + Namespace + "Service.Dto." + table.TableName + ";\r\n");
+        mapBuilder.Append("        /*" + table.Comment + "*/\r\n");
+        mapBuilder.Append("        CreateMap<" + table.TableName + "," + table.TableName + "Input>();");
+        mapBuilder.Append("        CreateMap<" + table.TableName + "Input," + table.TableName + ">();");
+        mapBuilder.Append("        CreateMap<" + table.TableName + "," + table.TableName + "QueryResult>();");
+        mapBuilder.Append(        "CreateMap<" + table.TableName + "QueryResult," + table.TableName + ">();");
+    }
+@usingBuilder.ToString();
+}
+
+namespace @ns
+{
+    /// <summary>
+    /// AutoMapper≈‰÷√
+    /// </summary>
+    public class MapperProfiles : Profile
+    {
+        @mapBuilder.ToString();
+    }
+}

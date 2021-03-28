@@ -8,6 +8,10 @@ namespace CodeGenerator.Core.Interfaces
     public interface IGenerateContext
     {
         /// <summary>
+        /// 主命名空间
+        /// </summary>
+        public string Namespace { get; set; }
+        /// <summary>
         /// 表集合
         /// </summary>
         ICollection<ITable> Tables { get; }

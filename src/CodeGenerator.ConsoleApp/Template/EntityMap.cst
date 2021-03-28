@@ -1,0 +1,41 @@
+﻿@{
+    string refEntities = Model.Namespace + ".Core.Entities";
+    string className = Model.Name + "Map";
+    string ns = Model.Namespace + ".Core.Maps";
+}
+using @refEntities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+@using GeneralManagement.GenerateCode.Entity;
+
+namespace @ns
+{
+    public class @className : IEntityTypeConfiguration<@Model.Name>
+    {
+        public void Configure(EntityTypeBuilder<@Model.Name> builder)
+        {
+            builder.ToTable("@Model.Name");
+
+            @foreach (Field field in Model.ExcludeFields)
+            {
+                var mapStr = "            builder.Property(t => t." + field.ColumnName + ")";
+                mapStr += ".HasColumnName(\"" + field.ColumnName + "\")";
+                if (field.DataType == "string" && field.Length < int.MaxValue)
+                {
+                    mapStr += ".HasMaxLength(" + field.Length + ")";
+                }
+                if (!field.IsNull)
+                {
+                    mapStr += ".IsRequired()";
+                }
+                if (!string.IsNullOrEmpty(field.DefaultValueSql))
+                {
+                    mapStr += ".HasDefaultValueSql(\"" + field.DefaultValueSql + "\")";
+                }
+                mapStr += ";\r\n";
+                @mapStr
+            }
+
+        }
+    }
+}

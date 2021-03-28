@@ -20,7 +20,7 @@
         /// <summary>
         /// 字段长度
         /// </summary>
-        int Length { get; set; }
+        long Length { get; set; }
         /// <summary>
         /// 精度
         /// </summary>
@@ -29,6 +29,10 @@
         /// 备注
         /// </summary>
         string Comment { get; set; }
+        /// <summary>
+        /// 是否可为空
+        /// </summary>
+        bool IsNullable { get; set; }
         /// <summary>
         /// 是否键
         /// </summary>

@@ -1,0 +1,44 @@
+﻿@using GeneralManagement.GenerateCode.Entity;
+using System;
+@{
+    string className = Model.Name + "QueryParams";
+    string ns = Model.Namespace + ".Service.Dto." + Model.Name;
+}
+namespace @ns
+{
+    /// <summary>
+    /// @Model.Description - 查询参数
+    /// </summary>
+    public class @className
+    {
+        /// <summary>
+        /// 分页参数
+        /// </summary>
+        public PageParams PageParams { get; set; }
+        @foreach (Field field in Model.QueryFields)
+        {
+            string outStr = "";
+            var nullStr = "";
+            if (!field.IsNull)
+            {
+                nullStr = "?";
+            }
+            if (field.DataType.ToLower().Contains("string"))
+            {
+                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+                outStr += "        public " + field.DataType + " " + field.ColumnName + " { get; set; }\r\n";
+            }else if (field.DataType.ToLower().Contains("datetime"))
+            {
+                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+                outStr += "        public " + field.DataType + nullStr + " Begin" + field.ColumnName + " { get; set; }\r\n";
+                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+                outStr += "        public " + field.DataType + nullStr  + " End" + field.ColumnName + " { get; set; }\r\n";
+            }else
+            {
+                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
+                outStr += "        public " + field.DataType + nullStr  + " " + field.ColumnName + " { get; set; }\r\n";
+            }
+        @outStr
+        }
+    }
+}

@@ -10,7 +10,9 @@ namespace CodeGenerator.Core.Utils
         public static string Trans(Column col)
         {
             var colType = col.ColumnType.ToLower();
-            var dbType = colType.Substring(0, colType.IndexOf("(", StringComparison.Ordinal));
+            var dbType = colType.Contains("(")
+                ? colType.Substring(0, colType.IndexOf("(", StringComparison.Ordinal))
+                : colType;
             switch (dbType)
             {
                 case "bit":
@@ -46,7 +48,8 @@ namespace CodeGenerator.Core.Utils
                 case "datetime":
                 case "timestamp":
                     return "DateTime";
-                //string
+                //string enum当做string处理
+                case "enum":
                 case "varchar":
                 case "tinytext":
                 case "mediumtext":
