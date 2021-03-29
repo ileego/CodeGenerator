@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CodeGenerator.Infra.Common.BaseEntities
 {
-    public abstract class FullAuditEntity : ModifyAuditEntity, IFullAuditEntity<long, long>
+    public abstract class FullAuditEntity : ModifyAuditEntity, IFullAuditEntity<long>
     {
         /// <summary>
         /// 是否删除

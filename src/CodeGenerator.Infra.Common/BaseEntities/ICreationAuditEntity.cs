@@ -6,9 +6,8 @@ namespace CodeGenerator.Infra.Common.BaseEntities
     /// <summary>
     /// Create Audit
     /// </summary>
-    /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TUser"></typeparam>
-    public interface ICreationAuditEntity<TKey, TUser> : IEntity<TKey>
+    public interface ICreationAuditEntity<TUser>
     {
         /// <summary>
         /// 创建人

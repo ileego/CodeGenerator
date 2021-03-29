@@ -26,7 +26,30 @@ namespace CodeGenerator.Core.Interfaces
         ICollection<ITable> AddTable(ITable table);
 
         /// <summary>
+        /// 表是否存在
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        bool TableExists(string tableName);
+
+        /// <summary>
+        /// 表是否存在
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        bool TableExists(ITable table);
+
+        /// <summary>
+        /// 按表名称获取表
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        ITable GetTable(string tableName);
+
+        /// <summary>
         /// 生成代码
+        /// 将要排除的字段名放入ViewBag，交由模板处理
+        /// @ViewBag.ExcludeFieldNames
         /// </summary>
         /// <param name="templatePath">模板路径</param>
         /// <param name="outPath">文件保存路径</param>
@@ -43,7 +66,9 @@ namespace CodeGenerator.Core.Interfaces
             ICollection<string> excludeFieldNames = null);
 
         /// <summary>
-        /// 生成代码,单文件
+        /// 生成代码，单文件
+        /// 将要排除表名、字段名放入ViewBag，交由模板处理
+        /// @ViewBag.ExcludeTableNames、@ViewBag.ExcludeFieldNames
         /// </summary>
         /// <param name="templatePath">模板路径</param>
         /// <param name="outPath">文件保存路径</param>

@@ -81,7 +81,7 @@ namespace CodeGenerator.Core.Implements
         public bool Equals(ITable other)
         {
             Check.NotNull(other, nameof(other));
-            return this.TableName == other.TableName;
+            return this.TableName.Equals(other.TableName, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

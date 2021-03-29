@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Infra.Common;
 using CodeGenerator.Infra.Common.Extensions.String;

@@ -1,4 +1,5 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
+﻿@using CodeGenerator.Core.Implements;
+@using System.Text;
 @{
     string ref1 = Model.Namespace + ".Infra.Common.BaseEntities";
     string refTable = "";
@@ -13,9 +14,9 @@ using @ref1;
 namespace @ns
 {
     /// <summary>
-    /// @Model.Description
+    /// @Model.Comment
     /// </summary>
-    public class @Model.Name : @Model.Abstract
+    public class @Model.ClassName : @Model.Abstract
     {
         @foreach (Field field in Model.ExcludeFields)
         {

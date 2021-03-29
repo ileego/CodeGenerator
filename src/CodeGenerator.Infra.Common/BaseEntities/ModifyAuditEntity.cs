@@ -2,7 +2,7 @@
 
 namespace CodeGenerator.Infra.Common.BaseEntities
 {
-    public abstract class ModifyAuditEntity : CreationAuditEntity, IModifyAuditEntity<long, long>
+    public abstract class ModifyAuditEntity : CreationAuditEntity, IModifyAuditEntity<long>
     {
         /// <summary>
         /// 修改操作人员
