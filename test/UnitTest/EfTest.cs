@@ -6,6 +6,7 @@ using CodeGenerator.Core.Db.Repository;
 using CodeGenerator.Core.ForTest.Entities;
 using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Core.Interfaces;
+using CodeGenerator.Infra.Common.BaseEntities;
 using CodeGenerator.Infra.Common.Interfaces;
 using CodeGenerator.Infra.Common.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,13 @@ namespace UnitTest
         }
 
         [Fact]
+        public void TestReflect()
+        {
+            var propertyInfos = typeof(Entity).GetProperties();
+            Assert.NotEmpty(propertyInfos);
+        }
+
+        [Fact]
         public async Task TestRepository()
         {
             var unitOfWork = _fixture.GetService<IUnitOfWork>();
@@ -39,6 +47,8 @@ namespace UnitTest
                 ICollection<CodeGenerator.Core.Db.Entities.Column>>>();
             var generateContext = await tableFactory.CreateContext();
             Assert.NotEmpty(generateContext.Tables);
+            var baseClass = FindBaseClass.Find(generateContext.Tables.First());
+            Assert.Equal("FullAuditEntity", baseClass);
             //var userRepository = _fixture.GetService<IUserRepository>();
             //var user = userRepository.Query.Where(t => t.UserName.Equals("tao_abc_2")).Include(t => t.UserContacts).FirstOrDefault();
             //var user2 = userRepository.Query.Where(t => t.UserName.Equals("tao_abc_7")).Include(t => t.UserContacts).FirstOrDefault();

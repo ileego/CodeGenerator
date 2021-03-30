@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
+using CodeGenerator.Core.Utils;
 using CodeGenerator.Infra.Common;
 using CodeGenerator.Infra.Common.Extensions.String;
 
@@ -37,6 +38,8 @@ namespace CodeGenerator.Core.Implements
                 if (field.IsKey)
                     Keys.Add(new Key(field));
             }
+            this.BaseClass = FindBaseClass.Find(this);
+
         }
 
         /// <summary>
@@ -48,6 +51,11 @@ namespace CodeGenerator.Core.Implements
         /// 类名
         /// </summary>
         public string ClassName { get; set; }
+
+        /// <summary>
+        /// 基类
+        /// </summary>
+        public string BaseClass { get; set; }
 
         /// <summary>
         /// 变量名

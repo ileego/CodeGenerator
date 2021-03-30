@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CodeGenerator.Core.Db.Repository;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 
 namespace CodeGenerator.Core.Implements
 {
@@ -37,10 +35,12 @@ namespace CodeGenerator.Core.Implements
             {
                 var dataType = TypeConvert.Trans(column);
                 long length = 0;
-                if (column.CharacterMaximumLength != null || column.NumericPrecision != null)
-                    length = dataType.Equals("string") || dataType.Equals("char[]")
-                        ? column.CharacterMaximumLength.Value
-                        : column.NumericPrecision.Value;
+
+                if (column.CharacterMaximumLength != null)
+                    length = column.CharacterMaximumLength.Value;
+                if (column.NumericPrecision != null)
+                    length = column.NumericPrecision.Value;
+
                 var isKey = column.ColumnKey.Length > 0;
                 var keyType = column.ColumnKey.Equals("PRI") ? KeyTypeEnum.PrimaryKey : KeyTypeEnum.ForeignKey;
                 var isNullable = column.IsNullable.Equals("YES");

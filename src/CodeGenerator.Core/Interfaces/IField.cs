@@ -50,4 +50,10 @@
         /// </summary>
         KeyTypeEnum? KeyType { get; set; }
     }
+
+    public enum FieldTypeEnum
+    {
+        Normal,
+        Audit
+    }
 }

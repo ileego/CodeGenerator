@@ -30,6 +30,10 @@ namespace CodeGenerator.Core.Interfaces
         /// </summary>
         string ClassName { get; set; }
         /// <summary>
+        /// 基类
+        /// </summary>
+        string BaseClass { get; set; }
+        /// <summary>
         /// 变量名
         /// </summary>
         string VariableName { get; set; }

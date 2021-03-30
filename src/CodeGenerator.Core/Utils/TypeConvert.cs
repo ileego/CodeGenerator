@@ -29,8 +29,10 @@ namespace CodeGenerator.Core.Utils
                 case "smallint unsigned":
                     return "ushort";
                 case "int":
+                case "mediumint":
                     return "int";
                 case "int unsigned":
+                case "mediumint unsigned":
                     return "uint";
                 case "bigint":
                     return "long";
@@ -48,7 +50,8 @@ namespace CodeGenerator.Core.Utils
                 case "datetime":
                 case "timestamp":
                     return "DateTime";
-                //string enum当做string处理
+                //string enum、json当做string处理
+                case "json":
                 case "enum":
                 case "varchar":
                 case "tinytext":
@@ -59,6 +62,8 @@ namespace CodeGenerator.Core.Utils
                 case "char":
                     return "char[]";
                 //blob
+                case "binary":
+                case "varbinary":
                 case "tinyblob":
                 case "blob":
                 case "mediumblob":
