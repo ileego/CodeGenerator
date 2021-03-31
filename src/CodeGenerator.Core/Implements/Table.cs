@@ -38,7 +38,7 @@ namespace CodeGenerator.Core.Implements
                 if (field.IsKey)
                     Keys.Add(new Key(field));
             }
-            this.BaseClass = FindBaseClass.Find(this);
+            this.BaseClass = this.FindBaseClass();
 
         }
 
