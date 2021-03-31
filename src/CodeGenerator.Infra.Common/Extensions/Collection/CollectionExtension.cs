@@ -306,7 +306,7 @@ namespace CodeGenerator.Infra.Common.Extensions
         }
 
         /// <summary>
-        ///   An ICollection<T> extension method that removes value that satisfy the predicate.
+        ///     An ICollection&lt;T&gt; extension method that removes value that satisfy the predicate.
         /// </summary>
         /// <typeparam name="T">Generic type parameter.</typeparam>
         /// <param name="this">The @this to act on.</param>
@@ -319,23 +319,6 @@ namespace CodeGenerator.Infra.Common.Extensions
             {
                 @this.Remove(item);
             }
-        }
-
-        /// <summary>
-        ///  An ICollection<T> extension method that excludes values that satisfy the predicate and returns a new result.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public static ICollection<T> Exclude<T>([NotNull] this ICollection<T> collection, Func<T, bool> predicate)
-        {
-            var list = new List<T>();
-            foreach (var item in collection.Where(predicate).ToList())
-            {
-                list.Add(item);
-            }
-            return list;
         }
 
         /// <summary>
