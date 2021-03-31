@@ -322,6 +322,24 @@ namespace CodeGenerator.Infra.Common.Extensions
         }
 
         /// <summary>
+        ///  An ICollection<T> extension method that excludes values that satisfy the predicate and returns a new result.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static ICollection<T> Exclude<T>([NotNull] this ICollection<T> collection, Func<T, bool> predicate)
+        {
+            var list = new List<T>();
+            var except = collection.Where(predicate);
+            foreach (var item in collection.Except(except).ToList())
+            {
+                list.Add(item);
+            }
+            return list;
+        }
+
+        /// <summary>
         /// 获取随机排序后列表
         /// </summary>
         /// <typeparam name="T">T</typeparam>
