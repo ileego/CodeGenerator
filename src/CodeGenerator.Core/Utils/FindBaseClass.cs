@@ -4,9 +4,9 @@ using CodeGenerator.Infra.Common.BaseEntities;
 
 namespace CodeGenerator.Core.Utils
 {
-    public class FindBaseClass
+    public static class BaseClass
     {
-        public static string Find(ITable table)
+        public static string FindBaseClass(this ITable table)
         {
             var baseClassName = nameof(NoKeyEntity);
             var propertyInfos = typeof(Entity).GetProperties().ToArray();
