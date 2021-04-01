@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
+using CodeGenerator.Infra.Common.Extensions;
 using RazorEngine;
 using RazorEngine.Configuration;
 using RazorEngine.Templating;
@@ -15,16 +16,23 @@ namespace CodeGenerator.Core.Implements
     /// <summary>
     /// 上下文
     /// </summary>
+    [Serializable]
     public class GenerateContext : IGenerateContext
     {
         /// <summary>
-        /// 主命名空间
+        /// 命名空间,可以用多个层次，以[.]分隔
         /// </summary>
-        public string Namespace { get; set; }
+        private string[] _namespace;
+        public string FullNamespace => string.Join(".", _namespace);
+        public string[] Namespace => _namespace;
+        public void SetNamespace(string value)
+        {
+            _namespace = value.Split(".");
+        }
         /// <summary>
         /// 表集合
         /// </summary>
-        public ICollection<ITable> Tables { get; }
+        public ICollection<ITable> Tables { get; set; }
         /// <summary>
         /// 添加表
         /// </summary>
@@ -57,6 +65,16 @@ namespace CodeGenerator.Core.Implements
         }
 
         /// <summary>
+        /// 表是否存在
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        public bool TableExistsByClassName(string className)
+        {
+            return Tables.Any(t => t.ClassName.Equals(className, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
         /// 按表名称获取表
         /// </summary>
         /// <param name="tableName"></param>
@@ -64,65 +82,53 @@ namespace CodeGenerator.Core.Implements
         public ITable GetTable(string tableName)
         {
             var table = Tables.FirstOrDefault(t => t.TableName.Equals(tableName, StringComparison.OrdinalIgnoreCase));
-            if (table == null)
-            {
-                throw new Exception("Table does not exist");
-            }
-
             return table;
         }
 
         /// <summary>
-        /// 生成代码
-        /// 模板通过@ViewBag.Namespace获取命名空间
-        /// 将要排除的字段名放入ViewBag，交由模板处理
-        /// @ViewBag.ExcludeFieldNames
+        /// 按类名名称获取表
         /// </summary>
-        /// <param name="templatePath">模板路径</param>
-        /// <param name="outPath">文件保存路径</param>
-        /// <param name="postfix">名称后缀</param>
-        /// <param name="createSeparateDirectory">创建独立目录</param>
-        /// <param name="excludeTableNames">要排除的表名</param>
-        /// <param name="excludeFieldNames">要排除的字段名</param>
+        /// <param name="className"></param>
         /// <returns></returns>
-        public void GenerateCode(string templatePath, string outPath, string postfix, bool createSeparateDirectory,
-            ICollection<string> excludeTableNames = null, ICollection<string> excludeFieldNames = null)
+        public ITable GetTableByClassName(string className)
         {
-            TemplateServiceConfiguration templateConfig = new TemplateServiceConfiguration
-            {
-                //Debug = true,
-                DisableTempFileLocking = true,
-                Language = Language.CSharp,
-                EncodedStringFactory = new RawStringFactory()
-            };
-            var razorEngineService = RazorEngineService.Create((ITemplateServiceConfiguration)templateConfig);
-            razorEngineService.AddTemplate("template", templatePath);
-            foreach (var table in Tables)
-            {
-                if (excludeTableNames != null && excludeTableNames.Count > 0 &&
-                    excludeTableNames.Any(t => t.Equals(table.TableName, StringComparison.OrdinalIgnoreCase)))
-                    continue;
-                var viewBag = new DynamicViewBag();
-                viewBag.AddValue("Namespace", Namespace);
-                viewBag.AddValue("ExcludeFieldNames", excludeFieldNames);
-                var outStr = razorEngineService.RunCompile(name: "template", typeof(IGenerateContext), model: table, viewBag);
-                OutFile.WriteText(outPath, outStr);
-            }
-
+            var table = Tables.FirstOrDefault(t => t.ClassName.Equals(className, StringComparison.OrdinalIgnoreCase));
+            return table;
         }
 
         /// <summary>
-        /// 生成代码，单文件
-        /// 将要排除表名、字段名放入ViewBag，交由模板处理
-        /// @ViewBag.ExcludeTableNames、@ViewBag.ExcludeFieldNames
+        /// 去除错误的外键引用，
+        /// 即：如果外键
+        /// </summary>
+        private void ClearBadForeignKeyRef()
+        {
+            foreach (var table in Tables)
+            {
+                table.ForeignKeys = table.ForeignKeys
+                    .Where(t => this.TableExistsByClassName(t.RefTableClassName)).ToList();
+            }
+        }
+
+        /// <summary>
+        /// 生成代码，多文件
+        /// 模板通过@ViewBag.Namespace获取命名空间
         /// </summary>
         /// <param name="templatePath">模板路径</param>
         /// <param name="outPath">文件保存路径</param>
-        /// <param name="excludeTableNames">要排除的表名</param>
-        /// <param name="excludeFieldNames">要排除的字段名</param>
+        /// <param name="filenamePrefix">文件名称前缀</param>
+        /// <param name="filenamePostfix">文件名称后缀</param>
+        /// <param name="createSeparateDirectory">创建独立目录</param>
+        /// <param name="withDefaultExcludeField">添加默认的排除字段</param>
+        /// <param name="excludeTableClassNames">要排除的表的类名</param>
+        /// <param name="excludeFieldPropertyNames">要排除的字段的属性名</param>
         /// <returns></returns>
-        public void GenerateCodeSingleFile(string templatePath, string outPath,
-            ICollection<string> excludeTableNames = null, ICollection<string> excludeFieldNames = null)
+        public void GenerateCode(string templatePath, string outPath,
+            bool createSeparateDirectory,
+            string filenamePrefix = "",
+            string filenamePostfix = "",
+            bool withDefaultExcludeField = true,
+            ICollection<string> excludeTableClassNames = null,
+            ICollection<string> excludeFieldPropertyNames = null)
         {
             TemplateServiceConfiguration templateConfig = new TemplateServiceConfiguration
             {
@@ -133,11 +139,75 @@ namespace CodeGenerator.Core.Implements
             };
             var razorEngineService = RazorEngineService.Create((ITemplateServiceConfiguration)templateConfig);
             razorEngineService.AddTemplate("template", File.ReadAllText(templatePath));
-            //将要排除表名、字段名放入ViewBag，交由模板处理
-            var viewBag = new DynamicViewBag();
-            viewBag.AddValue("ExcludeTableNames", excludeTableNames);
-            viewBag.AddValue("ExcludeFieldNames", excludeFieldNames);
-            var outStr = razorEngineService.RunCompile(name: "template", typeof(IGenerateContext), model: this, viewBag);
+            //清理错误的外键
+            ClearBadForeignKeyRef();
+            var tables = Tables;
+            //排除表
+            if (excludeTableClassNames != null)
+            {
+                tables = Tables.ExcludeTablesByClassNames(excludeTableClassNames);
+            }
+            foreach (var table in tables)
+            {
+                var viewBag = new DynamicViewBag();
+                viewBag.AddValue("Namespace", Namespace);
+                viewBag.AddValue("FullNamespace", FullNamespace);
+                excludeFieldPropertyNames ??= new List<string>();
+
+                //添加默认的排除字段
+                if (withDefaultExcludeField)
+                {
+                    var defaultExcludeFields = Exclude.DefaultExcludeFields().ToArray();
+                    excludeFieldPropertyNames.AddRange(defaultExcludeFields);
+                }
+
+                var newTable = (ITable)table.Clone();
+                //排除字段
+                newTable.Fields = newTable.Fields.ExcludeFieldsByPropertyNames(excludeFieldPropertyNames);
+                var outStr = razorEngineService.RunCompile(name: "template", typeof(ITable), model: newTable, viewBag);
+                var filename = createSeparateDirectory
+                    ? $"{outPath}\\{table.ClassName}\\{filenamePrefix}{table.ClassName}{filenamePostfix}.cs"
+                    : $"{outPath}\\{filenamePrefix}{table.ClassName}{filenamePostfix}.cs";
+                OutFile.WriteText(filename, outStr);
+            }
+
+        }
+
+        /// <summary>
+        /// 生成代码，单文件
+        /// </summary>
+        /// <param name="templatePath">模板路径</param>
+        /// <param name="outPath">文件保存路径</param>
+        /// <param name="excludeTableClassNames">要排除的表的类名</param>
+        /// <param name="excludeFieldPropertyNames">要排除的字段的属性名</param>
+        /// <returns></returns>
+        public void GenerateCodeSingleFile(string templatePath, string outPath,
+            ICollection<string> excludeTableClassNames = null, ICollection<string> excludeFieldPropertyNames = null)
+        {
+            TemplateServiceConfiguration templateConfig = new TemplateServiceConfiguration
+            {
+                //Debug = true,
+                DisableTempFileLocking = true,
+                Language = Language.CSharp,
+                EncodedStringFactory = new RawStringFactory()
+            };
+            var razorEngineService = RazorEngineService.Create((ITemplateServiceConfiguration)templateConfig);
+            razorEngineService.AddTemplate("template", File.ReadAllText(templatePath));
+            //清理错误的外键
+            ClearBadForeignKeyRef();
+            var newContext = (IGenerateContext)this.DeepClone();
+            //排除表
+            if (excludeTableClassNames != null && excludeTableClassNames.Count > 0)
+                newContext.Tables = newContext.Tables.ExcludeTablesByClassNames(excludeTableClassNames).ToList();
+            //排除字段
+            if (excludeFieldPropertyNames != null && excludeFieldPropertyNames.Count > 0)
+            {
+                foreach (var table in newContext.Tables)
+                {
+                    table.Fields = table.Fields.ExcludeFieldsByPropertyNames(excludeFieldPropertyNames);
+                }
+            }
+            var outStr = razorEngineService.RunCompile(name: "template", typeof(IGenerateContext), model: newContext);
             OutFile.WriteText(outPath, outStr);
         }
 
@@ -158,10 +228,16 @@ namespace CodeGenerator.Core.Implements
                 mapBuilder.Append("CreateMap<" + table.TableName + "Input," + table.TableName + ">();");
                 mapBuilder.Append("CreateMap<" + table.TableName + "," + table.TableName + "QueryResult>();");
                 mapBuilder.Append("CreateMap<" + table.TableName + "QueryResult," + table.TableName + ">();");
+                table.Fields.ExcludeFieldsByPropertyNames(Exclude.DefaultExcludeFields());
             }
 
             usingBuilder.ToString();
             mapBuilder.ToString();
+        }
+
+        public object Clone()
+        {
+            return this.DeepClone();
         }
     }
 }

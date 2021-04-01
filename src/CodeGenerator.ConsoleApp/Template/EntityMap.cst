@@ -1,41 +1,39 @@
-﻿@{
-    string refEntities = Model.Namespace + ".Core.Entities";
-    string className = Model.Name + "Map";
-    string ns = Model.Namespace + ".Core.Maps";
-}
-using @refEntities;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
+using CodeGenerator.Infra.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-@using GeneralManagement.GenerateCode.Entity;
-
+@{
+    string ref1 = $"{ViewBag.FullNamespace}.Entities;";
+    string ns = $"{ViewBag.FullNamespace}.Core.Maps";
+    string className = $"{Model.ClassName}Map";
+    var mapBuilder = new StringBuilder();
+    foreach (Field field in Model.Fields)
+    {
+        mapBuilder.Append($"\t\t\tbuilder.Property(t => t.{field.PropertyName})");
+        mapBuilder.Append($".HasColumnName(\"{field.FieldName}\")");
+        if (field.DataType == "string" && field.Length < int.MaxValue)
+        {
+            mapBuilder.Append($".HasMaxLength({field.Length})");
+        }
+        if (!field.IsNullable)
+        {
+            mapBuilder.Append(".IsRequired()");
+        }
+        mapBuilder.Append(";\r\n");
+    }
+}
+using @ref1
 namespace @ns
 {
-    public class @className : IEntityTypeConfiguration<@Model.Name>
+    public class @className : EntityTypeConfiguration<@Model.ClassName>
     {
-        public void Configure(EntityTypeBuilder<@Model.Name> builder)
+        public override void Configure(EntityTypeBuilder<@Model.ClassName> builder)
         {
-            builder.ToTable("@Model.Name");
+            builder.ToTable("@Model.TableName");
 
-            @foreach (Field field in Model.ExcludeFields)
-            {
-                var mapStr = "            builder.Property(t => t." + field.ColumnName + ")";
-                mapStr += ".HasColumnName(\"" + field.ColumnName + "\")";
-                if (field.DataType == "string" && field.Length < int.MaxValue)
-                {
-                    mapStr += ".HasMaxLength(" + field.Length + ")";
-                }
-                if (!field.IsNull)
-                {
-                    mapStr += ".IsRequired()";
-                }
-                if (!string.IsNullOrEmpty(field.DefaultValueSql))
-                {
-                    mapStr += ".HasDefaultValueSql(\"" + field.DefaultValueSql + "\")";
-                }
-                mapStr += ";\r\n";
-                @mapStr
-            }
-
+@mapBuilder.ToString()
         }
     }
 }

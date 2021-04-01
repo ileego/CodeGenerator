@@ -1,10 +1,13 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
 @{
-    string ref1 = Model.Namespace + ".Infrastructure.ValueModel";
-    string ref2 = Model.Namespace + ".Service.Dto";
-    string ref3 = Model.Namespace + ".Service.Dto." + Model.Name;
-    string interfaceName = "I" + Model.Name + "Service";
-    string ns = Model.Namespace + ".Service.Services.Interfaces";
+    string firstNamespace = ((string[])ViewBag.Namespace)[0];
+    string ref1 = $"{firstNamespace}.Infra.Common.ValueModel";
+    string ref2 = $"{ViewBag.FullNamespace}.DTOs";
+    string ref3 = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
+    string interfaceName = "I{Model.ClassName}Service";
+    string ns = $"{ViewBag.FullNamespace}.Services.Interfaces";
 }
 using System;
 using System.Collections.Generic;

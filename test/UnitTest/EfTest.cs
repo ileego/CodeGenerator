@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeGenerator.Core.Db.Repository;
+using CodeGenerator.Core.Db.Repository.Column;
+using CodeGenerator.Core.Db.Repository.Table;
 using CodeGenerator.Core.ForTest.Entities;
 using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
 using CodeGenerator.Infra.Common.BaseEntities;
+using CodeGenerator.Infra.Common.Extensions.String;
 using CodeGenerator.Infra.Common.Interfaces;
 using CodeGenerator.Infra.Common.Utils;
 using Microsoft.EntityFrameworkCore;
@@ -29,8 +32,17 @@ namespace UnitTest
         [Fact]
         public void TestReflect()
         {
+            var s = "ApplicationId".RemovePostFix("Id");
             var propertyInfos = typeof(Entity).GetProperties();
             Assert.NotEmpty(propertyInfos);
+            var strArray = new string[2];
+            strArray = "string.bac".Split(".");
+            var ss = string.Join(",", strArray);
+            Assert.Equal("string,bac", ss);
+            object sao = strArray;
+            string sa = ((string[])sao)[0];
+            Assert.Equal("string", sa);
+
         }
 
         [Fact]

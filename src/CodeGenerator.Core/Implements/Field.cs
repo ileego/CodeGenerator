@@ -8,6 +8,7 @@ namespace CodeGenerator.Core.Implements
     /// <summary>
     /// 字段
     /// </summary>
+    [Serializable]
     public class Field : IField, IEquatable<IField>
     {
         public Field()

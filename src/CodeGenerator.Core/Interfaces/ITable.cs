@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CodeGenerator.Core.Interfaces
 {
@@ -19,7 +20,7 @@ namespace CodeGenerator.Core.Interfaces
     /// <summary>
     /// 表
     /// </summary>
-    public interface ITable
+    public interface ITable : ICloneable
     {
         /// <summary>
         /// 表名
@@ -48,10 +49,10 @@ namespace CodeGenerator.Core.Interfaces
         /// <summary>
         /// 获取所有键
         /// </summary>
-        ICollection<IKey> Keys { get; }
+        ICollection<IKey> ForeignKeys { get; set; }
         /// <summary>
         /// 获取所有字段
         /// </summary>
-        ICollection<IField> Fields { get; }
+        ICollection<IField> Fields { get; set; }
     }
 }

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
 using CodeGenerator.Infra.Common;
+using CodeGenerator.Infra.Common.Extensions;
 using CodeGenerator.Infra.Common.Extensions.String;
 
 namespace CodeGenerator.Core.Implements
@@ -11,11 +15,12 @@ namespace CodeGenerator.Core.Implements
     /// <summary>
     /// 表
     /// </summary>
+    [Serializable]
     public class Table : ITable, IEquatable<ITable>
     {
         public Table()
         {
-            this.Keys = new List<IKey>();
+            this.ForeignKeys = new List<IKey>();
             this.Fields = new List<IField>();
         }
 
@@ -35,8 +40,11 @@ namespace CodeGenerator.Core.Implements
             foreach (var field in fields)
             {
                 Fields.Add(field);
-                if (field.IsKey)
-                    Keys.Add(new Key(field));
+                if (field.IsKey && field.KeyType != KeyTypeEnum.PrimaryKey)
+                {
+                    ForeignKeys.Add(new Key(field));
+                }
+
             }
             this.BaseClass = this.FindBaseClass();
 
@@ -75,12 +83,12 @@ namespace CodeGenerator.Core.Implements
         /// <summary>
         /// 获取所有键
         /// </summary>
-        public ICollection<IKey> Keys { get; }
+        public ICollection<IKey> ForeignKeys { get; set; }
 
         /// <summary>
         /// 获取所有字段
         /// </summary>
-        public ICollection<IField> Fields { get; }
+        public ICollection<IField> Fields { get; set; }
 
         /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
         /// <param name="other">An object to compare with this object.</param>
@@ -90,6 +98,11 @@ namespace CodeGenerator.Core.Implements
         {
             Check.NotNull(other, nameof(other));
             return this.TableName.Equals(other.TableName, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public object Clone()
+        {
+            return this.DeepClone();
         }
     }
 }

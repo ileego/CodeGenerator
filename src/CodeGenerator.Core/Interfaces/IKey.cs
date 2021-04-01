@@ -1,4 +1,6 @@
-﻿namespace CodeGenerator.Core.Interfaces
+﻿using System;
+
+namespace CodeGenerator.Core.Interfaces
 {
     /// <summary>
     /// 键类型枚举
@@ -28,5 +30,13 @@
         /// 键名称
         /// </summary>
         public string KeyName { get; set; }
+        /// <summary>
+        /// 关联的表名
+        /// </summary>
+        public string RefTableClassName { get; set; }
+        /// <summary>
+        /// 相关字段
+        /// </summary>
+        public IField Field { get; set; }
     }
 }

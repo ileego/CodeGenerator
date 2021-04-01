@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Core", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Infra.Common", "src\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj", "{590C323B-06B8-46D2-A97C-07F092C59415}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Service", "src\CodeGenerator.Service\CodeGenerator.Service.csproj", "{5D04C04E-5023-4A9D-BD35-F07926684C53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Application", "src\CodeGenerator.Application\CodeGenerator.Application.csproj", "{5D04C04E-5023-4A9D-BD35-F07926684C53}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator.Mvc", "src\CodeGenerator.Mvc\CodeGenerator.Mvc.csproj", "{33E8B209-2372-4118-929D-B3AA83BDF262}"
 EndProject

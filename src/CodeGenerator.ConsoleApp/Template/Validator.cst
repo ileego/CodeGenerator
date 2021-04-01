@@ -1,11 +1,28 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
 @{
-    string ref1 = Model.Namespace + ".Service.Dto." + Model.Name;
-    string ctorName = Model.Name + "Validator()";
-    string className = Model.Name + "Validator";
-    string modelName = Model.Name + "Input";
-    string ns = Model.Namespace + ".Service.Validations";
-    string outStr = "";
+    string ref1 = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
+    string ctorName = $"{Model.ClassName}Validator()";
+    string className = $"{Model.ClassName}Validator";
+    string modelName = $"{Model.ClassName}Input";
+    string ns = $"{ViewBag.FullNamespace}.Validations";
+    var outBuilder = new StringBuilder();
+    foreach (Field field in Model.Fields)
+    {
+        if (field.DataType=="string")
+        {
+            if (!field.IsNullable)
+            {
+                outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}.NotEmpty().WithMessage(\"请输入{field.Comment}\");\r\n");
+            }
+            outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}.MaximumLength({field.Length}).WithMessage(\"{field.Comment}长度不能超过{field.Length}\");\r\n");
+        }
+        else if (!field.IsNullable && field.DataType!="bool")
+        {
+            outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}).NotEqual(t => default).WithMessage(\"{field.Comment}必须填写\");\r\n");
+        }
+    }
 }
 using @ref1;
 using FluentValidation;
@@ -23,28 +40,7 @@ namespace @ns
         public @ctorName
         {
             CascadeMode = CascadeMode.Stop;
-            @foreach (Field field in Model.Fields)
-            {
-                if (field.ColumnName.ToLower().Equals("id"))
-                {
-                    continue;
-                }
-                outStr = "";
-                if (field.DataType=="string")
-                {
-                    int length = field.Length;
-                    if (!field.IsNull)
-                    {
-                        outStr += "            RuleFor(t => t."+field.ColumnName+").NotEmpty().WithMessage(\"请输入"+field.Comment+"\");\r\n";
-                    }
-                    outStr+= "            RuleFor(t => t."+field.ColumnName+").MaximumLength(" + length + ").WithMessage(\""+field.Comment+"长度不能超过" + length + "\");\r\n";
-                }
-                else if (!field.IsNull)
-                {
-                    outStr+= "            RuleFor(t => t."+field.ColumnName+").NotEqual(t => default).WithMessage(\""+field.Comment+"必须填写\");\r\n";
-                }
-                @outStr
-            }
+@outBuilder.ToString()
         }
     }
 }

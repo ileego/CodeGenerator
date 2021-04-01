@@ -55,20 +55,6 @@ namespace CodeGenerator.Infra.Common.Extensions
         }
 
         /// <summary>
-        /// 添加多个元素
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="this"></param>
-        /// <param name="values"></param>
-        public static void AddRange<T>(this ICollection<T> @this, params T[] values)
-        {
-            foreach (var obj in values)
-            {
-                @this.Add(obj);
-            }
-        }
-
-        /// <summary>
         /// 添加符合条件的多个元素
         /// </summary>
         /// <typeparam name="T"></typeparam>

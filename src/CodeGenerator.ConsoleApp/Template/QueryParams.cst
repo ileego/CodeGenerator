@@ -1,44 +1,40 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
-using System;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
 @{
-    string className = Model.Name + "QueryParams";
-    string ns = Model.Namespace + ".Service.Dto." + Model.Name;
+    string className = $"{Model.ClassName}QueryParams";
+    string ns = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
+    string firstNamespace = ((string[])ViewBag.Namespace)[0];
+    string ref1 = $"{firstNamespace}.Infra.Common.BaseDTOs;";
+    var outBuilder = new StringBuilder();
+    foreach (Field field in Model.Fields)
+    {
+        if (field.DataType.ToLower().Contains("datetime"))
+        {
+            outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
+            outBuilder.Append($"\t\tpublic {field.DataType} Begin{field.PropertyName} {{ get; set; }}\r\n");
+            outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
+            outBuilder.Append($"\t\tpublic {field.DataType} End{field.PropertyName} {{ get; set; }}\r\n");
+        }else
+        {
+            outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>"+"\r\n");
+            outBuilder.Append($"\t\tpublic {field.DataType} {field.PropertyName} {{ get; set; }}\r\n");
+        }
+    }
 }
+using @ref1
+
 namespace @ns
 {
     /// <summary>
-    /// @Model.Description - 查询参数
+    /// @Model.Comment - 查询参数
     /// </summary>
     public class @className
     {
         /// <summary>
         /// 分页参数
         /// </summary>
-        public PageParams PageParams { get; set; }
-        @foreach (Field field in Model.QueryFields)
-        {
-            string outStr = "";
-            var nullStr = "";
-            if (!field.IsNull)
-            {
-                nullStr = "?";
-            }
-            if (field.DataType.ToLower().Contains("string"))
-            {
-                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-                outStr += "        public " + field.DataType + " " + field.ColumnName + " { get; set; }\r\n";
-            }else if (field.DataType.ToLower().Contains("datetime"))
-            {
-                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-                outStr += "        public " + field.DataType + nullStr + " Begin" + field.ColumnName + " { get; set; }\r\n";
-                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-                outStr += "        public " + field.DataType + nullStr  + " End" + field.ColumnName + " { get; set; }\r\n";
-            }else
-            {
-                outStr += @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-                outStr += "        public " + field.DataType + nullStr  + " " + field.ColumnName + " { get; set; }\r\n";
-            }
-        @outStr
-        }
+        public PagingParamDto PageParams { get; set; }
+@outBuilder.ToString()   
     }
 }

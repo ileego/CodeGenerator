@@ -2,24 +2,27 @@
 @using System.Text;
 using AutoMapper;
 using System.Collections.Generic;
-using CodeGenerator.Infra.Common.BaseEntities;
 @{
-    string ns = Model.Namespace +".Profiles";
+    string firstNamespace = Model.Namespace[0];
+    string ref1 = $"{firstNamespace}.Infra.Common.BaseEntities;";
+    string ref2 = $"{firstNamespace}.Core.Entities;";
+    string ns = $"{Model.FullNamespace}.Profiles";
     var usingBuilder = new StringBuilder();
     var mapBuilder = new StringBuilder();
     foreach (var table in @Model.Tables)
     {
-        usingBuilder.Append("using " + Model.Namespace + ".Dto." + table.ClassName + ";\r\n");
-        mapBuilder.Append("        /*" + table.Comment + "*/\r\n");
-        mapBuilder.Append("        CreateMap<" + table.ClassName + "," + table.ClassName + "Input>();\r\n");
-        mapBuilder.Append("        CreateMap<" + table.ClassName + "Input," + table.ClassName + ">();\r\n");
-        mapBuilder.Append("        CreateMap<" + table.ClassName + "," + table.ClassName + "QueryResult>();\r\n");
-        mapBuilder.Append("        CreateMap<" + table.ClassName + "QueryResult," + table.ClassName + ">();\r\n");
+        usingBuilder.Append($"using {Model.FullNamespace}.DTOs.{table.ClassName};\r\n");
+        mapBuilder.Append($"\t\t/* {table.Comment} */\r\n");
+        mapBuilder.Append($"\t\tCreateMap<{table.ClassName},{table.ClassName}Input>();\r\n");
+        mapBuilder.Append($"\t\tCreateMap<{table.ClassName}Input,{table.ClassName}>();\r\n");
+        mapBuilder.Append($"\t\tCreateMap<{table.ClassName},{table.ClassName}QueryResult>();\r\n");
+        mapBuilder.Append($"\t\tCreateMap<{table.ClassName}QueryResult,{table.ClassName}>();\r\n");
         mapBuilder.Append("\r\n");
     }
-@usingBuilder.ToString();
 }
-
+using @ref1
+using @ref2
+@usingBuilder.ToString()
 namespace @ns
 {
     /// <summary>

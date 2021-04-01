@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CodeGenerator.Core.Db.Repository;
+using CodeGenerator.Core.Db.Repository.Column;
+using CodeGenerator.Core.Db.Repository.Table;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CodeGenerator.Core.Implements;
 
 namespace CodeGenerator.Core.Interfaces
@@ -6,17 +7,25 @@ namespace CodeGenerator.Core.Interfaces
     /// <summary>
     /// 上下文
     /// </summary>
-    public interface IGenerateContext
+    public interface IGenerateContext : ICloneable
     {
         /// <summary>
-        /// 主命名空间
+        /// 命名空间
         /// </summary>
-        public string Namespace { get; set; }
-
+        string[] Namespace { get; }
+        /// <summary>
+        /// 命名空间全名
+        /// </summary>
+        string FullNamespace { get; }
+        /// <summary>
+        /// 设置命名空间,可以用多个层次，以[.]分隔
+        /// </summary>
+        /// <param name="value"></param>
+        void SetNamespace(string value);
         /// <summary>
         /// 表集合
         /// </summary>
-        ICollection<ITable> Tables { get; }
+        ICollection<ITable> Tables { get; set; }
 
         /// <summary>
         /// 添加表
@@ -40,6 +49,13 @@ namespace CodeGenerator.Core.Interfaces
         bool TableExists(ITable table);
 
         /// <summary>
+        /// 表是否存在
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        bool TableExistsByClassName(string className);
+
+        /// <summary>
         /// 按表名称获取表
         /// </summary>
         /// <param name="tableName"></param>
@@ -47,37 +63,44 @@ namespace CodeGenerator.Core.Interfaces
         ITable GetTable(string tableName);
 
         /// <summary>
-        /// 生成代码
-        /// 将要排除的字段名放入ViewBag，交由模板处理
-        /// @ViewBag.ExcludeFieldNames
+        /// 按类名名称获取表
+        /// </summary>
+        /// <param name="className"></param>
+        /// <returns></returns>
+        ITable GetTableByClassName(string className);
+
+        /// <summary>
+        /// 生成代码，多文件
+        /// 模板通过@ViewBag.Namespace获取命名空间
         /// </summary>
         /// <param name="templatePath">模板路径</param>
         /// <param name="outPath">文件保存路径</param>
-        /// <param name="postfix">名称后缀</param>
+        /// <param name="filenamePrefix">文件名称前缀</param>
+        /// <param name="filenamePostfix">文件名称后缀</param>
         /// <param name="createSeparateDirectory">创建独立目录</param>
-        /// <param name="excludeTableNames">要排除的表名</param>
-        /// <param name="excludeFieldNames">要排除的字段名</param>
+        /// <param name="withDefaultExcludeField">添加默认的排除字段</param>
+        /// <param name="excludeTableClassNames">要排除的表的类名</param>
+        /// <param name="excludeFieldPropertyNames">要排除的字段的属性名</param>
         /// <returns></returns>
         void GenerateCode(string templatePath,
             string outPath,
-            string postfix,
             bool createSeparateDirectory,
-            ICollection<string> excludeTableNames = null,
-            ICollection<string> excludeFieldNames = null);
+            string filenamePrefix = "",
+            string filenamePostfix = "",
+            bool withDefaultExcludeField = true,
+            ICollection<string> excludeTableClassNames = null,
+            ICollection<string> excludeFieldPropertyNames = null);
 
         /// <summary>
         /// 生成代码，单文件
-        /// 将要排除表名、字段名放入ViewBag，交由模板处理
-        /// @ViewBag.ExcludeTableNames、@ViewBag.ExcludeFieldNames
         /// </summary>
         /// <param name="templatePath">模板路径</param>
         /// <param name="outPath">文件保存路径</param>
-        /// <param name="excludeTableNames">要排除的表名</param>
-        /// <param name="excludeFieldNames">要排除的字段名</param>
-        /// <returns></returns>
+        /// <param name="excludeTableClassNames">要排除的表的类名</param>
+        /// <param name="excludeFieldPropertyNames">要排除的字段的属性名</param>
         void GenerateCodeSingleFile(string templatePath,
             string outPath,
-            ICollection<string> excludeTableNames = null,
-            ICollection<string> excludeFieldNames = null);
+            ICollection<string> excludeTableClassNames = null,
+            ICollection<string> excludeFieldPropertyNames = null);
     }
 }

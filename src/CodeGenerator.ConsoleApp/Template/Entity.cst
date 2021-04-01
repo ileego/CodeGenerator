@@ -1,41 +1,40 @@
 ﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
 @using System.Text;
-@{
-    string ref1 = Model.Namespace + ".Infra.Common.BaseEntities";
-    string refTable = "";
-    string ns = Model.Namespace + ".Core.Entities";
-}
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
-using @ref1;
+@{
+    string ref1 = $"{ViewBag.FullNamespace}.Infra.Common.BaseEntities;";
+    string ns = $"{ViewBag.FullNamespace}.Entities";
+    var propertiesBuilder = new StringBuilder();
+    var refTableBuilder = new StringBuilder();
+    foreach (Field field in Model.Fields)
+    {
+        propertiesBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
+        propertiesBuilder.Append($"\t\tpublic {field.DataType} {field.PropertyName} {{ get; set; }}\r\n");
+    }
+    if(Model.ForeignKeys.Count > 0)
+    {
+        foreach (var foreignKey in Model.ForeignKeys)
+        {
+
+            refTableBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {foreignKey.Field.Comment.Replace("主键","")}\r\n\t\t/// </summary>\r\n");
+            refTableBuilder.Append($"\t\tpublic virtual {foreignKey.RefTableClassName} {foreignKey.RefTableClassName} {{ get; set; }}\r\n");
+        }
+    }
+}
+using @ref1
 
 namespace @ns
 {
     /// <summary>
     /// @Model.Comment
     /// </summary>
-    public class @Model.ClassName : @Model.Abstract
+    public class @Model.ClassName : @Model.BaseClass
     {
-        @foreach (Field field in Model.ExcludeFields)
-        {
-        string summary = @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-        string property = "        public " + field.DataType + " " + field.ColumnName+" { get; set; }\r\n";
-        @summary
-        @property
-        }
-        @if(Model.ForeignKeys.Count > 0)
-        {
-            
-            foreach (var foreignKey in Model.ForeignKeys)
-            {
-
-                refTable += @"        /// <summary>        "+"\r\n        /// " + foreignKey.Description + "\r\n        "+"/// </summary>"+"\r\n";
-                refTable += "        public virtual " + foreignKey.JoinTableName + " " + foreignKey.JoinTableName+" { get; set; }\r\n";
-            }
-        @refTable
-        }
-      
+@propertiesBuilder.ToString()
+@refTableBuilder.ToString()     
     }
 }

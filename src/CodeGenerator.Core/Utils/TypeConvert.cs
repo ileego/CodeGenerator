@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CodeGenerator.Core.Db.Entities;
 
@@ -10,46 +11,61 @@ namespace CodeGenerator.Core.Utils
         public static string Trans(Column col)
         {
             var colType = col.ColumnType.ToLower();
+            var isNull = col.IsNullable.Equals("yes", StringComparison.OrdinalIgnoreCase);
             var dbType = colType.Contains("(")
                 ? colType.Substring(0, colType.IndexOf("(", StringComparison.Ordinal))
                 : colType;
+            var type = "";
             switch (dbType)
             {
                 case "bit":
                 case "bool":
                 case "boolean":
-                    return "bool";
+                    type = "bool";
+                    break;
                 //integer
                 case "tinyint":
-                    return colType.Equals("tinyint(1)") ? "bool" : "byte";
+                    type = colType.Equals("tinyint(1)") ? "bool" : "byte";
+                    break;
                 case "tinyint unsigned":
-                    return "sbyte";
+                    type = "sbyte";
+                    break;
                 case "smallint":
-                    return "short";
+                    type = "short";
+                    break;
                 case "smallint unsigned":
-                    return "ushort";
+                    type = "ushort";
+                    break;
                 case "int":
                 case "mediumint":
-                    return "int";
+                    type = "int";
+                    break;
                 case "int unsigned":
                 case "mediumint unsigned":
-                    return "uint";
+                    type = "uint";
+                    break;
                 case "bigint":
-                    return "long";
+                    type = "long";
+                    break;
                 case "bigint unsigned":
-                    return "ulong";
+                    type = "ulong";
+                    break;
                 //float
                 case "float":
-                    return "float";
+                    type = "float";
+                    break;
                 case "double":
-                    return "double";
+                    type = "double";
+                    break;
                 case "decimal":
-                    return "decimal";
+                    type = "decimal";
+                    break;
                 //date
                 case "date":
                 case "datetime":
                 case "timestamp":
-                    return "DateTime";
+                    type = "DateTime";
+                    break;
                 //string enum、json当做string处理
                 case "json":
                 case "enum":
@@ -58,9 +74,11 @@ namespace CodeGenerator.Core.Utils
                 case "mediumtext":
                 case "longtext":
                 case "text":
-                    return "string";
+                    type = "string";
+                    break;
                 case "char":
-                    return "char[]";
+                    type = "char[]";
+                    break;
                 //blob
                 case "binary":
                 case "varbinary":
@@ -68,15 +86,27 @@ namespace CodeGenerator.Core.Utils
                 case "blob":
                 case "mediumblob":
                 case "longblob":
-                    return "byte[]";
+                    type = "byte[]";
+                    break;
                 //geometry
                 case "geometry":
-                    return "geometry";
+                    type = "MySqlGeometry";
+                    break;
                 default:
                     throw new Exception("Unknown type");
             }
 
+            if (isNull)
+            {
+                var types = new[] { "sbyte", "byte", "short", "ushort", "int",
+                    "uint", "long", "ulong", "char", "float", "double", "bool", "decimal","DateTime","MySqlGeometry"};
+                if (types.Contains(type))
+                {
+                    type += "?";
+                }
+            }
 
+            return type;
         }
     }
 }

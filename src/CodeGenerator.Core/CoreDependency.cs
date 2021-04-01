@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using CodeGenerator.Core.Db.Repository;
+using CodeGenerator.Core.Db.Repository.Column;
+using CodeGenerator.Core.Db.Repository.Table;
 using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Core.Implements;
 using CodeGenerator.Core.Interfaces;

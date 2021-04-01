@@ -1,22 +1,23 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
-using System;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
 @{
-    string className = Model.Name + "Input";
-    string ns = Model.Namespace + ".Service.Dto." + Model.Name;
+    string className = $"{Model.ClassName}Input";
+    string ns = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
+    var outBuilder = new StringBuilder();
+    foreach (Field field in Model.Fields)
+    {
+        outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
+        outBuilder.Append($"\t\tpublic {field.DataType} {field.PropertyName} {{ get; set; }}\r\n");
+    }
 }
 namespace @ns
 {
     /// <summary>
-    /// @Model.Description - 录入
+    /// @Model.Comment - 录入
     /// </summary>
     public class @className
     {
-        @foreach (Field field in Model.Fields)
-        {
-        string summary = @"        /// <summary>        "+"\r\n        /// " + field.Comment + "\r\n        "+"/// </summary>"+"\r\n";
-        string property = "        public " + field.DataType + " " + field.ColumnName+" { get; set; }\r\n";
-        @summary
-        @property
-        }
+@outBuilder.ToString()        
     }
 }
