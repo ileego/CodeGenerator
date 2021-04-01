@@ -3,7 +3,8 @@
 @using System.Text;
 @{
     string firstNamespace = ((string[])ViewBag.Namespace)[0];
-    string ref1 = $"{firstNamespace}.Infra.Common.Implements";
+    string ref1 = $"{firstNamespace}.Infra.Common.Implements;";
+    string ref2 = $"{firstNamespace}.Infra.Common.ValueModel;";
     string ns = $"{ViewBag.FullNamespace}.Repository.{Model.ClassName}";
     string className = $"{Model.ClassName}Repository";
     string interfaceName = $"I{Model.ClassName}Repository";
@@ -16,7 +17,8 @@
     }
 }
 using Microsoft.EntityFrameworkCore;
-using @ref1;
+using @ref1
+using @ref2
 
 namespace @ns
 {

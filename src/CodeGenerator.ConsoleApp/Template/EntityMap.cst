@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 @{
     string ref1 = $"{ViewBag.FullNamespace}.Entities;";
-    string ns = $"{ViewBag.FullNamespace}.Core.Maps";
+    string ns = $"{ViewBag.FullNamespace}.Maps";
     string className = $"{Model.ClassName}Map";
     var mapBuilder = new StringBuilder();
     foreach (Field field in Model.Fields)
@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
         mapBuilder.Append(";\r\n");
     }
 }
+using System;
 using @ref1
 namespace @ns
 {

@@ -12,11 +12,11 @@ using System.Collections.Generic;
     foreach (var table in @Model.Tables)
     {
         usingBuilder.Append($"using {Model.FullNamespace}.DTOs.{table.ClassName};\r\n");
-        mapBuilder.Append($"\t\t/* {table.Comment} */\r\n");
-        mapBuilder.Append($"\t\tCreateMap<{table.ClassName},{table.ClassName}Input>();\r\n");
-        mapBuilder.Append($"\t\tCreateMap<{table.ClassName}Input,{table.ClassName}>();\r\n");
-        mapBuilder.Append($"\t\tCreateMap<{table.ClassName},{table.ClassName}QueryResult>();\r\n");
-        mapBuilder.Append($"\t\tCreateMap<{table.ClassName}QueryResult,{table.ClassName}>();\r\n");
+        mapBuilder.Append($"\t\t\t/* {table.Comment} */\r\n");
+        mapBuilder.Append($"\t\t\tCreateMap<{table.ClassName},{table.ClassName}InputDto>();\r\n");
+        mapBuilder.Append($"\t\t\tCreateMap<{table.ClassName}InputDto,{table.ClassName}>();\r\n");
+        mapBuilder.Append($"\t\t\tCreateMap<{table.ClassName},{table.ClassName}Dto>();\r\n");
+        mapBuilder.Append($"\t\t\tCreateMap<{table.ClassName}Dto,{table.ClassName}>();\r\n");
         mapBuilder.Append("\r\n");
     }
 }
@@ -30,6 +30,12 @@ namespace @ns
     /// </summary>
     public class MapperProfiles : Profile
     {
+        /// <summary>
+        /// 配置Map
+        /// </summary>
+        public MapperProfiles()
+        {
 @mapBuilder.ToString()
+        }
     }
 }

@@ -2,10 +2,10 @@
 @using CodeGenerator.Core.Utils;
 @using System.Text;
 @{
-    string className = $"{Model.ClassName}QueryParams";
+    string className = $"{Model.ClassName}ParamsDto";
     string ns = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
     string firstNamespace = ((string[])ViewBag.Namespace)[0];
-    string ref1 = $"{firstNamespace}.Infra.Common.BaseDTOs;";
+    string ref1 = $"{firstNamespace}.Infra.Common.Paging;";
     var outBuilder = new StringBuilder();
     foreach (Field field in Model.Fields)
     {
@@ -22,6 +22,7 @@
         }
     }
 }
+using System;
 using @ref1
 
 namespace @ns
@@ -34,7 +35,7 @@ namespace @ns
         /// <summary>
         /// 分页参数
         /// </summary>
-        public PagingParamDto PageParams { get; set; }
+        public PagedModel PageParams { get; set; }
 @outBuilder.ToString()   
     }
 }

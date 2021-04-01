@@ -1,8 +1,10 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
 @{
-    string className = Model.Name + "Service";
+    string className = $"{Model.ClassName}Service";
 	string ctor = className + "(";
-    string interfaceName = "I" + Model.Name + "Service";
+    string interfaceName = "I" + Model.ClassName + "Service";
     string ns = Model.Namespace + ".Service.Services.Impl";
     string iRepository = "I" + Model.Name + "Repository";
     string repository = Model.LName + "Repository";

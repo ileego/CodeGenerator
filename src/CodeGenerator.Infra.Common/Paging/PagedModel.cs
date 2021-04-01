@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CodeGenerator.Infra.Common.BaseDTOs
+﻿namespace CodeGenerator.Infra.Common.Paging
 {
     /// <summary>
     /// 分页参数
     /// </summary>
-    public class PagingParamDto
+    public class PagedModel
     {
-        public PagingParamDto()
+        public PagedModel()
         {
             _page = 1;
             _pageSize = 10;

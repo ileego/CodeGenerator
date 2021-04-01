@@ -2,7 +2,7 @@
 @using CodeGenerator.Core.Utils;
 @using System.Text;
 @{
-    string className = $"{Model.ClassName}Input";
+    string className = $"{Model.ClassName}InputDto";
     string ns = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
     var outBuilder = new StringBuilder();
     foreach (Field field in Model.Fields)
@@ -11,6 +11,8 @@
         outBuilder.Append($"\t\tpublic {field.DataType} {field.PropertyName} {{ get; set; }}\r\n");
     }
 }
+using System;
+
 namespace @ns
 {
     /// <summary>

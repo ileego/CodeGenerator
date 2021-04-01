@@ -20,8 +20,8 @@ namespace CodeGenerator.ConsoleApp
         public const string ISERVICE = "IService.cst";
         public const string SERVICE = "Service.cst";
         public const string INPUT_DTO = "InputDto.cst";
-        public const string QUERY_PARAMS = "QueryParams.cst";
-        public const string QUERY_RESULT = "QueryResult.cst";
+        public const string QUERY_PARAMS_DTO = "QueryParamsDto.cst";
+        public const string QUERY_RESULT_DTO = "QueryResultDto.cst";
         public const string VALIDATOR = "Validator.cst";
         public const string MAPPER_PROFILES = "MapperProfiles.cst";
     }

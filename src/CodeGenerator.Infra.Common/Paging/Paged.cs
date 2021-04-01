@@ -10,7 +10,7 @@ namespace CodeGenerator.Infra.Common.Paging
     public class Paged
     {
         /// <summary>
-        /// 需要注入automapper configuration provider
+        /// 需要注入Automapper configuration provider
         /// </summary>
         private readonly IConfigurationProvider _mapperConfigurationProvider;
 
@@ -23,13 +23,15 @@ namespace CodeGenerator.Infra.Common.Paging
             _mapperConfigurationProvider = configurationProvider;
         }
 
-        public PagedResult<T> GetPaged<T>(IQueryable<T> query,
-                                         int page, int pageSize) where T : class
+        public PagedResult<TValue> GetPaged<TValue>(IQueryable<TValue> query,
+                                         int page, int pageSize) where TValue : class
         {
-            var result = new PagedResult<T>();
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = query.Count();
+            var result = new PagedResult<TValue>
+            {
+                CurrentPage = page,
+                PageSize = pageSize,
+                RowCount = query.Count()
+            };
 
 
             var pageCount = (double)result.RowCount / pageSize;
@@ -41,13 +43,15 @@ namespace CodeGenerator.Infra.Common.Paging
             return result;
         }
 
-        public PagedResult<U> GetPaged<T, U>(IQueryable<T> query,
-                                            int page, int pageSize) where U : class
+        public PagedResult<TU> GetPaged<TValue, TU>(IQueryable<TValue> query,
+                                            int page, int pageSize) where TU : class
         {
-            var result = new PagedResult<U>();
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = query.Count();
+            var result = new PagedResult<TU>
+            {
+                CurrentPage = page,
+                PageSize = pageSize,
+                RowCount = query.Count()
+            };
 
             var pageCount = (double)result.RowCount / pageSize;
             result.PageCount = (int)Math.Ceiling(pageCount);
@@ -55,7 +59,7 @@ namespace CodeGenerator.Infra.Common.Paging
             var skip = (page - 1) * pageSize;
             result.Results = query.Skip(skip)
                                   .Take(pageSize)
-                                  .ProjectTo<U>(_mapperConfigurationProvider)
+                                  .ProjectTo<TU>(_mapperConfigurationProvider)
                                   .ToList();
 
             return result;

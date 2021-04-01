@@ -48,10 +48,10 @@
     <None Update="Template\MapperProfiles.cst">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Template\QueryParams.cst">
+    <None Update="Template\QueryParamsDto.cst">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Template\QueryResult.cst">
+    <None Update="Template\QueryResultDto.cst">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Template\Repository.cst">

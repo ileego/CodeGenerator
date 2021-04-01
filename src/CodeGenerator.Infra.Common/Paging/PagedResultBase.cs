@@ -11,16 +11,9 @@ namespace CodeGenerator.Infra.Common.Paging
         public int PageSize { get; set; }
         public int RowCount { get; set; }
 
-        public int FirstRowOnPage
-        {
+        public int FirstRowOnPage => (CurrentPage - 1) * PageSize + 1;
 
-            get { return (CurrentPage - 1) * PageSize + 1; }
-        }
-
-        public int LastRowOnPage
-        {
-            get { return Math.Min(CurrentPage * PageSize, RowCount); }
-        }
+        public int LastRowOnPage => Math.Min(CurrentPage * PageSize, RowCount);
     }
 
     public class PagedResult<T> : PagedResultBase where T : class

@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 @{
-    string ref1 = $"{ViewBag.FullNamespace}.Infra.Common.BaseEntities;";
+    string firstNamespace = ((string[])ViewBag.Namespace)[0];
+    string ref1 = $"{firstNamespace}.Infra.Common.BaseEntities;";
     string ns = $"{ViewBag.FullNamespace}.Entities";
     var propertiesBuilder = new StringBuilder();
     var refTableBuilder = new StringBuilder();
@@ -19,9 +20,16 @@ using System.ComponentModel.DataAnnotations.Schema;
     {
         foreach (var foreignKey in Model.ForeignKeys)
         {
-
-            refTableBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {foreignKey.Field.Comment.Replace("主键","")}\r\n\t\t/// </summary>\r\n");
-            refTableBuilder.Append($"\t\tpublic virtual {foreignKey.RefTableClassName} {foreignKey.RefTableClassName} {{ get; set; }}\r\n");
+            if (foreignKey.RefTableClassName == Model.ClassName)
+            {
+                refTableBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {@Model.Comment}的子节点\r\n\t\t/// </summary>\r\n");
+                refTableBuilder.Append($"\t\tpublic virtual ICollection<{foreignKey.RefTableClassName}> Children {{ get; set; }}\r\n");
+            }
+            else
+            {
+                refTableBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {foreignKey.Field.Comment.Replace("主键","")}\r\n\t\t/// </summary>\r\n");
+                refTableBuilder.Append($"\t\tpublic virtual {foreignKey.RefTableClassName} {foreignKey.RefTableClassName} {{ get; set; }}\r\n");
+            }
         }
     }
 }

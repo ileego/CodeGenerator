@@ -5,7 +5,7 @@
     string ref1 = $"{ViewBag.FullNamespace}.DTOs.{Model.ClassName}";
     string ctorName = $"{Model.ClassName}Validator()";
     string className = $"{Model.ClassName}Validator";
-    string modelName = $"{Model.ClassName}Input";
+    string modelName = $"{Model.ClassName}InputDto";
     string ns = $"{ViewBag.FullNamespace}.Validations";
     var outBuilder = new StringBuilder();
     foreach (Field field in Model.Fields)
@@ -14,9 +14,9 @@
         {
             if (!field.IsNullable)
             {
-                outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}.NotEmpty().WithMessage(\"请输入{field.Comment}\");\r\n");
+                outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}).NotEmpty().WithMessage(\"请输入{field.Comment}\");\r\n");
             }
-            outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}.MaximumLength({field.Length}).WithMessage(\"{field.Comment}长度不能超过{field.Length}\");\r\n");
+            outBuilder.Append($"\t\t\tRuleFor(t => t.{field.PropertyName}).MaximumLength({field.Length}).WithMessage(\"{field.Comment}长度不能超过{field.Length}\");\r\n");
         }
         else if (!field.IsNullable && field.DataType!="bool")
         {

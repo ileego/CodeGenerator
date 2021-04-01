@@ -1,19 +1,18 @@
-﻿using CodeGenerator.Infra.Common.Helper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using CodeGenerator.Infra.Common.Helper;
+using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Options;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
-using CodeGenerator.Infra.Common.Options;
 
-
-namespace CodeGenerator.Infra.Common.AuthorizationHandlers
+namespace CodeGenerator.Infra.Common.Authorize
 {
     /// <summary>
     /// 权限
