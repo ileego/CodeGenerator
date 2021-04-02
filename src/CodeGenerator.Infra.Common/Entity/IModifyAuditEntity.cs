@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeGenerator.Infra.Common.BaseEntities
+namespace CodeGenerator.Infra.Common.Entity
 {
     /// <summary>
     /// Modify Audit

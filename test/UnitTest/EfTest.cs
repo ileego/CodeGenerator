@@ -1,20 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CodeGenerator.Core.Db.Repository;
 using CodeGenerator.Core.Db.Repository.Column;
 using CodeGenerator.Core.Db.Repository.Table;
-using CodeGenerator.Core.ForTest.Entities;
-using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Core.Interfaces;
 using CodeGenerator.Core.Utils;
-using CodeGenerator.Infra.Common.BaseEntities;
+using CodeGenerator.Infra.Common.Entity;
 using CodeGenerator.Infra.Common.Extensions.String;
-using CodeGenerator.Infra.Common.Interfaces;
-using CodeGenerator.Infra.Common.Utils;
-using Microsoft.EntityFrameworkCore;
-using MySql.Data.Types;
+using CodeGenerator.Infra.Common.Uow;
 using UnitTest.Fixtures;
 using Xunit;
 
@@ -33,7 +27,7 @@ namespace UnitTest
         public void TestReflect()
         {
             var s = "ApplicationId".RemovePostFix("Id");
-            var propertyInfos = typeof(Entity).GetProperties();
+            var propertyInfos = typeof(BaseEntity).GetProperties();
             Assert.NotEmpty(propertyInfos);
             var strArray = new string[2];
             strArray = "string.bac".Split(".");
@@ -92,7 +86,7 @@ namespace UnitTest
             //userRepository.Insert(u);
             //userRepository.Delete(user);
             //user2.UserName = "tao_abc_7";
-            //user2.UserContacts.FirstOrDefault().ContactAddress = "ʲô�ط�";
+            //user2.UserContacts.FirstOrDefault().ContactAddress = "ʲô�ط�";
             //userRepository.Update(user2);
             //var t = unitOfWork.Commit();
         }

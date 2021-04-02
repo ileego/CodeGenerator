@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CodeGenerator.Infra.Common.BaseEntities;
-using CodeGenerator.Infra.Common.Interfaces;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Infra.Common.Entity
 {
     public abstract class AbstractEntityInfo : IEntityInfo
     {

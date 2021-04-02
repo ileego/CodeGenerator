@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using StackExchange.Redis;
 
-namespace CodeGenerator.Infra.Common.Interfaces
+namespace CodeGenerator.Infra.Common.Cache
 {
     public interface ICache : IDisposable
     {

@@ -1,5 +1,5 @@
 ﻿using CodeGenerator.Core.ForTest.Entities;
-using CodeGenerator.Infra.Common.Implements;
+using CodeGenerator.Infra.Common.Repository;
 using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.EntityFrameworkCore;
 

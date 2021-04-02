@@ -4,14 +4,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.BaseEntities;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Entity;
 using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Z.EntityFramework.Plus;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Infra.Common.Repository
 {
     public abstract partial class QueryRepository<TEntity> : IQueryRepository<TEntity> where TEntity : NoKeyEntity
     {
@@ -30,7 +29,7 @@ namespace CodeGenerator.Infra.Common.Implements
     /// Ef Repository
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public abstract partial class EfRepository<TEntity> : IEfRepository<TEntity, long> where TEntity : Entity
+    public abstract partial class EfRepository<TEntity> : IEfRepository<TEntity, long> where TEntity : BaseEntity
     {
         private readonly UnitOfWorkStatus _unitOfWorkStatus;
 

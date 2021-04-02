@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using CodeGenerator.Infra.Common.BaseEntities;
+﻿using CodeGenerator.Infra.Common.Entity;
 
 namespace CodeGenerator.Core.Db.Entities
 {

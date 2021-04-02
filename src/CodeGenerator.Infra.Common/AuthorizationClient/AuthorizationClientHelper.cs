@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.AuthorizationClient;
 using CodeGenerator.Infra.Common.Options;
 using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.Extensions.Options;

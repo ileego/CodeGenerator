@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace CodeGenerator.Infra.Common.Interfaces
+namespace CodeGenerator.Infra.Common.Uow
 {
     public interface IUnitOfWork : IDisposable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace CodeGenerator.Infra.Common.BaseEntities
+namespace CodeGenerator.Infra.Common.Entity
 {
     /// <summary>
     /// Create Audit

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using CodeGenerator.Infra.Common.Implements;
+using CodeGenerator.Infra.Common.Entity;
 
 namespace CodeGenerator.Core
 {

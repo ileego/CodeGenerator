@@ -1,4 +1,4 @@
-﻿using CodeGenerator.Infra.Common.Interfaces;
+﻿using CodeGenerator.Infra.Common.Repository;
 
 namespace CodeGenerator.Core.Db.Repository.Column
 {

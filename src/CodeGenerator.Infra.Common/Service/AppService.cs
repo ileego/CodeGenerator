@@ -1,7 +1,6 @@
 ﻿using System.Net;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Uow;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodeGenerator.Infra.Common.Service

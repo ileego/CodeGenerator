@@ -4,7 +4,7 @@ using AutoMapper;
 using System.Collections.Generic;
 @{
     string firstNamespace = Model.Namespace[0];
-    string ref1 = $"{firstNamespace}.Infra.Common.BaseEntities;";
+    string ref1 = $"{firstNamespace}.Infra.Common.Entity;";
     string ref2 = $"{firstNamespace}.Core.Entities;";
     string ns = $"{Model.FullNamespace}.Profiles";
     var usingBuilder = new StringBuilder();

@@ -7,7 +7,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 @{
     string firstNamespace = ((string[])ViewBag.Namespace)[0];
-    string ref1 = $"{firstNamespace}.Infra.Common.BaseEntities;";
+    string ref1 = $"{firstNamespace}.Infra.Common.Entity;";
     string ns = $"{ViewBag.FullNamespace}.Entities";
     var propertiesBuilder = new StringBuilder();
     var refTableBuilder = new StringBuilder();

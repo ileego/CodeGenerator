@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.ValueModel;
 
-namespace CodeGenerator.Infra.Common.Interfaces
+namespace CodeGenerator.Infra.Common.AuthorizationClient
 {
     public interface IAuthorizationClientHelper
     {

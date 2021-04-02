@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using CodeGenerator.Core.Interfaces;
-using CodeGenerator.Infra.Common.BaseEntities;
+using CodeGenerator.Infra.Common.Entity;
 
 namespace CodeGenerator.Core.Utils
 {
@@ -9,9 +9,9 @@ namespace CodeGenerator.Core.Utils
         public static string FindBaseClass(this ITable table)
         {
             var baseClassName = nameof(NoKeyEntity);
-            var propertyInfos = typeof(Entity).GetProperties().ToArray();
+            var propertyInfos = typeof(BaseEntity).GetProperties().ToArray();
             if (propertyInfos.Any(t => table.Fields.Any(f => f.PropertyName == t.Name)))
-                baseClassName = nameof(Entity);
+                baseClassName = nameof(BaseEntity);
             propertyInfos = typeof(CreationAuditEntity).GetProperties().Where(t => t.DeclaringType.Name == nameof(CreationAuditEntity)).ToArray();
             if (propertyInfos.Any(t => table.Fields.Any(f => f.PropertyName == t.Name)))
                 baseClassName = nameof(CreationAuditEntity);

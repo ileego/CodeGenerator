@@ -1,11 +1,10 @@
-﻿using CodeGenerator.Infra.Common.BaseEntities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CodeGenerator.Infra.Common
+namespace CodeGenerator.Infra.Common.Entity
 {
     public abstract class EntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-       where TEntity : Entity
+       where TEntity : BaseEntity
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.BaseEntities;
+using CodeGenerator.Infra.Common.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace CodeGenerator.Infra.Common.Interfaces
+namespace CodeGenerator.Infra.Common.Repository
 {
     public interface IQueryRepository<out TEntity> where TEntity : NoKeyEntity
     {
@@ -23,7 +23,7 @@ namespace CodeGenerator.Infra.Common.Interfaces
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IEfRepository<TEntity, in TKey> where TEntity : Entity
+    public interface IEfRepository<TEntity, in TKey> where TEntity : class
     {
         /// <summary>
         /// DbContext

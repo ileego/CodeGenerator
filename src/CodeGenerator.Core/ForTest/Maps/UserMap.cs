@@ -1,5 +1,6 @@
 ﻿using CodeGenerator.Core.ForTest.Entities;
 using CodeGenerator.Infra.Common;
+using CodeGenerator.Infra.Common.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

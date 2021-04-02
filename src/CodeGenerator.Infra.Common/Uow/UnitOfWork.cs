@@ -2,13 +2,12 @@
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
 using CodeGenerator.Infra.Common.ValueModel;
 using DotNetCore.CAP;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Infra.Common.Uow
 {
     public sealed class UnitOfWork : IUnitOfWork
     {

@@ -1,4 +1,4 @@
-﻿using CodeGenerator.Infra.Common.Implements;
+﻿using CodeGenerator.Infra.Common.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace CodeGenerator.Core.Db.Repository.Table

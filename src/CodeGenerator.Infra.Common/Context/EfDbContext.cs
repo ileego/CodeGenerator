@@ -1,30 +1,36 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.BaseEntities;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Entity;
 using CodeGenerator.Infra.Common.ValueModel;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Debug;
 
-namespace CodeGenerator.Infra.Common
+namespace CodeGenerator.Infra.Common.Context
 {
     public sealed class EfDbContext : DbContext
     {
+        private readonly UserContext _userContext;
         private readonly UnitOfWorkStatus _unitOfWorkStatus;
         private readonly IEntityInfo _entityInfo;
         public static readonly LoggerFactory LoggerFactory = new LoggerFactory(new[] {
             new DebugLoggerProvider()
         });
 
+        /// <summary>
+        /// 当前用户
+        /// </summary>
+        public UserModel User => _userContext.User;
+
         public EfDbContext([NotNull] DbContextOptions options,
+            UserContext userContext,
             UnitOfWorkStatus unitOfWorkStatus,
             [NotNull] IEntityInfo entityInfo) : base(options)
         {
+            _userContext = userContext;
             _unitOfWorkStatus = unitOfWorkStatus;
             _entityInfo = entityInfo;
             //关闭默认事务
@@ -33,9 +39,11 @@ namespace CodeGenerator.Infra.Common
 
         public override int SaveChanges()
         {
+            var changedEntities = this.SetAuditFields();
+
             //没有自动开启事务的情况下,保证主从表插入，主从表更新开启事务。
             var isManualTransaction = false;
-            if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow)
+            if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow && changedEntities > 1)
             {
                 isManualTransaction = true;
                 Database.AutoTransactionsEnabled = true;
@@ -52,9 +60,11 @@ namespace CodeGenerator.Infra.Common
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            var changedEntities = this.SetAuditFields();
+
             //没有自动开启事务的情况下,保证主从表插入，主从表更新开启事务。
             var isManualTransaction = false;
-            if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow)
+            if (!Database.AutoTransactionsEnabled && !_unitOfWorkStatus.IsStartingUow && changedEntities > 1)
             {
                 isManualTransaction = true;
                 Database.AutoTransactionsEnabled = true;
@@ -111,6 +121,37 @@ namespace CodeGenerator.Infra.Common
 
             optionsBuilder.EnableSensitiveDataLogging();
 
+        }
+
+        /// <summary>
+        /// 自动设置审计字段
+        /// </summary>
+        /// <returns></returns>
+        private int SetAuditFields()
+        {
+            var allEntities = ChangeTracker.Entries<BaseEntity>();
+
+            var allBasicAuditEntities = ChangeTracker.Entries<ICreationAuditEntity<long>>().Where(x => x.State == EntityState.Added);
+            foreach (var entry in allBasicAuditEntities)
+            {
+                var entity = entry.Entity;
+                {
+                    entity.Creator = _userContext.User.UserId;
+                    entity.CreationTime = DateTime.Now;
+                }
+            }
+
+            var auditFullEntities = ChangeTracker.Entries<IModifyAuditEntity<long>>().Where(x => x.State == EntityState.Modified);
+            foreach (var entry in auditFullEntities)
+            {
+                var entity = entry.Entity;
+                {
+                    entity.LastModifier = _userContext.User.UserId;
+                    entity.LastModificationTime = DateTime.Now;
+                }
+            }
+
+            return allEntities.Count();
         }
     }
 }

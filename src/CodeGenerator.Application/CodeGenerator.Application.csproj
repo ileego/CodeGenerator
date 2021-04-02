@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="FluentValidation" Version="9.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGenerator.Core\CodeGenerator.Core.csproj" />
+    <ProjectReference Include="..\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Channels;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Cache;
 using CodeGenerator.Infra.Common.Options;
 using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.AspNetCore.Authentication;
@@ -17,7 +15,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Infra.Common.Jwt
 {
     public class JwtHelper : IJwtHelper
     {

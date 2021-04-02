@@ -8,7 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Cache;
+using CodeGenerator.Infra.Common.Jwt;
 
 namespace CodeGenerator.Infra.Common.Extensions
 {

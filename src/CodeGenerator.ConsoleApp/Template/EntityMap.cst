@@ -1,11 +1,12 @@
 ﻿@using CodeGenerator.Core.Implements;
 @using CodeGenerator.Core.Utils;
 @using System.Text;
-using CodeGenerator.Infra.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 @{
-    string ref1 = $"{ViewBag.FullNamespace}.Entities;";
+    string firstNamespace = ((string[])ViewBag.Namespace)[0];
+    string ref1 = $"{firstNamespace}.Infra.Common.Entity;";
+    string ref2 = $"{ViewBag.FullNamespace}.Entities;";
     string ns = $"{ViewBag.FullNamespace}.Maps";
     string className = $"{Model.ClassName}Map";
     var mapBuilder = new StringBuilder();
@@ -26,6 +27,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 }
 using System;
 using @ref1
+using @ref2
+
 namespace @ns
 {
     public class @className : EntityTypeConfiguration<@Model.ClassName>

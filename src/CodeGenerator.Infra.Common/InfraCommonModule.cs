@@ -1,6 +1,9 @@
 ﻿using Autofac;
-using CodeGenerator.Infra.Common.Implements;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Cache;
+using CodeGenerator.Infra.Common.Context;
+using CodeGenerator.Infra.Common.Jwt;
+using CodeGenerator.Infra.Common.Repository;
+using CodeGenerator.Infra.Common.Uow;
 
 namespace CodeGenerator.Infra.Common
 {

@@ -1,10 +1,11 @@
-﻿using System.Reflection;
+﻿using CodeGenerator.Infra.Common.AuthorizationClient;
+using CodeGenerator.Infra.Common.Cache;
+using CodeGenerator.Infra.Common.Context;
 using CodeGenerator.Infra.Common.Extensions;
 using CodeGenerator.Infra.Common.Helper;
-using CodeGenerator.Infra.Common.Implements;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Jwt;
+using CodeGenerator.Infra.Common.Uow;
 using CodeGenerator.Infra.Common.ValueModel;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeGenerator.Infra.Common
@@ -19,7 +20,8 @@ namespace CodeGenerator.Infra.Common
             services.AddScoped(typeof(UnitOfWorkStatus));
             //注册工作单元
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            //注册UserContext
+            services.AddScoped<UserContext>();
             //services.AddScoped<IEntityInfo, EntityInfo>();
 
             //注册Redis工具类

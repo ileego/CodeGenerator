@@ -1,4 +1,4 @@
-﻿using CodeGenerator.Infra.Common.BaseEntities;
+﻿using CodeGenerator.Infra.Common.Entity;
 
 namespace CodeGenerator.Core.Db.Entities
 {

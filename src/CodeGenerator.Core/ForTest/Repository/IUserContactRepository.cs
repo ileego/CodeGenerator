@@ -1,5 +1,5 @@
 ﻿using CodeGenerator.Core.ForTest.Entities;
-using CodeGenerator.Infra.Common.Interfaces;
+using CodeGenerator.Infra.Common.Repository;
 
 namespace CodeGenerator.Core.ForTest.Repository
 {

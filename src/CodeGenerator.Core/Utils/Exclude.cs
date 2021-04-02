@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using CodeGenerator.Core.Interfaces;
-using CodeGenerator.Infra.Common.BaseEntities;
+using CodeGenerator.Infra.Common.Entity;
 using CodeGenerator.Infra.Common.Extensions;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace CodeGenerator.Core.Utils
 {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-
-namespace CodeGenerator.Infra.Common.BaseEntities
+﻿namespace CodeGenerator.Infra.Common.Entity
 {
     /// <summary>
     /// Full Audit

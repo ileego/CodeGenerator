@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CodeGenerator.Infra.Common.BaseEntities
+namespace CodeGenerator.Infra.Common.Entity
 {
-    public abstract class CreationAuditEntity : Entity, ICreationAuditEntity<long>
+    public abstract class CreationAuditEntity : BaseEntity, ICreationAuditEntity<long>
     {
         /// <summary>
         /// 创建人

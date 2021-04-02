@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.Interfaces;
 using CodeGenerator.Infra.Common.Options;
 using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
-namespace CodeGenerator.Infra.Common.Implements
+namespace CodeGenerator.Infra.Common.Cache
 {
     public class RedisCache : ICache
     {

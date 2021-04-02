@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeGenerator.Infra.Common.BaseEntities
+namespace CodeGenerator.Infra.Common.Entity
 {
     public abstract class ModifyAuditEntity : CreationAuditEntity, IModifyAuditEntity<long>
     {

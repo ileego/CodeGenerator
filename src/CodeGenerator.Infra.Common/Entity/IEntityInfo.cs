@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace CodeGenerator.Infra.Common.Interfaces
+namespace CodeGenerator.Infra.Common.Entity
 {
     public interface IEntityInfo
     {
