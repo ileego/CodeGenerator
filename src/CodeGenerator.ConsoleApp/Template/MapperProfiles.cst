@@ -4,10 +4,11 @@ using AutoMapper;
 using System.Collections.Generic;
 @{
     string firstNamespace = Model.Namespace[0];
-    string ref1 = $"{firstNamespace}.Infra.Common.Entity;";
-    string ref2 = $"{firstNamespace}.Core.Entities;";
     string ns = $"{Model.FullNamespace}.Profiles";
     var usingBuilder = new StringBuilder();
+    usingBuilder.Append($"using {firstNamespace}.Infra.Common.Entity;\r\n");
+    usingBuilder.Append($"using {firstNamespace}.Core.Entities;\r\n");
+
     var mapBuilder = new StringBuilder();
     foreach (var table in @Model.Tables)
     {
@@ -20,9 +21,8 @@ using System.Collections.Generic;
         mapBuilder.Append("\r\n");
     }
 }
-using @ref1
-using @ref2
 @usingBuilder.ToString()
+
 namespace @ns
 {
     /// <summary>

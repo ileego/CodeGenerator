@@ -22,12 +22,15 @@ namespace CodeGenerator.Core.Implements
             }
             this.KeyName = field.FieldName;
             if (field.KeyType == KeyTypeEnum.ForeignKey)
+            {
                 this.RefTableClassName = field.PropertyName.RemovePostFix("Id");
+                this.RefTableVariableName =
+                    char.ToLower(this.RefTableClassName[0]) + this.RefTableClassName[1..];
+            }
             this.Field = field;
             if (field.KeyType != null) this.KeyType = field.KeyType.Value;
         }
 
-        public ulong? fsf;
         /// <summary>
         /// 键类型
         /// </summary>
@@ -44,7 +47,12 @@ namespace CodeGenerator.Core.Implements
         public string RefTableClassName { get; set; }
 
         /// <summary>
-        /// 查关字段
+        /// 关联的表变量名
+        /// </summary>
+        public string RefTableVariableName { get; set; }
+
+        /// <summary>
+        /// 相关字段
         /// </summary>
         public IField Field { get; set; }
 

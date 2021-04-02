@@ -349,3 +349,23 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /src/CodeGenerator.Core
+/src/CodeGenerator.Application/Validations
+/src/CodeGenerator.Application/Services
+/src/CodeGenerator.Application/Profiles
+/src/CodeGenerator.Application/DTOs
+/src/CodeGenerator.WebApi/Controllers/RoleAuthorizeController.cs
+/src/CodeGenerator.WebApi/Controllers/OrganizationTypeController.cs
+/src/CodeGenerator.WebApi/Controllers/OrganizationController.cs
+/src/CodeGenerator.WebApi/Controllers/EmployeeController.cs
+/src/CodeGenerator.WebApi/Controllers/EmployeeAuthorizeController.cs
+/src/CodeGenerator.WebApi/Controllers/DistrictController.cs
+/src/CodeGenerator.WebApi/Controllers/DepartmentController.cs
+/src/CodeGenerator.WebApi/Controllers/DataAccessAuthorizeController.cs
+/src/CodeGenerator.WebApi/Controllers/ClientsAuthorizeController.cs
+/src/CodeGenerator.WebApi/Controllers/ClientController.cs
+/src/CodeGenerator.WebApi/Controllers/ApplicationSystemController.cs
+/src/CodeGenerator.WebApi/Controllers/ApplicationRoleController.cs
+/src/CodeGenerator.WebApi/Controllers/ApplicationMenuController.cs
+/src/CodeGenerator.WebApi/Controllers/ApplicationMenuActionController.cs
+/src/CodeGenerator.WebApi/Controllers/ApplicationActionController.cs
+/src/CodeGenerator.WebApi/Controllers/ApiResourceController.cs

@@ -129,6 +129,10 @@ namespace CodeGenerator.Infra.Common.Context
         /// <returns></returns>
         private int SetAuditFields()
         {
+            if (_userContext?.User == null)
+            {
+                throw new Exception("请设置用户上下文");
+            }
             var allEntities = ChangeTracker.Entries<BaseEntity>();
 
             var allBasicAuditEntities = ChangeTracker.Entries<CreationAuditEntity>().Where(x => x.State == EntityState.Added);

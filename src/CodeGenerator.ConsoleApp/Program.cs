@@ -10,7 +10,11 @@ namespace CodeGenerator.ConsoleApp
 {
     class Program
     {
-        private static string[] excludeTables = new[] { "TblUser", "TblUserContact", "ViewColumns", "ViewTables" };
+        static readonly string[] ExcludeTables = new[]
+        {
+            "TblUser", "TblUserContact", "ViewColumns", "ViewTables"
+        };
+
         static async Task Main(string[] args)
         {
             var serviceProvider = new ServiceProvider();
@@ -48,8 +52,8 @@ namespace CodeGenerator.ConsoleApp
                 GenerateIRepository(generateContext, serviceProvider.ApplicationPath);
                 GenerateRepository(generateContext, serviceProvider.ApplicationPath);
                 GenerateIService(generateContext, serviceProvider.ApplicationPath);
-                //GenerateService(generateContext, serviceProvider.ApplicationPath);
-                //GenerateController(generateContext, serviceProvider.ApplicationPath);
+                GenerateService(generateContext, serviceProvider.ApplicationPath);
+                GenerateController(generateContext, serviceProvider.ApplicationPath);
             });
 
             task.Start();
@@ -73,7 +77,7 @@ namespace CodeGenerator.ConsoleApp
             var templatePath = Path.Combine(rootPath, "Template",
                 TemplateTypeConst.MAPPER_PROFILES);
             var outPath = Path.Combine("Output", "Profiles", "MapperProfiles.cs");
-            generateContext.GenerateCodeSingleFile(templatePath: templatePath, outPath: outPath, excludeTableClassNames: excludeTables);
+            generateContext.GenerateCodeSingleFile(templatePath: templatePath, outPath: outPath, excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateEntities(IGenerateContext generateContext, string rootPath)
@@ -85,7 +89,7 @@ namespace CodeGenerator.ConsoleApp
             generateContext.GenerateCode(templatePath: templatePath,
                 outPath: outPath, filenamePostfix: "",
                 createSeparateDirectory: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateEntityMaps(IGenerateContext generateContext, string rootPath)
@@ -98,7 +102,7 @@ namespace CodeGenerator.ConsoleApp
                 outPath: outPath,
                 filenamePostfix: "Map",
                 createSeparateDirectory: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateInputDto(IGenerateContext generateContext, string rootPath)
@@ -111,7 +115,7 @@ namespace CodeGenerator.ConsoleApp
                 outPath: outPath,
                 filenamePostfix: "InputDto",
                 createSeparateDirectory: true,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateValidator(IGenerateContext generateContext, string rootPath)
@@ -124,7 +128,7 @@ namespace CodeGenerator.ConsoleApp
                 outPath: outPath,
                 filenamePostfix: "Validator",
                 createSeparateDirectory: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateQueryParams(IGenerateContext generateContext, string rootPath)
@@ -137,7 +141,7 @@ namespace CodeGenerator.ConsoleApp
                 outPath: outPath,
                 filenamePostfix: "ParamsDto",
                 createSeparateDirectory: true,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateQueryResult(IGenerateContext generateContext, string rootPath)
@@ -151,7 +155,7 @@ namespace CodeGenerator.ConsoleApp
                 filenamePostfix: "Dto",
                 createSeparateDirectory: true,
                 withDefaultExcludeField: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateIRepository(IGenerateContext generateContext, string rootPath)
@@ -165,7 +169,7 @@ namespace CodeGenerator.ConsoleApp
                 filenamePrefix: "I",
                 filenamePostfix: "Repository",
                 createSeparateDirectory: true,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateRepository(IGenerateContext generateContext, string rootPath)
@@ -178,7 +182,7 @@ namespace CodeGenerator.ConsoleApp
                 outPath: outPath,
                 filenamePostfix: "Repository",
                 createSeparateDirectory: true,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateIService(IGenerateContext generateContext, string rootPath)
@@ -193,7 +197,7 @@ namespace CodeGenerator.ConsoleApp
                 filenamePostfix: "Service",
                 createSeparateDirectory: true,
                 withDefaultExcludeField: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateService(IGenerateContext generateContext, string rootPath)
@@ -207,21 +211,21 @@ namespace CodeGenerator.ConsoleApp
                 filenamePostfix: "Service",
                 createSeparateDirectory: true,
                 withDefaultExcludeField: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
 
         static void GenerateController(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Api");
+            generateContext.SetNamespace("CodeGenerator.WebApi");
             var templatePath = Path.Combine(rootPath, "Template",
                 TemplateTypeConst.CONTROLLER);
             var outPath = Path.Combine("Output", "Controller");
             generateContext.GenerateCode(templatePath: templatePath,
                 outPath: outPath,
                 filenamePostfix: "Controller",
-                createSeparateDirectory: true,
+                createSeparateDirectory: false,
                 withDefaultExcludeField: false,
-                excludeTableClassNames: excludeTables);
+                excludeTableClassNames: ExcludeTables);
         }
     }
 }

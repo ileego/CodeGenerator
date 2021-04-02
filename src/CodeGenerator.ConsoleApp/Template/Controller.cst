@@ -1,247 +1,114 @@
-﻿@using GeneralManagement.GenerateCode.Entity;
-@{
-    string ns = Model.Namespace + ".WebApi.Controllers";
-    string controllerName = Model.Name + "Controller";
-    string ctor = controllerName + "(";
-    string iServiceName = "I" + Model.Name + "Service";
-    string serviceName = Model.LName + "Service";
-    string _serviceName = "_" + Model.LName + "Service";
-    string modelName = Model.Name + "Input";
-	string queryModelName = Model.Name + "QueryResult";
-    string add = _serviceName + ".Add(input, currentUser);";
-    string edit = _serviceName + ".Edit(input, currentUser);";
-    string delete = _serviceName + ".Delete(id, currentUser);";
-    string bulkDelete = _serviceName + ".BulkDelete(ids, currentUser);";
-
-}
+﻿@using CodeGenerator.Core.Implements;
+@using CodeGenerator.Core.Utils;
+@using System.Text;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
-using @{@Model.Namespace}.Infrastructure.Extensions;
-using @{@Model.Namespace}.Service.Services.Interfaces;
-using @{@Model.Namespace}.Service.Dto;
-using @{@Model.Namespace}.Service.Dto.@{@Model.Name};
+@{
+    string firstNamespace = ((string[])ViewBag.Namespace)[0];
+    string ns = $"{ViewBag.FullNamespace}.Controllers";
+    string controllerName = $"{Model.ClassName}Controller";
+    
+    string iServiceName = $"I{Model.ClassName}Service";
+    string serviceName = $"{Model.VariableName}Service";
+    string _serviceName = $"_{serviceName}";
+    string ctor = $"{controllerName}({iServiceName} {serviceName})";
+
+    var usingBuilder = new StringBuilder();
+    usingBuilder.Append($"using {firstNamespace}.Application.DTOs.{Model.ClassName};\r\n");
+    usingBuilder.Append($"using {firstNamespace}.Application.Services.{Model.ClassName};\r\n");
+    usingBuilder.Append($"using {firstNamespace}.Infra.Common.Authorize;\r\n");
+    usingBuilder.Append($"using {firstNamespace}.Infra.Common.Paging;\r\n");
+    usingBuilder.Append($"using {firstNamespace}.Infra.Common.Service;\r\n");
+}
+@usingBuilder.ToString()
 
 namespace @ns
 {
     /// <summary>
-    /// @Model.Description
+    /// @Model.Comment - 应用接口
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "Permission")]
     public class @controllerName : ControllerBase
     {
-        private readonly ILogger<@controllerName> _logger;
         private readonly @iServiceName @_serviceName;
+
         /// <summary>
         /// Ctor
         /// </summary>
         public @ctor
-            @iServiceName @serviceName,
-            ILogger<@controllerName> logger
-            )
         {
             this.@_serviceName = @serviceName;
-            this._logger = logger;
         }
 
         /// <summary>
-        /// 添加
+        /// 创建 - @Model.Comment
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="inputDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("new")]
-        public async Task<Result<@modelName>> New@{@Model.Name}(@modelName input)
+        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "create", "创建")]
+        public async Task<ActionResult<AppServiceResult<long>>> CreateAsync(
+            [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var currentUser = await this.CurrentUser();
-                    var result = await @{@_serviceName}.Add(input, currentUser);
-                    return new Result<@modelName>()
-                    {
-                        Succeed = true,
-                        Content = result
-                    };
-                }
-                else
-                {
-                    return new Result<@modelName>()
-                    {
-                        Succeed = false,
-                        Message = "数据不完整，请按要求填写！"
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                return new Result<@modelName>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
+            return await _@{@Model.VariableName}Service.CreateAsync(inputDto);
         }
 
         /// <summary>
-        /// 修改
+        /// 修改 - @Model.Comment
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="id"></param>
+        /// <param name="inputDto"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("edit")]
-        public async Task<Result<@modelName>> Edit@{@Model.Name}(@modelName input)
+        [HttpPut("{id}")]
+        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "update", "修改")]
+        public async Task<ActionResult<AppServiceResult>> UpdateAsync([FromRoute] long id,
+            [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var currentUser = await this.CurrentUser();
-                    var result = await @{@_serviceName}.Edit(input, currentUser);
-                    return new Result<@modelName>()
-                    {
-                        Succeed = true,
-                        Content = result
-                    };
-                }
-                else
-                {
-                    return new Result<@modelName>()
-                    {
-                        Succeed = false,
-                        Message = "数据不完整，请按要求填写！"
-                    };
-                }
-            }
-            catch (Exception e)
-            {
-                return new Result<@modelName>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
+            return await _@{@Model.VariableName}Service.UpdateAsync(id, inputDto);
         }
 
         /// <summary>
-        /// 删除
+        /// 删除 - @Model.Comment
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("delete")]
-        public async Task<Result<@modelName>> Delete@{@Model.Name}(Guid id)
+        [HttpDelete("{id}")]
+        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "delete", "删除")]
+        public async Task<ActionResult<AppServiceResult>> DeleteAsync([FromRoute] long id)
         {
-            try
-            {
-                var currentUser = await this.CurrentUser();
-                var result = await @{@_serviceName}.Delete(id, currentUser);
-                return new Result<@modelName>()
-                {
-                    Succeed = true,
-                    Content = result
-                };
-            }
-            catch (Exception e)
-            {
-                return new Result<@modelName>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
+            return await _@{@Model.VariableName}Service.DeleteAsync(id);
         }
 
         /// <summary>
-        /// 批量删除
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("bulkDelete")]
-        public async Task<Result<bool>> BulkDelete@{@Model.Name}(ICollection<Guid> ids)
-        {
-            try
-            {
-                var currentUser = await this.CurrentUser();
-                var result = await @{@_serviceName}.BulkDelete(ids, currentUser);
-                return new Result<bool>()
-                {
-                    Succeed = true,
-                    Content = result
-                };
-            }
-            catch (Exception e)
-            {
-                return new Result<bool>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
-        }
-
-        /// <summary>
-        /// 查询
+        /// 按Id查询 - @Model.Comment
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("queryById")]
-        public async Task<Result<@modelName>> QueryById(Guid id)
+        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "getById", "按Id查明细")]
+        public async Task<ActionResult<AppServiceResult<@{@Model.ClassName}Dto>>> GetByIdAsync([FromRoute] long id)
         {
-            try
-            {
-                var result = await @{@_serviceName}.QueryById(id);
-                return new Result<@modelName>()
-                {
-                    Succeed = true,
-                    Content = result
-                };
-            }
-            catch (Exception e)
-            {
-                return new Result<@modelName>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
+            return await _@{@Model.VariableName}Service.GetByIdAsync(id);
         }
 
         /// <summary>
-        /// 查询
+        /// 查询 - @Model.Comment
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("query")]
-        public async Task<Result<Pagination<@queryModelName>>> Query(@{@Model.Name}QueryParams queryParams)
+        [HttpGet]
+        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "getList", "查询列表")]
+        public async Task<ActionResult<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>>> GetListAsync(
+            [FromQuery] @{@Model.ClassName}ParamsDto queryParams)
         {
-            try
-            {
-                var result = await @{@_serviceName}.Query(queryParams);
-                return new Result<Pagination<@queryModelName>>()
-                {
-                    Succeed = true,
-                    Content = result
-                };
-            }
-            catch (Exception e)
-            {
-                return new Result<Pagination<@queryModelName>>()
-                {
-                    Succeed = false,
-                    Message = e.Message
-                };
-            }
+            return await _@{@Model.VariableName}Service.GetListAsync(queryParams);
         }
     }
 }

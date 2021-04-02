@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeGenerator.Application\CodeGenerator.Application.csproj" />
+    <ProjectReference Include="..\CodeGenerator.Core\CodeGenerator.Core.csproj" />
+    <ProjectReference Include="..\CodeGenerator.Infra.Common\CodeGenerator.Infra.Common.csproj" />
+  </ItemGroup>
+
+
+</Project>

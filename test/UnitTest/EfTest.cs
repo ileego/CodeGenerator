@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CodeGenerator.Core.Db.Repository.Column;
 using CodeGenerator.Core.Db.Repository.Table;
@@ -36,7 +37,10 @@ namespace UnitTest
             object sao = strArray;
             string sa = ((string[])sao)[0];
             Assert.Equal("string", sa);
-
+            var strBuilder = new StringBuilder();
+            strBuilder.Append("121\r\n123");
+            strBuilder.Remove(strBuilder.Length - 5, 5);
+            var x = strBuilder.ToString();
         }
 
         [Fact]

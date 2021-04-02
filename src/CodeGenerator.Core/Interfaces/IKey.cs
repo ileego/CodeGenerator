@@ -35,6 +35,10 @@ namespace CodeGenerator.Core.Interfaces
         /// </summary>
         public string RefTableClassName { get; set; }
         /// <summary>
+        /// 关联的表变量名
+        /// </summary>
+        public string RefTableVariableName { get; set; }
+        /// <summary>
         /// 相关字段
         /// </summary>
         public IField Field { get; set; }
