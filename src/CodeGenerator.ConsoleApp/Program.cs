@@ -18,9 +18,9 @@ namespace CodeGenerator.ConsoleApp
         static async Task Main(string[] args)
         {
             var serviceProvider = new ServiceProvider();
-            var tableFactory = serviceProvider.GetService<ITableFactory<CodeGenerator.Core.Db.Entities.Table,
+            var tableFactory = serviceProvider.GetService<IGenerateBuilder<CodeGenerator.Core.Db.Entities.Table,
                 ICollection<CodeGenerator.Core.Db.Entities.Column>>>();
-            var generateContext = await tableFactory.CreateContext();
+            var generateContext = await tableFactory.BuildContext();
 
             var stopwatch = new Stopwatch();
             Console.ForegroundColor = ConsoleColor.DarkRed;
