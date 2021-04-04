@@ -20,7 +20,7 @@ namespace CodeGenerator.Core
             services.AddScoped<IColumnRepository, ColumnRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserContactRepository, UserContactRepository>();
-            services.AddScoped<IGenerateBuilder<Db.Entities.Table, ICollection<Db.Entities.Column>>, MySqlGenerateBuilder>();
+            services.AddScoped<IGenerateContextBuilder<Db.Entities.Table, ICollection<Db.Entities.Column>>, MySqlGenerateContextBuilder>();
             services.AddScoped<IGenerateContext, GenerateContext>();
         }
     }

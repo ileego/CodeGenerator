@@ -54,7 +54,7 @@ namespace UnitTest
             var columnRepository = _fixture.GetService<IColumnRepository>();
             var columns = columnRepository.Query.ToList();
             Assert.True(columns.Any());
-            var tableFactory = _fixture.GetService<IGenerateBuilder<CodeGenerator.Core.Db.Entities.Table,
+            var tableFactory = _fixture.GetService<IGenerateContextBuilder<CodeGenerator.Core.Db.Entities.Table,
                 ICollection<CodeGenerator.Core.Db.Entities.Column>>>();
             var generateContext = await tableFactory.BuildContext();
             Assert.NotEmpty(generateContext.Tables);
