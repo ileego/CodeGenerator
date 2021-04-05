@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations.Schema;
     foreach (Field field in Model.Fields)
     {
         propertiesBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
+        propertiesBuilder.Append($"\t\t[ColumnMap(\"{field.FieldName}\")]\r\n");
         propertiesBuilder.Append($"\t\tpublic {field.DataType} {field.PropertyName} {{ get; set; }}\r\n");
     }
     if(Model.ForeignKeys.Count > 0)

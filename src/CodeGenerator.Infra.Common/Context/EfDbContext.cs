@@ -135,7 +135,7 @@ namespace CodeGenerator.Infra.Common.Context
             }
             var allEntities = ChangeTracker.Entries<BaseEntity>();
 
-            var allBasicAuditEntities = ChangeTracker.Entries<CreationAuditEntity>().Where(x => x.State == EntityState.Added);
+            var allBasicAuditEntities = ChangeTracker.Entries<ICreationAuditEntity<long>>().Where(x => x.State == EntityState.Added);
             foreach (var entry in allBasicAuditEntities)
             {
                 var entity = entry.Entity;
@@ -145,7 +145,7 @@ namespace CodeGenerator.Infra.Common.Context
                 }
             }
 
-            var auditModifyEntities = ChangeTracker.Entries<ModifyAuditEntity>().Where(x => x.State == EntityState.Modified);
+            var auditModifyEntities = ChangeTracker.Entries<IModifyAuditEntity<long>>().Where(x => x.State == EntityState.Modified);
             foreach (var entry in auditModifyEntities)
             {
                 var entity = entry.Entity;
@@ -155,7 +155,7 @@ namespace CodeGenerator.Infra.Common.Context
                 }
             }
             //TODO: 待测试
-            var auditDeleteEntities = ChangeTracker.Entries<FullAuditEntity>().Where(x => x.State == EntityState.Deleted);
+            var auditDeleteEntities = ChangeTracker.Entries<ISoftDelete<long>>().Where(x => x.State == EntityState.Deleted);
             foreach (var entry in auditDeleteEntities)
             {
                 entry.State = EntityState.Modified;
