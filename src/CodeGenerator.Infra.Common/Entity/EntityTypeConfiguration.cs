@@ -22,19 +22,19 @@ namespace CodeGenerator.Infra.Common.Entity
                     .ValueGeneratedOnAddOrUpdate();
             }
 
-            if (typeof(ICreationAuditEntity<>).IsAssignableFrom(entityType))
+            if (typeof(CreationAuditEntity).IsAssignableFrom(entityType))
             {
                 builder.Property("Creator").HasColumnName("creator");
                 builder.Property("CreationTime").HasColumnName("creation_time");
             }
 
-            if (typeof(IModifyAuditEntity<>).IsAssignableFrom(entityType))
+            if (typeof(ModifyAuditEntity).IsAssignableFrom(entityType))
             {
                 builder.Property("LastModifier").HasColumnName("last_modifier");
                 builder.Property("LastModificationTime").HasColumnName("last_modification_time");
             }
 
-            if (typeof(ISoftDelete<>).IsAssignableFrom(entityType))
+            if (typeof(DeletionAuditEntity).IsAssignableFrom(entityType) || typeof(FullAuditEntity).IsAssignableFrom(entityType))
             {
                 builder.Property("IsDeleted").HasColumnName("is_deleted").HasDefaultValue(false);
                 builder.Property("Deleter").HasColumnName("deleter");
