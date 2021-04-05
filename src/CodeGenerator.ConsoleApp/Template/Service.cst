@@ -179,7 +179,7 @@ namespace @ns
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        public async Task<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>> GetListAsync(@{@Model.ClassName}ParamsDto queryParams)
+        public async Task<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>> QueryListAsync(@{@Model.ClassName}ParamsDto queryParams)
         {
             var query = _@{@Model.VariableName}Repository.Query
                 .OrderByDescending(t => t.Id)

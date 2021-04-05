@@ -53,7 +53,8 @@ namespace @ns
         /// <param name="inputDto"></param>
         /// <returns></returns>
         [HttpPost]
-        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "create", "创建")]
+        [Route("create")]
+        [Permission("@{@Model.Comment}管理", "创建")]
         public async Task<ActionResult<AppServiceResult<long>>> CreateAsync(
             [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
@@ -66,8 +67,8 @@ namespace @ns
         /// <param name="id"></param>
         /// <param name="inputDto"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
-        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "update", "修改")]
+        [HttpPost("update/{id}")]
+        [Permission("@{@Model.Comment}管理", "修改")]
         public async Task<ActionResult<AppServiceResult>> UpdateAsync([FromRoute] long id,
             [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
@@ -79,8 +80,8 @@ namespace @ns
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "delete", "删除")]
+        [HttpPost("delete/{id}")]
+        [Permission("@{@Model.Comment}管理", "删除")]
         public async Task<ActionResult<AppServiceResult>> DeleteAsync([FromRoute] long id)
         {
             return await _@{@Model.VariableName}Service.DeleteAsync(id);
@@ -92,7 +93,7 @@ namespace @ns
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "getById", "按Id查明细")]
+        [Permission("@{@Model.Comment}管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<@{@Model.ClassName}Dto>>> GetByIdAsync([FromRoute] long id)
         {
             return await _@{@Model.VariableName}Service.GetByIdAsync(id);
@@ -103,12 +104,13 @@ namespace @ns
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Permission(groupTag: "@{@Model.ClassName}", "@{@Model.Comment}管理", "getList", "查询列表")]
-        public async Task<ActionResult<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>>> GetListAsync(
-            [FromQuery] @{@Model.ClassName}ParamsDto queryParams)
+        [HttpPost]
+        [Route("queryList")]
+        [Permission("@{@Model.Comment}管理", "查询列表")]
+        public async Task<ActionResult<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>>> QueryListAsync(
+            [FromBody] @{@Model.ClassName}ParamsDto queryParams)
         {
-            return await _@{@Model.VariableName}Service.GetListAsync(queryParams);
+            return await _@{@Model.VariableName}Service.QueryListAsync(queryParams);
         }
     }
 }

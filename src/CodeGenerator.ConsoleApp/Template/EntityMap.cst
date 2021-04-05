@@ -35,6 +35,8 @@ namespace @ns
     {
         public override void Configure(EntityTypeBuilder<@Model.ClassName> builder)
         {
+            base.Configure(builder);
+
             builder.ToTable("@Model.TableName");
 
 @mapBuilder.ToString()

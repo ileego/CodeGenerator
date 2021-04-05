@@ -58,6 +58,6 @@ namespace @ns
         /// </summary>
         /// <param name="queryParams"></param>
         /// <returns></returns>
-        Task<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>> GetListAsync(@{@Model.ClassName}ParamsDto queryParams);
+        Task<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>> QueryListAsync(@{@Model.ClassName}ParamsDto queryParams);
     }
 }
