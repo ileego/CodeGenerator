@@ -1,7 +1,5 @@
 ﻿using System;
 using CodeGenerator.Core;
-using CodeGenerator.Core.Db.Repository;
-using CodeGenerator.Core.ForTest.Repository;
 using CodeGenerator.Infra.Common;
 using CodeGenerator.Infra.Common.Context;
 using Microsoft.DotNet.PlatformAbstractions;

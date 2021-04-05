@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ForTest\**" />
+    <EmbeddedResource Remove="ForTest\**" />
+    <None Remove="ForTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="RazorEngine.NetCore" Version="3.1.0" />
   </ItemGroup>
 
