@@ -30,23 +30,39 @@ namespace CodeGenerator.Infra.Common.Service
         }
 
         /// <summary>
-        /// 保存
+        /// 提交
         /// </summary>
         /// <returns></returns>
-        protected bool Save()
+        protected bool Commit()
         {
             this._unitOfWork.Commit();
             return true;
         }
 
         /// <summary>
-        /// 保存
+        /// 提交
         /// </summary>
         /// <returns></returns>
-        protected async Task<bool> SaveAsync()
+        protected async Task<bool> CommitAsync()
         {
             await this._unitOfWork.CommitAsync();
             return true;
+        }
+
+        /// <summary>
+        /// 回滚
+        /// </summary>
+        public void Rollback()
+        {
+            this._unitOfWork.Rollback();
+        }
+
+        /// <summary>
+        /// 回滚
+        /// </summary>
+        public void RollbackAsync()
+        {
+            this._unitOfWork.RollbackAsync();
         }
 
         /// <summary>
