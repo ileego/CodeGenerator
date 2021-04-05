@@ -116,7 +116,6 @@ namespace @ns
             var @{@Model.VariableName} = _mapper.Map<Core.Entities.@{@Model.ClassName}>(input);
             @{@variableName} .Id = SnowflakeId.Default().NextId();
             await _@{@Model.VariableName}Repository.InsertAsync(@{@Model.VariableName});
-            await SaveAsync();
             return AppServiceResult(@{@Model.VariableName}.Id);
         }
 
@@ -136,7 +135,6 @@ namespace @ns
             }
             @{@variableName} = _mapper.Map(input, @{@Model.VariableName});
             await _@{@Model.VariableName}Repository.UpdateAsync(@{@Model.VariableName});
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -153,7 +151,6 @@ namespace @ns
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _@{@Model.VariableName}Repository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 
