@@ -92,7 +92,7 @@ namespace @ns
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [Permission("@{@Model.Comment}管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<@{@Model.ClassName}Dto>>> GetByIdAsync([FromRoute] long id)
         {
