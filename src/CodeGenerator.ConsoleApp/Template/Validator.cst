@@ -39,7 +39,6 @@ namespace @ns
         /// </summary>
         public @ctorName
         {
-            CascadeMode = CascadeMode.Stop;
 @outBuilder.ToString()
         }
     }
