@@ -11,6 +11,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using CodeGenerator.Core;
 using CodeGenerator.Infra.Common;
@@ -54,6 +55,9 @@ namespace CodeGenerator.WebApi
                 {
                     options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
                     options.JsonSerializerOptions.Converters.Add(new DateTimeNullableConverter());
+                    options.JsonSerializerOptions.Converters.Add(new LongConverter());
+                    options.JsonSerializerOptions.Converters.Add(new LongNullableConverter());
+
                     options.JsonSerializerOptions.Encoder = SystemTextJsonHelper.GetDefaultEncoder();
                     //该值指示是否允许、不允许或跳过注释。
                     options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
