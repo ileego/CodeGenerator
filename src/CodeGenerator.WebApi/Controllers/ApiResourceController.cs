@@ -39,7 +39,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
-        [Permission("Api资源管理", "创建")]
+        //[Permission("Api资源管理", "创建")]
         public async Task<ActionResult<AppServiceResult<long>>> CreateAsync(
             [FromBody] ApiResourceInputDto inputDto)
         {
@@ -53,7 +53,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// <param name="inputDto"></param>
         /// <returns></returns>
         [HttpPost("update/{id}")]
-        [Permission("Api资源管理", "修改")]
+        //[Permission("Api资源管理", "修改")]
         public async Task<ActionResult<AppServiceResult>> UpdateAsync([FromRoute] long id,
             [FromBody] ApiResourceInputDto inputDto)
         {
@@ -66,7 +66,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("delete/{id}")]
-        [Permission("Api资源管理", "删除")]
+        //[Permission("Api资源管理", "删除")]
         public async Task<ActionResult<AppServiceResult>> DeleteAsync([FromRoute] long id)
         {
             return await _apiResourceService.DeleteAsync(id);
@@ -77,8 +77,8 @@ namespace CodeGenerator.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        [Permission("Api资源管理", "按Id查明细")]
+        [HttpGet("{id}")]
+        //[Permission("Api资源管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<ApiResourceDto>>> GetByIdAsync([FromRoute] long id)
         {
             return await _apiResourceService.GetByIdAsync(id);
@@ -91,7 +91,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("queryList")]
-        [Permission("Api资源管理", "查询列表")]
+        //[Permission("Api资源管理", "查询列表")]
         public async Task<ActionResult<AppServiceResult<PagedResult<ApiResourceDto>>>> QueryListAsync(
             [FromBody] ApiResourceParamsDto queryParams)
         {

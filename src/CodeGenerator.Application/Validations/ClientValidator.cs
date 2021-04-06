@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ClientValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.ClientNo).NotEmpty().WithMessage("请输入客户端编号");
 			RuleFor(t => t.ClientNo).MaximumLength(128).WithMessage("客户端编号长度不能超过128");
 			RuleFor(t => t.ClientName).NotEmpty().WithMessage("请输入客户端名称");

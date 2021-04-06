@@ -57,7 +57,6 @@ namespace CodeGenerator.Application.Services.Department
             var department = _mapper.Map<Core.Entities.Department>(input);
 			department .Id = SnowflakeId.Default().NextId();
             await _departmentRepository.InsertAsync(department);
-            await SaveAsync();
             return AppServiceResult(department.Id);
         }
 
@@ -77,7 +76,6 @@ namespace CodeGenerator.Application.Services.Department
             }
 			department = _mapper.Map(input, department);
             await _departmentRepository.UpdateAsync(department);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -94,7 +92,6 @@ namespace CodeGenerator.Application.Services.Department
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _departmentRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

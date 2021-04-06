@@ -53,7 +53,6 @@ namespace CodeGenerator.Application.Services.District
             var district = _mapper.Map<Core.Entities.District>(input);
 			district .Id = SnowflakeId.Default().NextId();
             await _districtRepository.InsertAsync(district);
-            await SaveAsync();
             return AppServiceResult(district.Id);
         }
 
@@ -73,7 +72,6 @@ namespace CodeGenerator.Application.Services.District
             }
 			district = _mapper.Map(input, district);
             await _districtRepository.UpdateAsync(district);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -90,7 +88,6 @@ namespace CodeGenerator.Application.Services.District
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _districtRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

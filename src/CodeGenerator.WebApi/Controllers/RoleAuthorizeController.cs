@@ -77,7 +77,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [Permission("角色授权管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<RoleAuthorizeDto>>> GetByIdAsync([FromRoute] long id)
         {

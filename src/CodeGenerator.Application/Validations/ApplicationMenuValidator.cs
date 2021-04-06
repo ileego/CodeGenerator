@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ApplicationMenuValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.ApplicationSystemId).NotEqual(t => default).WithMessage("所属应用必须填写");
 			RuleFor(t => t.MenuCode).NotEmpty().WithMessage("请输入菜单代码");
 			RuleFor(t => t.MenuCode).MaximumLength(50).WithMessage("菜单代码长度不能超过50");

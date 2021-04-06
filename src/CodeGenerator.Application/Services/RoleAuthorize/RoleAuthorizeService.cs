@@ -61,7 +61,6 @@ namespace CodeGenerator.Application.Services.RoleAuthorize
             var roleAuthorize = _mapper.Map<Core.Entities.RoleAuthorize>(input);
 			roleAuthorize .Id = SnowflakeId.Default().NextId();
             await _roleAuthorizeRepository.InsertAsync(roleAuthorize);
-            await SaveAsync();
             return AppServiceResult(roleAuthorize.Id);
         }
 
@@ -81,7 +80,6 @@ namespace CodeGenerator.Application.Services.RoleAuthorize
             }
 			roleAuthorize = _mapper.Map(input, roleAuthorize);
             await _roleAuthorizeRepository.UpdateAsync(roleAuthorize);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -98,7 +96,6 @@ namespace CodeGenerator.Application.Services.RoleAuthorize
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _roleAuthorizeRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

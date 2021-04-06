@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public DepartmentValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.OrganizationId).NotEqual(t => default).WithMessage("所属组织主键必须填写");
 			RuleFor(t => t.DepartmentName).MaximumLength(100).WithMessage("部门名称长度不能超过100");
 			RuleFor(t => t.DepartmentHead).MaximumLength(30).WithMessage("部门主管长度不能超过30");

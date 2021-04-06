@@ -57,7 +57,6 @@ namespace CodeGenerator.Application.Services.Employee
             var employee = _mapper.Map<Core.Entities.Employee>(input);
 			employee .Id = SnowflakeId.Default().NextId();
             await _employeeRepository.InsertAsync(employee);
-            await SaveAsync();
             return AppServiceResult(employee.Id);
         }
 
@@ -77,7 +76,6 @@ namespace CodeGenerator.Application.Services.Employee
             }
 			employee = _mapper.Map(input, employee);
             await _employeeRepository.UpdateAsync(employee);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -94,7 +92,6 @@ namespace CodeGenerator.Application.Services.Employee
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _employeeRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

@@ -53,7 +53,6 @@ namespace CodeGenerator.Application.Services.Client
             var client = _mapper.Map<Core.Entities.Client>(input);
 			client .Id = SnowflakeId.Default().NextId();
             await _clientRepository.InsertAsync(client);
-            await SaveAsync();
             return AppServiceResult(client.Id);
         }
 
@@ -73,7 +72,6 @@ namespace CodeGenerator.Application.Services.Client
             }
 			client = _mapper.Map(input, client);
             await _clientRepository.UpdateAsync(client);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -90,7 +88,6 @@ namespace CodeGenerator.Application.Services.Client
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _clientRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

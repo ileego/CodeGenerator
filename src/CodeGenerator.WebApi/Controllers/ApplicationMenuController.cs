@@ -77,7 +77,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [Permission("应用菜单管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<ApplicationMenuDto>>> GetByIdAsync([FromRoute] long id)
         {

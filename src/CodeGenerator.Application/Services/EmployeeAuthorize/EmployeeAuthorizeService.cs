@@ -61,7 +61,6 @@ namespace CodeGenerator.Application.Services.EmployeeAuthorize
             var employeeAuthorize = _mapper.Map<Core.Entities.EmployeeAuthorize>(input);
 			employeeAuthorize .Id = SnowflakeId.Default().NextId();
             await _employeeAuthorizeRepository.InsertAsync(employeeAuthorize);
-            await SaveAsync();
             return AppServiceResult(employeeAuthorize.Id);
         }
 
@@ -81,7 +80,6 @@ namespace CodeGenerator.Application.Services.EmployeeAuthorize
             }
 			employeeAuthorize = _mapper.Map(input, employeeAuthorize);
             await _employeeAuthorizeRepository.UpdateAsync(employeeAuthorize);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -98,7 +96,6 @@ namespace CodeGenerator.Application.Services.EmployeeAuthorize
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _employeeAuthorizeRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

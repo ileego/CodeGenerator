@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public OrganizationValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.DistrictiD).NotEqual(t => default).WithMessage("行政区主键必须填写");
 			RuleFor(t => t.OrganizationTypeId).NotEqual(t => default).WithMessage("组织类型主键必须填写");
 			RuleFor(t => t.UnifiedSocialCreditCode).NotEmpty().WithMessage("请输入统一社会信用代码 ");

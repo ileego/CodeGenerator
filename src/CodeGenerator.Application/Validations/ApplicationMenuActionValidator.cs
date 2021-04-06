@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ApplicationMenuActionValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.ApplicationMenuId).NotEqual(t => default).WithMessage("应用菜单主键必须填写");
 			RuleFor(t => t.ApplicationActionId).NotEqual(t => default).WithMessage("应用功能主键必须填写");
 

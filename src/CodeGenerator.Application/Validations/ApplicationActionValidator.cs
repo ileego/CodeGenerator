@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ApplicationActionValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.GroupTag).NotEmpty().WithMessage("请输入功能组标识");
 			RuleFor(t => t.GroupTag).MaximumLength(50).WithMessage("功能组标识长度不能超过50");
 			RuleFor(t => t.GroupName).NotEmpty().WithMessage("请输入功能组名称");

@@ -57,7 +57,6 @@ namespace CodeGenerator.Application.Services.Organization
             var organization = _mapper.Map<Core.Entities.Organization>(input);
 			organization .Id = SnowflakeId.Default().NextId();
             await _organizationRepository.InsertAsync(organization);
-            await SaveAsync();
             return AppServiceResult(organization.Id);
         }
 
@@ -77,7 +76,6 @@ namespace CodeGenerator.Application.Services.Organization
             }
 			organization = _mapper.Map(input, organization);
             await _organizationRepository.UpdateAsync(organization);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -94,7 +92,6 @@ namespace CodeGenerator.Application.Services.Organization
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _organizationRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

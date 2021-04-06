@@ -53,7 +53,6 @@ namespace CodeGenerator.Application.Services.ApiResource
             var apiResource = _mapper.Map<Core.Entities.ApiResource>(input);
 			apiResource .Id = SnowflakeId.Default().NextId();
             await _apiResourceRepository.InsertAsync(apiResource);
-            await SaveAsync();
             return AppServiceResult(apiResource.Id);
         }
 
@@ -73,7 +72,6 @@ namespace CodeGenerator.Application.Services.ApiResource
             }
 			apiResource = _mapper.Map(input, apiResource);
             await _apiResourceRepository.UpdateAsync(apiResource);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -90,7 +88,6 @@ namespace CodeGenerator.Application.Services.ApiResource
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _apiResourceRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ClientsAuthorizeValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.ApiResourceId).NotEqual(t => default).WithMessage("Api资源主键必须填写");
 			RuleFor(t => t.ClientId).NotEqual(t => default).WithMessage("客户端主键必须填写");
 

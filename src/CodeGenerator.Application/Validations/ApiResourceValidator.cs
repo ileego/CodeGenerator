@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ApiResourceValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.ApiKey).NotEmpty().WithMessage("请输入ApiKey");
 			RuleFor(t => t.ApiKey).MaximumLength(128).WithMessage("ApiKey长度不能超过128");
 			RuleFor(t => t.ApiName).NotEmpty().WithMessage("请输入Api名称");

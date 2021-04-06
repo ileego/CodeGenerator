@@ -53,7 +53,6 @@ namespace CodeGenerator.Application.Services.ApplicationAction
             var applicationAction = _mapper.Map<Core.Entities.ApplicationAction>(input);
 			applicationAction .Id = SnowflakeId.Default().NextId();
             await _applicationActionRepository.InsertAsync(applicationAction);
-            await SaveAsync();
             return AppServiceResult(applicationAction.Id);
         }
 
@@ -73,7 +72,6 @@ namespace CodeGenerator.Application.Services.ApplicationAction
             }
 			applicationAction = _mapper.Map(input, applicationAction);
             await _applicationActionRepository.UpdateAsync(applicationAction);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -90,7 +88,6 @@ namespace CodeGenerator.Application.Services.ApplicationAction
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _applicationActionRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

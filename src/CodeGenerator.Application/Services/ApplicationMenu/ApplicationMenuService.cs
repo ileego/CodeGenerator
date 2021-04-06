@@ -57,7 +57,6 @@ namespace CodeGenerator.Application.Services.ApplicationMenu
             var applicationMenu = _mapper.Map<Core.Entities.ApplicationMenu>(input);
 			applicationMenu .Id = SnowflakeId.Default().NextId();
             await _applicationMenuRepository.InsertAsync(applicationMenu);
-            await SaveAsync();
             return AppServiceResult(applicationMenu.Id);
         }
 
@@ -77,7 +76,6 @@ namespace CodeGenerator.Application.Services.ApplicationMenu
             }
 			applicationMenu = _mapper.Map(input, applicationMenu);
             await _applicationMenuRepository.UpdateAsync(applicationMenu);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -94,7 +92,6 @@ namespace CodeGenerator.Application.Services.ApplicationMenu
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _applicationMenuRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

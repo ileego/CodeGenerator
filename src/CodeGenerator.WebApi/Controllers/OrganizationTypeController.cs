@@ -77,7 +77,7 @@ namespace CodeGenerator.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("{id}")]
         [Permission("组织类型管理", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<OrganizationTypeDto>>> GetByIdAsync([FromRoute] long id)
         {

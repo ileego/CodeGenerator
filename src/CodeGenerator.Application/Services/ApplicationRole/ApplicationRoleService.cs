@@ -57,7 +57,6 @@ namespace CodeGenerator.Application.Services.ApplicationRole
             var applicationRole = _mapper.Map<Core.Entities.ApplicationRole>(input);
 			applicationRole .Id = SnowflakeId.Default().NextId();
             await _applicationRoleRepository.InsertAsync(applicationRole);
-            await SaveAsync();
             return AppServiceResult(applicationRole.Id);
         }
 
@@ -77,7 +76,6 @@ namespace CodeGenerator.Application.Services.ApplicationRole
             }
 			applicationRole = _mapper.Map(input, applicationRole);
             await _applicationRoleRepository.UpdateAsync(applicationRole);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -94,7 +92,6 @@ namespace CodeGenerator.Application.Services.ApplicationRole
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _applicationRoleRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 

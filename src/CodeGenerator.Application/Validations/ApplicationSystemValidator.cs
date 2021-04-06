@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public ApplicationSystemValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.AppNo).NotEmpty().WithMessage("请输入应用编号");
 			RuleFor(t => t.AppNo).MaximumLength(128).WithMessage("应用编号长度不能超过128");
 			RuleFor(t => t.AppName).NotEmpty().WithMessage("请输入应用名称");

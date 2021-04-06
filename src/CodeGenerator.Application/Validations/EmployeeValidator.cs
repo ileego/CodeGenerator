@@ -13,7 +13,6 @@ namespace CodeGenerator.Application.Validations
         /// </summary>
         public EmployeeValidator()
         {
-            CascadeMode = CascadeMode.Stop;
 			RuleFor(t => t.DepartmentId).NotEqual(t => default).WithMessage("所属部门主键必须填写");
 			RuleFor(t => t.Account).NotEmpty().WithMessage("请输入账号");
 			RuleFor(t => t.Account).MaximumLength(30).WithMessage("账号长度不能超过30");

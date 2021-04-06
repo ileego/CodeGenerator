@@ -61,7 +61,6 @@ namespace CodeGenerator.Application.Services.DataAccessAuthorize
             var dataAccessAuthorize = _mapper.Map<Core.Entities.DataAccessAuthorize>(input);
 			dataAccessAuthorize .Id = SnowflakeId.Default().NextId();
             await _dataAccessAuthorizeRepository.InsertAsync(dataAccessAuthorize);
-            await SaveAsync();
             return AppServiceResult(dataAccessAuthorize.Id);
         }
 
@@ -81,7 +80,6 @@ namespace CodeGenerator.Application.Services.DataAccessAuthorize
             }
 			dataAccessAuthorize = _mapper.Map(input, dataAccessAuthorize);
             await _dataAccessAuthorizeRepository.UpdateAsync(dataAccessAuthorize);
-            await SaveAsync();
             return AppServiceResult();
         }
 
@@ -98,7 +96,6 @@ namespace CodeGenerator.Application.Services.DataAccessAuthorize
                 throw new AppServiceException("您要删除的数据不存在");
             }
             await _dataAccessAuthorizeRepository.DeleteAsync(id);
-            await SaveAsync();
             return AppServiceResult();
         }
 
