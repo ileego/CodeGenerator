@@ -20,7 +20,7 @@ namespace CodeGenerator.Infra.Common.Configurations
         private ulong _currentIndex;
         private Task _pollTask;
 
-        public DefaultConsulConfigurationProvider(ConsulOption consulOption, bool reloadOnChanges)
+        public DefaultConsulConfigurationProvider(ConsulOptions consulOption, bool reloadOnChanges)
         {
             _consulClient = new ConsulClient(x =>
             {
@@ -41,7 +41,7 @@ namespace CodeGenerator.Infra.Common.Configurations
             //加载数据
             LoadData(GetData().GetAwaiter().GetResult());
             //处理数据变更
-            PollReaload();
+            PollReload();
         }
 
         //设置数据
@@ -70,7 +70,7 @@ namespace CodeGenerator.Infra.Common.Configurations
         }
 
         //处理数据变更
-        private void PollReaload()
+        private void PollReload()
         {
             if (_reloadOnChange)
             {

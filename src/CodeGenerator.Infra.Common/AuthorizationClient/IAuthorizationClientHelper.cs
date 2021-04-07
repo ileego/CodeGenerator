@@ -37,9 +37,9 @@ namespace CodeGenerator.Infra.Common.AuthorizationClient
         /// </summary>
         public string Token { get; set; }
         /// <summary>
-        /// 软件Id
+        /// 应用编号
         /// </summary>
-        public string SoftwareId { get; set; }
+        public string AppNo { get; set; }
     }
 
     /// <summary>

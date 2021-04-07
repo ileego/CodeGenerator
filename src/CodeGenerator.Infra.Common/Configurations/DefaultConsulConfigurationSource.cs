@@ -8,10 +8,10 @@ namespace CodeGenerator.Infra.Common.Configurations
 {
     public class DefaultConsulConfigurationSource : IConfigurationSource
     {
-        private readonly ConsulOption _consulOption;
+        private readonly ConsulOptions _consulOption;
         private readonly bool _reloadOnChanges;
 
-        public DefaultConsulConfigurationSource(ConsulOption consulOption, bool reloadOnChanges)
+        public DefaultConsulConfigurationSource(ConsulOptions consulOption, bool reloadOnChanges)
         {
             _consulOption = consulOption;
             _reloadOnChanges = reloadOnChanges;

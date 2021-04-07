@@ -40,8 +40,8 @@ namespace CodeGenerator.Infra.Common.Cache
         private IDatabase GetDatabase(bool isRead = false)
         {
             return isRead
-                ? ReadConnection.GetDatabase(_redisOptions.CurrentDb)
-                : WriteConnection.GetDatabase(_redisOptions.CurrentDb);
+                ? ReadConnection.GetDatabase(_redisOptions.DefaultDatabase)
+                : WriteConnection.GetDatabase(_redisOptions.DefaultDatabase);
         }
 
         /// <summary>

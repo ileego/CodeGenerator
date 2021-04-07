@@ -3,12 +3,12 @@
     /// <summary>
     /// 授权客户端配置
     /// </summary>
-    public class AuthorizationClientOption
+    public class AuthorizationOptions
     {
         /// <summary>
-        /// 软件Id
+        /// 应用编号
         /// </summary>
-        public string SoftwareId { get; set; }
+        public string AppNo { get; set; }
         /// <summary>
         /// 授权服务地址
         /// </summary>

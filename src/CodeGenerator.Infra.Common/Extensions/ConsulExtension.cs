@@ -21,8 +21,7 @@ namespace CodeGenerator.Infra.Common.Extensions
             ConsulRegistration.Register(app);
         }
 
-
-        public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, ConsulOption config, bool reloadOnChanges = false)
+        public static IConfigurationBuilder AddConsulConfiguration(this IConfigurationBuilder configurationBuilder, ConsulOptions config, bool reloadOnChanges = false)
         {
             return configurationBuilder.Add(new DefaultConsulConfigurationSource(config, reloadOnChanges));
         }
@@ -42,7 +41,7 @@ namespace CodeGenerator.Infra.Common.Extensions
     {
         public static void Register(IApplicationBuilder app)
         {
-            var consulOption = app.ApplicationServices.GetRequiredService<IOptions<ConsulOption>>().Value;
+            var consulOption = app.ApplicationServices.GetRequiredService<IOptions<ConsulOptions>>().Value;
             var consulClient = new ConsulClient(cfg => cfg.Address = new Uri(consulOption.ConsulUrl));
 
             var serviceAddress = GetServiceAddressInternal(app, consulOption);
@@ -87,12 +86,12 @@ namespace CodeGenerator.Infra.Common.Extensions
             });
         }
 
-        public static Uri GetServiceAddress(IApplicationBuilder app, ConsulOption consulOption)
+        public static Uri GetServiceAddress(IApplicationBuilder app, ConsulOptions consulOption)
         {
             return GetServiceAddressInternal(app, consulOption);
         }
 
-        private static Uri GetServiceAddressInternal(IApplicationBuilder app, ConsulOption consulOption)
+        private static Uri GetServiceAddressInternal(IApplicationBuilder app, ConsulOptions consulOption)
         {
             var errorMsg = string.Empty;
             Uri serviceAddress = default;

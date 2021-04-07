@@ -17,6 +17,6 @@ namespace CodeGenerator.Infra.Common.Options
         /// <summary>
         /// select redis db
         /// </summary>
-        public int CurrentDb { get; set; }
+        public int DefaultDatabase { get; set; }
     }
 }

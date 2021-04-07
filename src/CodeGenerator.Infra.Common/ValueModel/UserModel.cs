@@ -33,6 +33,10 @@ namespace CodeGenerator.Infra.Common.ValueModel
         /// </summary>
         public long[] RoleIds { get; set; }
         /// <summary>
+        /// 数据访问权限
+        /// </summary>
+        public long[] DataAccessRights { get; set; }
+        /// <summary>
         /// 附加内容
         /// </summary>
         public Dictionary<string, object> AdditionalContent { get; set; }

@@ -7,7 +7,7 @@ namespace CodeGenerator.Infra.Common.Options
     /// <summary>
     /// Consul 配置
     /// </summary>
-    public class ConsulOption
+    public class ConsulOptions
     {
         /// <summary>
         /// Consul Client 地址

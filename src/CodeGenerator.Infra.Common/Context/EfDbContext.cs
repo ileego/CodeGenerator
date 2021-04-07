@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging.Debug;
 
 namespace CodeGenerator.Infra.Common.Context
 {
-    public sealed class EfDbContext : DbContext
+    public class EfDbContext : DbContext
     {
         private readonly UserContext _userContext;
         private readonly UnitOfWorkStatus _unitOfWorkStatus;

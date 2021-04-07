@@ -13,16 +13,15 @@ namespace CodeGenerator.Infra.Common.Extensions
         /// Inject Assembly
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="assemblyName"></param>
+        /// <param name="assembly"></param>
         /// <param name="lifetime"></param>
         /// <param name="startWith"></param>
         /// <param name="endWith"></param>
         public static void AddAssembly(this IServiceCollection services,
-            string assemblyName, ServiceLifetime lifetime = ServiceLifetime.Scoped, string startWith = null, string endWith = null)
+            Assembly assembly, ServiceLifetime lifetime = ServiceLifetime.Scoped, string startWith = null, string endWith = null)
         {
-            var assemblies = Assembly.Load(assemblyName);
-            var interfaces = assemblies.GetTypes().Where(t => t.IsInterface);
-            var types = assemblies.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
+            var interfaces = assembly.GetTypes().Where(t => t.IsInterface);
+            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
             if (!string.IsNullOrEmpty(startWith))
             {
                 interfaces = interfaces.Where(t => t.Name.StartsWith(startWith));
@@ -48,14 +47,13 @@ namespace CodeGenerator.Infra.Common.Extensions
         /// Inject Scope Assembly
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="assemblyName"></param>
+        /// <param name="assembly"></param>
         /// <param name="startWith"></param>
         /// <param name="endWith"></param>
-        public static void AddScopeAssembly(this IServiceCollection services, string assemblyName, string startWith = null, string endWith = null)
+        public static void AddScopeAssembly(this IServiceCollection services, Assembly assembly, string startWith = null, string endWith = null)
         {
-            var assemblies = Assembly.Load(assemblyName);
-            var interfaces = assemblies.GetTypes().Where(t => t.IsInterface);
-            var types = assemblies.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
+            var interfaces = assembly.GetTypes().Where(t => t.IsInterface);
+            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
             if (!string.IsNullOrEmpty(startWith))
             {
                 interfaces = interfaces.Where(t => t.Name.StartsWith(startWith));
@@ -80,14 +78,13 @@ namespace CodeGenerator.Infra.Common.Extensions
         /// Inject Transient Assembly
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="assemblyName"></param>
+        /// <param name="assembly"></param>
         /// <param name="startWith"></param>
         /// <param name="endWith"></param>
-        public static void AddTransientAssembly(this IServiceCollection services, string assemblyName, string startWith = null, string endWith = null)
+        public static void AddTransientAssembly(this IServiceCollection services, Assembly assembly, string startWith = null, string endWith = null)
         {
-            var assemblies = Assembly.Load(assemblyName);
-            var interfaces = assemblies.GetTypes().Where(t => t.IsInterface);
-            var types = assemblies.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
+            var interfaces = assembly.GetTypes().Where(t => t.IsInterface);
+            var types = assembly.GetTypes().Where(t => t.IsClass && !t.IsAbstract).ToList();
             if (!string.IsNullOrEmpty(startWith))
             {
                 interfaces = interfaces.Where(t => t.Name.StartsWith(startWith));

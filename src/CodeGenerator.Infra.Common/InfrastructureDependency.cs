@@ -39,13 +39,13 @@ namespace CodeGenerator.Infra.Common
             services.AddScoped<ICache, RedisCache>();
             //注册Jwt工具类
             services.AddScoped<IJwtHelper, JwtHelper>();
-            services.AddScoped<StsExtensions, StsExtensions>();
-            services.AddScoped<OssExtensions, OssExtensions>();
+            services.AddScoped<StsExtensions>();
+            services.AddScoped<OssExtensions>();
 
             services.AddHttpContextAccessor();
             //注册授权验证帮助类
             services.AddScoped<IAuthorizationClientHelper, AuthorizationClientHelper>();
-            ControllerExtension.ServiceLocator.Provider = services.BuildServiceProvider();
+
         }
     }
 }

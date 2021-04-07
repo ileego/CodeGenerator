@@ -5,18 +5,18 @@ using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using CodeGenerator.Infra.Common.AuthorizationClient;
+using CodeGenerator.Infra.Common.Helper;
 using CodeGenerator.Infra.Common.Options;
 using CodeGenerator.Infra.Common.ValueModel;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace CodeGenerator.Infra.Common.Helper
+namespace CodeGenerator.Infra.Common.AuthorizationClient
 {
     public class AuthorizationClientHelper : IAuthorizationClientHelper
     {
-        private readonly AuthorizationClientOption _clientOption;
-        public AuthorizationClientHelper(IOptions<AuthorizationClientOption> options)
+        private readonly AuthorizationOptions _clientOption;
+        public AuthorizationClientHelper(IOptions<AuthorizationOptions> options)
         {
             _clientOption = options.Value;
         }
@@ -32,7 +32,7 @@ namespace CodeGenerator.Infra.Common.Helper
             var req = new RequestAuthorizeInfoModel()
             {
                 Token = encryptToken,
-                SoftwareId = _clientOption.SoftwareId
+                AppNo = _clientOption.AppNo
             };
             const string api = "/api/authorizeInfo/user";
             var url = $"{_clientOption.Host}{api}";
@@ -51,7 +51,7 @@ namespace CodeGenerator.Infra.Common.Helper
             var req = new RequestAuthorizeInfoModel()
             {
                 Token = encryptToken,
-                SoftwareId = _clientOption.SoftwareId
+                AppNo = _clientOption.AppNo
             };
             const string api = "/api/authorizeInfo/functions";
             var url = $"{_clientOption.Host}{api}";
@@ -68,7 +68,7 @@ namespace CodeGenerator.Infra.Common.Helper
         {
             var encryptToken = CryptoHelper.Des3Encrypt(changePasswordModel.Token, _clientOption.Secret);
             changePasswordModel.Token = encryptToken;
-            changePasswordModel.SoftwareId = _clientOption.SoftwareId;
+            changePasswordModel.AppNo = _clientOption.AppNo;
             const string api = "/api/authorizeInfo/changePassword";
             var url = $"{_clientOption.Host}{api}";
             var result = await PostAsync<AuthorizeResult<bool>, ChangePasswordModel>(url, changePasswordModel);
