@@ -27,7 +27,7 @@ namespace CodeGenerator.Gateway
                     if (env.IsProduction() || env.IsStaging())
                     {
                         var configuration = cb.Build();
-                        var consulOption = configuration.GetSection("Consul").Get<ConsulOption>();
+                        var consulOption = configuration.GetSection("Consul").Get<ConsulOptions>();
                         cb.AddConsulConfiguration(new[] { consulOption.ConsulUrl }, consulOption.ConsulKeyPath);
                     }
                 })
