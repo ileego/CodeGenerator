@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using System.Net;
 @{
     string firstNamespace = ((string[])ViewBag.Namespace)[0];
     string className = $"{Model.ClassName}Service";
@@ -68,7 +69,7 @@ using AutoMapper;
                 checkReferenceBuilder.Append($"\t\t\t\tvar {foreignKey.RefTableVariableName} = await _{foreignKey.RefTableVariableName}Repository.FindByIdAsync(input.{foreignKey.RefTableClassName}Id.Value);\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\tif (null == {foreignKey.RefTableVariableName})\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\t{{\r\n");
-                checkReferenceBuilder.Append($"\t\t\t\t\tthrow new AppServiceException(\"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\t\treturn Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\t}}\r\n");
                 checkReferenceBuilder.Append($"\t\t\t}}\r\n");
             }
@@ -77,7 +78,7 @@ using AutoMapper;
                 checkReferenceBuilder.Append($"\t\t\tvar {foreignKey.RefTableVariableName} = await _{foreignKey.RefTableVariableName}Repository.FindByIdAsync(input.{foreignKey.RefTableClassName}Id);\r\n");
                 checkReferenceBuilder.Append($"\t\t\tif (null == {foreignKey.RefTableVariableName})\r\n");
                 checkReferenceBuilder.Append($"\t\t\t{{\r\n");
-                checkReferenceBuilder.Append($"\t\t\t\tthrow new AppServiceException(\"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\treturn Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
                 checkReferenceBuilder.Append($"\t\t\t}}\r\n");
             }
             
@@ -87,7 +88,6 @@ using AutoMapper;
     ctorBuilder.Append($"\r\n\t\t\t) : base(unitOfWork)\r\n");
 }
 @usingBuilder.ToString()
-
 namespace @ns
 {
     /// <summary>
@@ -131,7 +131,7 @@ namespace @ns
             var @{@Model.VariableName} = await _@{@Model.VariableName}Repository.FindByIdAsync(id);
             if (null == @{@Model.VariableName})
             {
-                throw new AppServiceException("您正在修改的数据不存在");
+                return Problem(HttpStatusCode.BadRequest, "您正在修改的数据不存在");
             }
             @{@variableName} = _mapper.Map(input, @{@Model.VariableName});
             await _@{@Model.VariableName}Repository.UpdateAsync(@{@Model.VariableName});
@@ -148,7 +148,7 @@ namespace @ns
             var @{@Model.VariableName} = await _@{@Model.VariableName}Repository.FindByIdAsync(id);
             if (null == @{@Model.VariableName})
             {
-                throw new AppServiceException("您要删除的数据不存在");
+                return Problem(HttpStatusCode.BadRequest, "您要删除的数据不存在");
             }
             await _@{@Model.VariableName}Repository.DeleteAsync(id);
             return AppServiceResult();
@@ -164,7 +164,7 @@ namespace @ns
             var @{@Model.VariableName} = await _@{@Model.VariableName}Repository.FindByIdAsync(id);
             if (null == @{@Model.VariableName})
             {
-                throw new AppServiceException("您查询的数据不存在");
+                return Problem(HttpStatusCode.BadRequest, "您查询的数据不存在");
             }
 
             var dto = _mapper.Map<@{@Model.ClassName}Dto>(@{@Model.VariableName});
