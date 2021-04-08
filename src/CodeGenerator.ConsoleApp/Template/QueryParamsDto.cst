@@ -11,10 +11,15 @@
     {
         if (field.DataType.ToLower().Contains("datetime"))
         {
+            var dataType = field.IsNullable ? field.DataType : field.DataType + "?";
             outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
-            outBuilder.Append($"\t\tpublic {field.DataType} Begin{field.PropertyName} {{ get; set; }}\r\n");
+            outBuilder.Append($"\t\tpublic {dataType} Begin{field.PropertyName} {{ get; set; }}\r\n");
             outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>\r\n");
-            outBuilder.Append($"\t\tpublic {field.DataType} End{field.PropertyName} {{ get; set; }}\r\n");
+            outBuilder.Append($"\t\tpublic {dataType} End{field.PropertyName} {{ get; set; }}\r\n");
+        }else if ((new string[] { "short", "int", "long", "bool", "decimal", "float", "double" }).Any(t => t.Equals(field.DataType.ToLower())))
+        {
+            outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>"+"\r\n");
+            outBuilder.Append($"\t\tpublic {field.DataType}? {field.PropertyName} {{ get; set; }}\r\n");
         }else
         {
             outBuilder.Append($"\t\t/// <summary>\r\n\t\t/// {field.Comment}\r\n\t\t/// </summary>"+"\r\n");
