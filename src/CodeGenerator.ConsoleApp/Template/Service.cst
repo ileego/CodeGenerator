@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
 @{
     string firstNamespace = ((string[])ViewBag.Namespace)[0];
     string className = $"{Model.ClassName}Service";
@@ -69,7 +70,8 @@ using System.Net;
                 checkReferenceBuilder.Append($"\t\t\t\tvar {foreignKey.RefTableVariableName} = await _{foreignKey.RefTableVariableName}Repository.FindByIdAsync(input.{foreignKey.RefTableClassName}Id.Value);\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\tif (null == {foreignKey.RefTableVariableName})\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\t{{\r\n");
-                checkReferenceBuilder.Append($"\t\t\t\t\treturn Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\t\tcheck = Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\t\treturn check;\r\n");
                 checkReferenceBuilder.Append($"\t\t\t\t}}\r\n");
                 checkReferenceBuilder.Append($"\t\t\t}}\r\n");
             }
@@ -78,7 +80,8 @@ using System.Net;
                 checkReferenceBuilder.Append($"\t\t\tvar {foreignKey.RefTableVariableName} = await _{foreignKey.RefTableVariableName}Repository.FindByIdAsync(input.{foreignKey.RefTableClassName}Id);\r\n");
                 checkReferenceBuilder.Append($"\t\t\tif (null == {foreignKey.RefTableVariableName})\r\n");
                 checkReferenceBuilder.Append($"\t\t\t{{\r\n");
-                checkReferenceBuilder.Append($"\t\t\t\treturn Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\tcheck = Problem(HttpStatusCode.BadRequest, \"引用的[{foreignKey.Field.Comment.Replace("主键","")}]记录不存在\");\r\n");
+                checkReferenceBuilder.Append($"\t\t\t\treturn check;\r\n");
                 checkReferenceBuilder.Append($"\t\t\t}}\r\n");
             }
             
@@ -112,7 +115,9 @@ namespace @ns
         /// <returns></returns>
         public async Task<AppServiceResult<long>> CreateAsync(@{@Model.ClassName}InputDto input)
         {
-            await CheckReferenceAsync(input);
+            var problem = await CheckReferenceAsync(input);
+            if (null != problem) return problem;
+
             var @{@Model.VariableName} = _mapper.Map<Core.Entities.@{@Model.ClassName}>(input);
             @{@variableName}.Id = SnowflakeId.Default().NextId();
             await _@{@Model.VariableName}Repository.InsertAsync(@{@Model.VariableName});
@@ -127,7 +132,9 @@ namespace @ns
         /// <returns></returns>
         public async Task<AppServiceResult> UpdateAsync(long id, @{@Model.ClassName}InputDto input)
         {
-            await CheckReferenceAsync(input);
+            var problem = await CheckReferenceAsync(input);
+            if (null != problem) return problem;
+
             var @{@Model.VariableName} = await _@{@Model.VariableName}Repository.FindByIdAsync(id);
             if (null == @{@Model.VariableName})
             {
@@ -194,10 +201,12 @@ namespace @ns
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private async Task CheckReferenceAsync(@{@Model.ClassName}InputDto input)
+        private async Task<ProblemDetails> CheckReferenceAsync(@{@Model.ClassName}InputDto input)
         {
+            ProblemDetails check = null;
 @checkReferenceBuilder.ToString()
-            return;
+            // ReSharper disable once ExpressionIsAlwaysNull
+            return await Task.FromResult(check);
         }
     }
 }
