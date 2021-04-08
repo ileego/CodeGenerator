@@ -114,7 +114,7 @@ namespace @ns
         {
             await CheckReferenceAsync(input);
             var @{@Model.VariableName} = _mapper.Map<Core.Entities.@{@Model.ClassName}>(input);
-            @{@variableName} .Id = SnowflakeId.Default().NextId();
+            @{@variableName}.Id = SnowflakeId.Default().NextId();
             await _@{@Model.VariableName}Repository.InsertAsync(@{@Model.VariableName});
             return AppServiceResult(@{@Model.VariableName}.Id);
         }
