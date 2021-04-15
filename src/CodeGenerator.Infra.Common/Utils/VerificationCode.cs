@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
+using CodeGenerator.Infra.Common.Extensions;
 
-namespace CodeGenerator.Infra.Common.Extensions
+namespace CodeGenerator.Infra.Common.Utils
 {
-    public class VerifyCodeExtension
+    public class VerificationCode
     {
 
         /// <summary>  
@@ -107,10 +107,10 @@ namespace CodeGenerator.Infra.Common.Extensions
             //采用一个简单的算法以保证生成随机数的不同  
             for (var i = 1; i < length + 1; i++)
             {
-                var t = RandomIndex(i, chars.Length); //获取随机数  
+                var t = RandomIndex(i, array.Length); //获取随机数  
                 if (temp != -1 && temp == t)
                 {
-                    t = RandomIndex(i, chars.Length);  //如果获取的随机数与上一次重复，则再生成一次  
+                    t = RandomIndex(i, array.Length);  //如果获取的随机数与上一次重复，则再生成一次  
                 }
 
                 temp = t; //把本次产生的随机数记录起来  
