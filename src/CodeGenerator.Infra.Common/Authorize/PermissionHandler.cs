@@ -22,9 +22,7 @@ namespace CodeGenerator.Infra.Common.Authorize
     {
         public IAuthenticationSchemeProvider SchemeProvider { get; set; }
         private readonly ICache _redis;
-        private readonly IJwtHelper _jwtHelper;
         readonly ILogger _logger = Log.ForContext<PermissionHandler>();
-        private readonly double _expireMinutes;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -48,10 +46,8 @@ namespace CodeGenerator.Infra.Common.Authorize
         {
             SchemeProvider = schemeProvider;
             _redis = redis;
-            _jwtHelper = jwtHelper;
             var jwtOptions1 = jwtOptions.Value;
             _httpContextAccessor = httpContextAccessor;
-            _expireMinutes = jwtOptions1.AccessTokenExpire;
             //_systemAction = systemActionService;
         }
 
@@ -95,12 +91,6 @@ namespace CodeGenerator.Infra.Common.Authorize
                     {
                         if (httpContext != null)
                         {
-                            //判断是否为已停用的 Token
-                            if (!await _jwtHelper.IsCurrentActiveTokenAsync())
-                            {
-                                context.Fail();
-                            }
-
                             httpContext.User = result.Principal;
 
                             //获取 Token
@@ -117,7 +107,7 @@ namespace CodeGenerator.Infra.Common.Authorize
                                 //await _redis.KeyExpireAsync(token, expiry, db: 1);
                             }
 
-                            var user = await (new CurrentUserHelper(_redis, _jwtHelper)).GetUser(token);
+                            //var user = await (new CurrentUserHelper(_redis, _jwtHelper)).GetUser(token);
 
                             //判断角色与 Url 是否对应
                             //
@@ -131,7 +121,7 @@ namespace CodeGenerator.Infra.Common.Authorize
                             //    return;
                             //}
 
-                            _logger.Warning("登录信息： {login} ,访问地址：{url}", $"【{user.Account}】{user.UserName}", url);
+                            //_logger.Warning("登录信息： {login} ,访问地址：{url}", $"【{user.Account}】{user.UserName}", url);
 
                             //判断是否过期
                             if (DateTime.Parse(httpContext.User.Claims

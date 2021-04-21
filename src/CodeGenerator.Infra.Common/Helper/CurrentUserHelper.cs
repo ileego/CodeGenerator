@@ -4,6 +4,8 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.Cache;
 using CodeGenerator.Infra.Common.Jwt;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 
 namespace CodeGenerator.Infra.Common.Helper
 {
@@ -12,19 +14,28 @@ namespace CodeGenerator.Infra.Common.Helper
     /// </summary>
     public class CurrentUserHelper
     {
-        readonly ICache _redis;
-        readonly IJwtHelper _jwt;
+        private readonly ICache _redis;
+        private readonly IJwtHelper _jwt;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAuthenticationSchemeProvider _schemeProvider;
+
         /// <summary>
-        /// 
+        /// Ctor
         /// </summary>
         /// <param name="redis"></param>
         /// <param name="jwtHelper"></param>
+        /// <param name="httpContextAccessor"></param>
+        /// <param name="schemeProvider"></param>
         public CurrentUserHelper(
             ICache redis,
-            IJwtHelper jwtHelper)
+            IJwtHelper jwtHelper,
+            IHttpContextAccessor httpContextAccessor,
+            IAuthenticationSchemeProvider schemeProvider)
         {
             _redis = redis;
             _jwt = jwtHelper;
+            _httpContextAccessor = httpContextAccessor;
+            _schemeProvider = schemeProvider;
         }
 
         /// <summary>
@@ -33,10 +44,20 @@ namespace CodeGenerator.Infra.Common.Helper
         /// <returns></returns>
         public async Task<UserModel> GetUser()
         {
-            string token = _jwt.GetCurrentUserToken();
-            var obj = await _redis.GetStringAsync(token);
-            var user = JsonConvert.DeserializeObject<UserModel>(obj);
-            return user;
+            var httpContext = _httpContextAccessor.HttpContext;
+            var defaultAuthenticate = await _schemeProvider.GetDefaultAuthenticateSchemeAsync();
+            var result = await httpContext.AuthenticateAsync(defaultAuthenticate.Name);
+            if (result.Succeeded)
+            {
+                //获取 Token
+                var token = result.Ticket.Properties.Items[".Token.access_token"];
+                var obj = await _redis.GetStringAsync(token);
+                var user = JsonConvert.DeserializeObject<UserModel>(obj);
+                return user;
+            }
+            return null;
+
+
         }
 
         /// <summary>

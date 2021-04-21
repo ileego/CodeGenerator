@@ -149,11 +149,14 @@ namespace CodeGenerator.Infra.Common.Extensions
             {
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SymmetricSecurityKey)),
-                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.AccessTokenExpire),
-                    ValidateLifetime = true
+                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.ClockSkew),
                 };
                 options.Events = new JwtBearerEvents
                 {
