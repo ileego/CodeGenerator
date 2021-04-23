@@ -264,10 +264,21 @@ namespace CodeGenerator.Infra.Common.Extensions
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins(corsOptions.Hosts)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                    if (corsOptions.Hosts != null && corsOptions.Hosts.Length > 0)
+                    {
+                        policy.WithOrigins(corsOptions.Hosts)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
+                    else
+                    {
+                        policy.SetIsOriginAllowed(isOriginAllowed => true);
+                        policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
                 });
             });
         }
