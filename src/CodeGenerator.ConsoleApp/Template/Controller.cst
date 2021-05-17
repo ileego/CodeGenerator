@@ -54,7 +54,7 @@ namespace @ns
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
-        //[Permission("@{@Model.Comment}管理", "创建")]
+        //[Permission("@{Model.ClassName}", "@{@Model.Comment}管理", "Create", "创建")]
         public async Task<ActionResult<AppServiceResult<long>>> CreateAsync(
             [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
@@ -68,7 +68,7 @@ namespace @ns
         /// <param name="inputDto"></param>
         /// <returns></returns>
         [HttpPost("update/{id}")]
-        //[Permission("@{@Model.Comment}管理", "修改")]
+        //[Permission("@{Model.ClassName}", "@{@Model.Comment}管理", "Update", "修改")]
         public async Task<ActionResult<AppServiceResult>> UpdateAsync([FromRoute] long id,
             [FromBody] @{@Model.ClassName}InputDto inputDto)
         {
@@ -81,7 +81,7 @@ namespace @ns
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("delete/{id}")]
-        //[Permission("@{@Model.Comment}管理", "删除")]
+        //[Permission("@{Model.ClassName}", "@{@Model.Comment}管理", "Delete", "删除")]
         public async Task<ActionResult<AppServiceResult>> DeleteAsync([FromRoute] long id)
         {
             return await _@{@Model.VariableName}Service.DeleteAsync(id);
@@ -93,7 +93,7 @@ namespace @ns
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        //[Permission("@{@Model.Comment}管理", "按Id查明细")]
+        //[Permission("@{Model.ClassName}", "@{@Model.Comment}管理", "GetById", "按Id查明细")]
         public async Task<ActionResult<AppServiceResult<@{@Model.ClassName}Dto>>> GetByIdAsync([FromRoute] long id)
         {
             return await _@{@Model.VariableName}Service.GetByIdAsync(id);
@@ -106,7 +106,7 @@ namespace @ns
         /// <returns></returns>
         [HttpPost]
         [Route("queryList")]
-        //[Permission("@{@Model.Comment}管理", "查询列表")]
+        //[Permission("@{Model.ClassName}", "@{@Model.Comment}管理", "QueryList", "查询列表")]
         public async Task<ActionResult<AppServiceResult<PagedResult<@{@Model.ClassName}Dto>>>> QueryListAsync(
             [FromBody] @{@Model.ClassName}ParamsDto queryParams)
         {
