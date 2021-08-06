@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,7 +75,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateMapperProfiles(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.MAPPER_PROFILES);
             var outPath = Path.Combine(rootPath, "Profiles", "MapperProfiles.cs");
@@ -83,7 +84,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateEntities(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Core");
+            generateContext.SetNamespace("RightsManagement.Core");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.ENTITY);
             var outPath = Path.Combine(rootPath, "Entities");
@@ -95,7 +96,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateEntityMaps(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Core");
+            generateContext.SetNamespace("RightsManagement.Core");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.ENTITY_MAP);
             var outPath = Path.Combine(rootPath, "Maps");
@@ -108,7 +109,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateInputDto(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.INPUT_DTO);
             var outPath = Path.Combine(rootPath, "DTOs");
@@ -121,7 +122,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateValidator(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.VALIDATOR);
             var outPath = Path.Combine(rootPath, "Validations");
@@ -134,7 +135,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateQueryParams(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.QUERY_PARAMS_DTO);
             var outPath = Path.Combine(rootPath, "DTOs");
@@ -147,7 +148,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateQueryResult(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.QUERY_RESULT_DTO);
             var outPath = Path.Combine(rootPath, "DTOs");
@@ -161,7 +162,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateIRepository(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Core");
+            generateContext.SetNamespace("RightsManagement.Core");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.IREPOSITORY);
             var outPath = Path.Combine(rootPath, "Repository");
@@ -175,7 +176,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateRepository(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Core");
+            generateContext.SetNamespace("RightsManagement.Core");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.REPOSITORY);
             var outPath = Path.Combine(rootPath, "Repository");
@@ -188,7 +189,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateIService(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.ISERVICE);
             var outPath = Path.Combine(rootPath, "Services");
@@ -203,7 +204,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateService(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.Application");
+            generateContext.SetNamespace("RightsManagement.Application");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.SERVICE);
             var outPath = Path.Combine(rootPath, "Services");
@@ -217,7 +218,7 @@ namespace CodeGenerator.ConsoleApp
 
         static void GenerateController(IGenerateContext generateContext, string rootPath)
         {
-            generateContext.SetNamespace("CodeGenerator.WebApi");
+            generateContext.SetNamespace("RightsManagement.WebApi");
             var templatePath = Path.Combine(AppContext.BaseDirectory, "Template",
                 TemplateTypeConst.CONTROLLER);
             var outPath = Path.Combine(rootPath, "Controller");

@@ -149,11 +149,14 @@ namespace CodeGenerator.Infra.Common.Extensions
             {
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
                     ValidIssuer = jwtOptions.Issuer,
                     ValidAudience = jwtOptions.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SymmetricSecurityKey)),
-                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.AccessTokenExpire),
-                    ValidateLifetime = true
+                    ClockSkew = TimeSpan.FromMinutes(jwtOptions.ClockSkew),
                 };
                 options.Events = new JwtBearerEvents
                 {
@@ -261,10 +264,21 @@ namespace CodeGenerator.Infra.Common.Extensions
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins(corsOptions.Hosts)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                    if (corsOptions.Hosts != null && corsOptions.Hosts.Length > 0)
+                    {
+                        policy.WithOrigins(corsOptions.Hosts)
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
+                    else
+                    {
+                        policy.SetIsOriginAllowed(isOriginAllowed => true);
+                        policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
                 });
             });
         }

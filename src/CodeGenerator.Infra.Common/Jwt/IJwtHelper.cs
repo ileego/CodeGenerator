@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using CodeGenerator.Infra.Common.ValueModel;
 
 namespace CodeGenerator.Infra.Common.Jwt
@@ -12,18 +14,21 @@ namespace CodeGenerator.Infra.Common.Jwt
         /// <param name="tokenType"></param>
         /// <returns></returns>
         string CreateToken(UserModel user, TokenType tokenType);
+
         /// <summary>
         /// 创建AccessToken
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         string CreateAccessToken(UserModel user);
+
         /// <summary>
         /// 创建RefreshToken
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
         string CreateRefreshToken(UserModel user);
+
         /// <summary>
         /// 使用RefreshToken创建AccessToken
         /// </summary>
@@ -31,6 +36,7 @@ namespace CodeGenerator.Infra.Common.Jwt
         /// <param name="refreshTokenTxt"></param>
         /// <returns></returns>
         string CreateAccessToken(UserModel user, string refreshTokenTxt);
+
         /// <summary>
         /// 缓存AccessToken
         /// </summary>
@@ -38,27 +44,35 @@ namespace CodeGenerator.Infra.Common.Jwt
         /// <param name="accessToken"></param>
         /// <returns></returns>
         Task CacheAccessToken(string userId, string accessToken);
+
         /// <summary>
-        /// 判断当前 Token 是否有效
-        /// </summary>
-        /// <returns></returns>
-        Task<bool> IsCurrentActiveTokenAsync();
-        /// <summary>
-        /// 当前用户 Token
-        /// </summary>
-        /// <returns></returns>
-        string GetCurrentUserToken();
-        /// <summary>
-        /// 注销用户
+        /// 获取缓存中的AccessToken
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task DeactivateTokenByUserId(string userId);
+        Task<string> GetCacheAccessToken(string userId);
+
         /// <summary>
-        /// 停止用户的当前登录
+        /// AccessToken是否在缓存中
         /// </summary>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task DeactivateTokenCurrentAsync();
+        Task<bool> AccessTokenIsCached(string userId);
+
+        /// <summary>
+        /// 移除缓存中的AccessToken
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task RemoveCacheAccessToken(string userId);
+
+        /// <summary>
+        /// 从Token中解析出Claims
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        IEnumerable<Claim> GetClaimsFromToken(string token);
+
     }
 
     public enum TokenType
